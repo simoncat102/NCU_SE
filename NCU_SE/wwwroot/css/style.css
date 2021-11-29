@@ -17,6 +17,7 @@
 	background-image: url('../img/background2.jpg');
 	background-size: cover;
 	background-position: center;
+	background-size: 100%;
 }
 
 .booking-form {

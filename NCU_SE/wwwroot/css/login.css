@@ -90,12 +90,14 @@ body {
   margin-bottom: 25px; }
 
 .login-img {
-  width: 100%;
-  height: 100vh;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -o-object-position: left;
-     object-position: left; }
+    width: 100%;
+    height: 100vh;
+    -o-object-fit: cover;
+    object-fit: cover;
+    -o-object-position: left;
+    object-position: left;
+/*    background-image: src('/Users/mac/Projects/NCU_SE/NCU_SE/wwwroot/img/elizabeth-camp.png')*/
+}
 
 
 .btn-login {
