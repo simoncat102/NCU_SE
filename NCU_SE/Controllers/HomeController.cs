@@ -18,12 +18,14 @@ namespace NCU_SE.Controllers
             _logger = logger;
         }
 
+        //這邊控制了navbar點什麼會顯示什麼頁面
+        //return View 要看的是上面的名稱 他回去找Home資料夾有沒有相對應的頁面(VIEW)
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Login() //原Privacy
         {
             return View();
         }
