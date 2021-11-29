@@ -96,7 +96,8 @@ body {
     object-fit: cover;
     -o-object-position: left;
     object-position: left;
-/*    background-image: src('/Users/mac/Projects/NCU_SE/NCU_SE/wwwroot/img/elizabeth-camp.png')*/
+    background-image: url('../img/elizabeth-camp.jpg');
+    /*    background-image: src('/Users/mac/Projects/NCU_SE/NCU_SE/wwwroot/img/elizabeth-camp.png')*/
 }
 
 
