@@ -29,6 +29,14 @@ namespace NCU_SE.Controllers
         {
             return View();
         }
+        public IActionResult Realtime() //原Privacy
+        {
+            return View();
+        }
+        public IActionResult ManageTicket() //原Privacy
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
