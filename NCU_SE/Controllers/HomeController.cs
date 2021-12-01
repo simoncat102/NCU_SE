@@ -38,6 +38,18 @@ namespace NCU_SE.Controllers
             return View();
         }
 
+        public IActionResult Register() //原Privacy
+        {
+            return View();
+        }
+
+        public ActionResult Logout()
+        {
+            //Session.Abandon();
+            return Redirect("Register");
+            //return RedirectToAction("Index", "Login");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
