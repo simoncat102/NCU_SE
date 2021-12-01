@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "登入會員";
+    ViewData["Title"] = "註冊帳號密碼";
 }
 
 <div class="container">
@@ -9,7 +9,7 @@
               <img src="img/logo.svg" alt="logo" class="logo" />
             </div> -->
             <div class="login-wrapper my-auto">
-                <h1 class="login-title">登入系統</h1>
+                <h1 class="login-title">註冊帳號密碼</h1>
                 <form action="#!">
                     <div class="form-group">
                         <label for="email">電子郵件</label>
@@ -27,20 +27,27 @@
                                class="form-control"
                                placeholder="輸入您的密碼" />
                     </div>
+                    <div class="form-group mb-4">
+                        @*<label for="password">密碼</label>*@
+                        <input type="password"
+                               name="password"
+                               id="password"
+                               class="form-control"
+                               placeholder="請再次輸入您的密碼" />
+                    </div>
                     <!-- 送出 -->
                     <div>
-                        <a href="#!" class="forgot-password-link">忘記密碼?</a>
-                        <input class="btn btn-login" type="submit" value="登入" />
+                        @*<a href="#!" class="forgot-password-link">忘記密碼?</a>*@
+                        <input class="btn btn-login" type="submit" value="註冊" />
                     </div>
 
                     <!--  -->
                 </form>
 
-                <p class="login-wrapper-footer-text">
-                    尚未擁有帳號?
-                    @*<a href="#!" class="text-reset">註冊</a>*@
-                    <a href="/Home/Logout" class="text-reset" plain="true" iconCls="icon-power-blue">註冊</a>
-                </p>
+                @*<p class="login-wrapper-footer-text">
+                        已擁有帳號?
+                        <a href="#!" class="text-reset">登入</a>
+                    </p>*@
             </div>
         </div>
         <div class="col-sm-6 px-0 d-none d-sm-block">
