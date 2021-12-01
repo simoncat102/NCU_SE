@@ -2,7 +2,6 @@
     ViewData["Title"] = "登入會員";
 }
 
-<div class="container">
     <div class="row">
         <div class="col-sm-6 login-section-wrapper">
             <!-- <div class="brand-wrapper">
@@ -29,24 +28,24 @@
                     </div>
                     <!-- 送出 -->
                     <div>
-                        <a href="#!" class="forgot-password-link">忘記密碼?</a>
+                        <a href="#!" class="forgot-password-link mr-5">忘記密碼?</a>
                         <input class="btn btn-login" type="submit" value="登入" />
                     </div>
 
                     <!--  -->
                 </form>
+                <div>
+                    <a class="login-wrapper-footer-text">
+                        尚未擁有帳號?
+                    </a>
+                     <a class="text-dark" asp-area="" asp-controller="User" asp-action="Register">註冊</a>
+                   
+                </div>
+          
 
-                <p class="login-wrapper-footer-text">
-                    尚未擁有帳號?
-                    @*<a href="#!" class="text-reset">註冊</a>*@
-                    <a href="/Home/Logout" class="text-reset" plain="true" iconCls="icon-power-blue">註冊</a>
-                </p>
+
             </div>
         </div>
-        <div class="col-sm-6 px-0 d-none d-sm-block">
-            <img @*url="elizabeth-camp.jpg"
-                 alt="login image"*@
-                 class="login-img" />
+        <div class="col-sm-6 d-none d-sm-block login-img">
         </div>
     </div>
-</div>

@@ -15,12 +15,14 @@ body {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
           flex-direction: column;
-  padding: 68px 100px;
+  padding: 100px 100px;
   background-color: #fff; }
   @media (max-width: 991px) {
     .login-section-wrapper {
-      padding-left: 50px;
-      padding-right: 50px; } }
+      padding-left: 20px;
+      padding-right: 20px;
+      margin-left:20px;
+    } }
   @media (max-width: 575px) {
     .login-section-wrapper {
       padding-top: 20px;
@@ -74,14 +76,22 @@ body {
     font-size: 14px;
     text-decoration: underline;
     display: inline-block;
-    margin-bottom: 54px; }
+    margin-bottom: 45px;
+    margin-right:20px;
+  }
     @media (max-width: 575px) {
-      .login-wrapper a.forgot-password-link {
-        margin-bottom: 16px; } }
-  .login-wrapper-footer-text {
+        .login-wrapper a.forgot-password-link {
+            margin-bottom: 16px;
+            margin-right:10px;
+        } }
+.login-wrapper-footer-text {
     font-size: 16px;
     color: #000;
-    margin-bottom: 0; }
+    margin-bottom: 0;
+    display: inline-block;
+    margin-right: 10px;
+    margin-top: 15px;
+}
 
 .login-title {
   font-size: 30px;
@@ -91,13 +101,12 @@ body {
 
 .login-img {
     width: 100%;
-    height: 100vh;
+    height: 85%;
     -o-object-fit: cover;
     object-fit: cover;
     -o-object-position: left;
     object-position: left;
     background-image: url('../img/elizabeth-camp.jpg');
-    /*    background-image: src('/Users/mac/Projects/NCU_SE/NCU_SE/wwwroot/img/elizabeth-camp.png')*/
 }
 
 
@@ -105,6 +114,8 @@ body {
   color: #fff;
 	background-color: #ff6a6a;
   border-radius: 20px;
+  margin-left: 15px;
+  margin-right:15px;
 }
 .btn-login:focus {
   color: #fff;

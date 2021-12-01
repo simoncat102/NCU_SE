@@ -25,25 +25,27 @@ namespace NCU_SE.Controllers
             return View();
         }
 
-        public IActionResult Login() //原Privacy
-        {
-            return View();
-        }
-        public IActionResult Realtime() //原Privacy
-        {
-            return View();
-        }
-        public IActionResult ManageTicket() //原Privacy
+        public IActionResult Login()
         {
             return View();
         }
 
-        public IActionResult Register() //原Privacy
+        public IActionResult Realtime() 
         {
             return View();
         }
 
-        public ActionResult Logout()
+        public IActionResult ManageTicket() 
+        {
+            return View();
+        }
+
+        //public IActionResult Register() 
+        //{
+        //    return View();
+        //}
+
+        public ActionResult Logout() //侑霖打的
         {
             //Session.Abandon();
             return Redirect("Register");

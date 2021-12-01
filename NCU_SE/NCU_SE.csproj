@@ -4,4 +4,12 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Views\User\" />
+    <None Remove="Views\Ticket\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\User\" />
+    <Folder Include="Views\Ticket\" />
+  </ItemGroup>
 </Project>
