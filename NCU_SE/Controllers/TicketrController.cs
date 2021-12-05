@@ -9,20 +9,16 @@ using NCU_SE.Models;
 
 namespace NCU_SE.Controllers
 {
-    public class UserController : Controller
+    public class TicketController : Controller
     {
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<TicketController> _logger;
 
-        public UserController(ILogger<UserController> logger)
+        public TicketController(ILogger<TicketController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Register()
-        {
-            return View();
-        }
-        public IActionResult PersonalInfo()
+        public IActionResult RealtimeFlight()
         {
             return View();
         }

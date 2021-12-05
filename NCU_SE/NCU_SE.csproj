@@ -11,5 +11,40 @@
   <ItemGroup>
     <Folder Include="Views\User\" />
     <Folder Include="Views\Ticket\" />
+    <Folder Include="wwwroot\css\slick\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\css\realtimeTicket.css" />
+    <Content Remove="wwwroot\img\airplane-icon.png" />
+    <Content Remove="wwwroot\img\airplane-img.jpg" />
+    <Content Remove="wwwroot\img\avataaars.svg" />
+    <Content Remove="wwwroot\img\bg-masthead.jpg" />
+    <Content Remove="wwwroot\img\bg-realtimeTicket.jpg" />
+    <Content Remove="wwwroot\img\bg-showcase-3.jpg" />
+    <Content Remove="wwwroot\img\density_medium_white_24dp.svg" />
+    <Content Remove="wwwroot\img\picture.jpg" />
+    <Content Remove="wwwroot\img\Program.cs" />
+    <Content Remove="wwwroot\img\Startup.cs" />
+    <Content Remove="wwwroot\img\testimonials-2.jpg" />
+    <Content Remove="wwwroot\img\testimonials-3.jpg" />
+    <Content Remove="appsettings.Development.json" />
+    <Content Remove="wwwroot\css\slick\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\css\realtimeTicket.css" />
+    <None Include="wwwroot\img\airplane-icon.png" />
+    <None Include="wwwroot\img\airplane-img.jpg" />
+    <None Include="wwwroot\img\avataaars.svg" />
+    <None Include="wwwroot\img\bg-masthead.jpg" />
+    <None Include="wwwroot\img\bg-realtimeTicket.jpg" />
+    <None Include="wwwroot\img\bg-showcase-3.jpg" />
+    <None Include="wwwroot\img\density_medium_white_24dp.svg" />
+    <None Include="wwwroot\img\picture.jpg" />
+    <None Include="wwwroot\img\testimonials-2.jpg" />
+    <None Include="wwwroot\img\testimonials-3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="wwwroot\img\Program.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
+    <Compile Include="wwwroot\img\Startup.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
   </ItemGroup>
 </Project>

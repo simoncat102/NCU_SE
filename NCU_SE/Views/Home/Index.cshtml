@@ -2,11 +2,6 @@
     ViewData["Title"] = "查詢首頁";
 }
 
-@*<div class="text-center">
-        <h1 class="display-4">Hello</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    </div>*@
-
 <div id="booking" class="section">
     <div class="section-center">
         <div class="container">
@@ -60,11 +55,12 @@
                                                placeholder="輸入機票代碼" />
                                     </div>
                                 </div>
-                        
+
                             </div>
                             <div class="form-btn">
                                 <button class="submit-btn">查詢</button>
                             </div>
+                            <a asp-area="" asp-controller="Ticket" asp-action="RealtimeFlight">即時動態</a>
                         </form>
                     </div>
                 </div>

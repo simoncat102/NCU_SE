@@ -35,10 +35,7 @@ namespace NCU_SE.Controllers
             return View();
         }
 
-        public IActionResult ManageTicket() 
-        {
-            return View();
-        }
+
 
         //public IActionResult Register() 
         //{

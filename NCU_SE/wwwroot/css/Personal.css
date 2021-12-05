@@ -1,0 +1,67 @@
+﻿
+/* 網頁捲軸【寬度】 */
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+/* 網頁捲軸【背景】顏色 */
+::-webkit-scrollbar-track {
+    background: #448fc8;
+}
+
+/* 網頁捲軸【把手】顏色 */
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #e1e5e8;
+}
+
+    /* 網頁捲軸【滑過時】把手的顏色 */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #fff;
+    }
+
+
+/*個人機票*/
+.ticketcontainer {
+    border: 1px solid;
+    background-color: #828282;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    padding: 7px;
+}
+
+.ticket_form {
+    margin: 20px;
+    max-width: 100%;
+    height: auto;
+    text-align: center
+}
+
+.ticket-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.ticket-col {
+    display: flex;
+    flex-direction: column;
+    padding: 7px;
+}
+
+.ticket-font-small {
+    font-size: small;
+    padding: 5px;
+    min-width: max-content;
+    white-space: nowrap;
+}
+
+.modify_btn {
+    border-radius: 25px;
+    width: 85px;
+    margin: 5px;
+    float: right;
+}
