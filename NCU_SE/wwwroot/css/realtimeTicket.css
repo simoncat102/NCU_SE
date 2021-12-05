@@ -1,0 +1,180 @@
+body{
+    background-color: whitesmoke;
+}
+.masthead {
+    background-image: url('../img/elizabeth-camp.jpg');
+    /*  background-color: #8e9baf;*/
+    padding: 40px 35px 20px;
+    margin-bottom: 50px;
+}
+
+td,th{
+    width: 16%;
+    margin-left: 3%;
+}
+
+
+
+.h1-title {
+    color: #646464;
+    font-weight: bold;
+
+}
+.center {
+    text-align: center !important;
+}
+
+/*搜索框*/
+#search{
+    border-radius: 10px;
+    font-size: larger;
+    padding-right: 10px;
+}
+.search-box{
+    margin: 15px auto;
+    width: 50%;
+    height: 80px;
+}
+.search_container{
+    width: 100%;
+    vertical-align: middle;
+    white-space: nowrap;
+    position: relative;
+  }
+
+.search_container input#search{
+    width: 100%;
+    height: 80px;
+    background: #DBDBDB;
+    border: none;
+    font-size: 15pt;
+    float: left;
+    color: #3c3c3f;
+    padding-left: 45px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    -webkit-transition: background .55s ease;
+    -moz-transition: background .55s ease;
+    -ms-transition: background .55s ease;
+    -o-transition: background .55s ease;
+    transition: background .55s ease;
+}
+.search_container input#search:focus{
+    background: #ffffff;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+}
+.search_container input#search:hover{
+    background: #ffffff;
+}
+
+.search_container input#search::-webkit-input-placeholder {
+    color: #65737e;
+ }
+  
+ .search_container input#search:-moz-placeholder { /* Firefox 18- */
+    color: #65737e;  
+ }
+  
+ .search_container input#search::-moz-placeholder {  /* Firefox 19+ */
+    color: #65737e;  
+ }
+  
+ .search_container input#search:-ms-input-placeholder {  
+    color: #65737e;  
+ }
+
+.search_container .icon{
+    position: absolute;
+    top: 50%;
+    margin-left: 14px;
+    margin-top: 23px;
+    z-index: 1;
+    color: #000000;
+    font-size: x-large;
+}
+
+.search_container input#search:hover, .search_container input#search:focus, .search_container input#search:active{
+    outline:none;
+}
+/*搜索框*/
+
+
+
+/*即時航班表格*/
+.realtime-title{
+    background-color: #404040;
+    border-radius: 20px;
+    display: flex;
+    height: 60px;
+    font-size: larger;
+    color: white;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 10px auto;
+    max-width: 900px;
+    min-width: 300px;
+}
+.realtime-title div{
+    padding: 5px;
+}
+
+.realtime-contain{
+    background-color: #7F7F7F;
+    border-radius: 5px;
+    display: flex;
+    height: 65px;
+    font-size: larger;
+    color: white;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 10px auto;
+    max-width: 900px;
+    min-width: 300px;
+}
+
+
+
+.greeting_bg{
+    position: absolute;
+    height: 9rem;
+    width: 100%;
+    filter: blur(10px);
+    object-fit: cover;
+}
+
+.greeting{
+    position: relative;
+    font-size: xx-large;
+    font-weight: 800;
+    display: flex;
+    top: 45px;
+    justify-content: center;
+    align-items: center;
+}
+
+footer.footer {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+@media screen and (max-width:650px){
+    .realtime-contain,.realtime-title{
+        font-size: smaller;
+    }
+    .greeting{
+        font-size: x-large;
+    }
+}
+
+@media screen and (max-width:500px)and (min-width:400px){
+    .realtime-contain,.realtime-title{
+        font-size: small;
+    }
+    .greeting{
+        font-size:larger;
+    }
+}

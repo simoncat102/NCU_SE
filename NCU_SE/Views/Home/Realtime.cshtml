@@ -2,12 +2,74 @@
     ViewData["Title"] = "即時動態";
 }
 
-@*<div class="text-center">
-        <h1 class="display-4">Hello</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    </div>*@
+<header class="masthead">
+    <div class="center">
+        <h1 class="h1-title">即時航班動態</h1>
+    </div>
+
+    <!--搜索框-->
+    <div class="search-box">
+        <div class="search_container">
+            <span class="icon"><i class="bi bi-search"></i></span>
+            <input type="text" id="search" placeholder="Search..." onkeyup="myFunction()" />
+        </div>
+    </div>
+</header>
+
+<!--即時航班：只呈現今天的即時航班，可以給非會員使用-->
+
+    <table style="width: 90%; margin: 10px auto;">
+        <thead>
+            <tr class="realtime-title">
+                <th>時間</th>
+                <th>航空名稱</th>
+                <th>班機編號</th>
+                <th>出發地</th>
+                <th>目的地</th>
+                <th>狀態</th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            <tr class="realtime-contain">
+                <td>05:20</td>
+                <td>XX航空</td>
+                <td>NH9647</td>
+                <td>東京成田機場</td>
+                <td>新加坡樟宜</td>
+                <td>飛行中</td>
+            </tr>
+            <tr class="realtime-contain">
+                <td>05:45</td>
+                <td>長榮航空</td>
+                <td>BR-766</td>
+                <td>成都雙流機場</td>
+                <td>台灣桃園機場</td>
+                <td>在登機門</td>
+            </tr>
+            <tr class="realtime-contain">
+                <td>05:50</td>
+                <td>中華航空</td>
+                <td>CI-784</td>
+                <td>新山一機場</td>
+                <td>台灣桃園機場</td>
+                <td>已排程</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>$(document).ready(function(){
+          $("#search").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });</script>
+
 <div class="container">
-    <h1>即時動態</h1>
+    <img src="../img/bg-realtimeTicket.jpg" alt="" class="greeting_bg">
+    <span class="greeting">Wish  you  a  good  journey.</span>
 </div>
 
 
