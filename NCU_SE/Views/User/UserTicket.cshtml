@@ -2,6 +2,276 @@
     ViewData["Title"] = "使用者機票";
 }
 
-<div class="container">
-   <h1>使用者機票</h1>
-</div>
+<head>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="~/img/favicon.ico" />
+    <!-- 彈跳視窗的js -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/css/personstyles.css" rel="stylesheet" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">var availableDates = ["2-1-2021", "3-1-2021", "4-1-2021"];
+
+        $(function () {
+            $('#datepicker').datepicker({
+                beforeShowDay:
+                    function (dt) {
+                        return [available(dt), ""];
+                    }
+                , changeMonth: true, changeYear: false
+            });
+        });
+
+        function available(date) {
+            dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+            if ($.inArray(dmy, availableDates) != -1) {
+                return true;
+            } else {
+                return false;
+            }
+        }</script>
+
+</head>
+
+<body id="page-top">
+    <!-- Masthead-->
+    <header class="masthead bg-primary text-white text-center">
+        <!-- 增加個人檔案邊框 -->
+        <div class="container d-flex align-items-center flex-column" style="border-width:4px;border-style:dashed;border-color:#f3e5e5;padding:10px;">
+            <!-- Masthead Avatar Image-->
+            <img class="masthead-avatar mb-5" src="~/img/avataaars.svg" alt="..." />
+            <!-- Masthead Heading-->
+            <h1 class="masthead-heading text-uppercase mb-0" style="border:6px orange solid;padding:10px;">Sharon Huang</h1>
+            <!-- Icon Divider-->
+            <div class="divider-custom divider-light">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-plane"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+            <!-- Masthead Subheading-->
+            <p class="masthead-subheading font-weight-light mb-0">110423039@gms.tku.edu.tw</p>
+        </div>
+    </header>
+
+    <!-- Portfolio Section-->
+    <section class="page-section portfolio" id="portfolio">
+        <div class="container">
+            <!-- Portfolio Section Heading-->
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">個人機票</h2>
+            <!-- Icon Divider-->
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-plane"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+            <!-- Portfolio Grid Items-->
+            <div class="row justify-content-center">
+                <!-- Portfolio Item 1-->
+                <div class="col-6">
+                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
+                        <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                            <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                        </div>
+                        <!--一張機票-->
+
+                        <form action="">
+                            <div class="ticket_form">
+                                <div class="ticketcontainer">
+                                    <div class="ticket-row" style="border-bottom: solid 1px;">
+                                        <div class="ticket-col">
+                                            <span style="align-self: center;">NH9647</span>
+                                            <span class="ticket-font-small">All Nippon Airways</span>
+                                        </div>
+                                        <div class="ticket-col">
+                                            <span>NRT</span>
+                                            <span class="ticket-font-small">Tokyo</span>
+                                        </div>
+                                        <div class="ticket-col" style="justify-content: center;"><img src="~/img/airplane-icon.png" alt=""></div>
+                                        <div class="ticket-col">
+                                            <span style="align-self: center;">TPE</span>
+                                            <span class="ticket-font-small">Taiwan</span>
+                                        </div>
+                                        <div class="ticket-font-small" style="color: #57ff65;">On-Time</div>
+                                    </div>
+
+                                    <div class="ticket-row">
+                                        <div class="ticket-col" style="padding: 1rem;border-right: 1px white solid;">
+                                            <span class="ticket-font-small" style="text-align: center;">Tokyo(NRT)</span>
+                                            <div class="ticket-row" style="padding: 0;">
+                                                <span class="ticket-font-small">Departure Times</span>
+                                                <span class="ticket-font-small">22 Nov 2021</span>
+                                            </div>
+                                            <div class="ticket-row" style="padding: 0;">
+                                                <div class="ticket-col" style="padding: 0;">
+                                                    <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
+                                                    <span class="ticket-font-small" style="align-self: center;">8:07</span>
+                                                </div>
+                                                <div class="ticket-col" style="padding: 0;">
+                                                    <span class="ticket-font-small">Actural</span>
+                                                    <span class="ticket-font-small" style="align-self: center;">8:23</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="ticket-col" style="padding: 1rem;">
+                                            <span class="ticket-font-small" style="align-self: center;">Taiwan(TPE)</span>
+                                            <div class="ticket-row" style="padding: 0;">
+                                                <span class="ticket-font-small">Departure Times</span>
+                                                <span class="ticket-font-small">22 Nov 2021</span>
+                                            </div>
+                                            <div class="ticket-row" style="padding: 0;">
+                                                <div class="ticket-col" style="padding: 0;">
+                                                    <span class="ticket-font-small">Scheduled</span>
+                                                    <span class="ticket-font-small" style="align-self: center;">10:42</span>
+                                                </div>
+                                                <div class="ticket-col" style="padding: 0;">
+                                                    <span class="ticket-font-small">Actural</span>
+                                                    <span class="ticket-font-small" style="align-self: center;">10:46</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!--一張機票-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Modal 1-->
+    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1" aria-hidden="true">
+        <div class="modal-dialog modal-xl ">
+            <div class="modal-content">
+                <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                <div class="modal-body text-center pb-5">
+                    <div class="container">
+                        <!--刪除、修改時要傳給後端的表單-->
+                        <form class="row justify-content-center" action="">
+                            <div class="col-lg-auto">
+                                <!-- Portfolio Modal - Title-->
+                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">單張個人機票</h2>
+                                <!-- Icon Divider-->
+                                <div class="divider-custom">
+                                    <div class="divider-custom-line"></div>
+                                    <div class="divider-custom-icon"><i class="fas fa-plane"></i></div>
+                                    <div class="divider-custom-line"></div>
+                                </div>
+
+
+                                <!-- Portfolio Modal - Image-->
+                                <!--一張機票-->
+                                <div class="ticket_form">
+                                    <div class="ticketcontainer">
+                                        <div class="ticket-row" style="border-bottom: solid 1px;">
+                                            <div class="ticket-col">
+                                                <span style="align-self: center;">NH9647</span>
+                                                <span class="ticket-font-small">All Nippon Airways</span>
+                                            </div>
+                                            <div class="ticket-col">
+                                                <span>NRT</span>
+                                                <span class="ticket-font-small">Tokyo</span>
+                                            </div>
+                                            <div class="ticket-col" style="justify-content: center;"><img src="~/img/airplane-icon.png" alt=""></div>
+                                            <div class="ticket-col">
+                                                <span style="align-self: center;">TPE</span>
+                                                <span class="ticket-font-small">Taiwan</span>
+                                            </div>
+                                            <div class="ticket-font-small" style="color: #57ff65;">On-Time</div>
+                                        </div>
+
+                                        <div class="ticket-row" style="padding: 0 5px 5px 5px;">
+                                            <div class="ticket-col" style="padding: 2px;border-right: 1px white solid;">
+                                                <span class="ticket-font-small" style="align-self: center;">Tokyo(NRT)</span>
+                                                <div class="ticket-row" style="padding: 0;">
+                                                    <span class="ticket-font-small">Departure Times</span>
+                                                    <span class="ticket-font-small">22 Nov 2021</span>
+                                                </div>
+                                                <div class="ticket-row" style="padding: 0;">
+                                                    <div class="ticket-col" style="padding: 0;">
+                                                        <span class="ticket-font-small">Scheduled</span>
+                                                        <span class="ticket-font-small" style="align-self: center;">8:07</span>
+                                                    </div>
+                                                    <div class="ticket-col" style="padding: 0;">
+                                                        <span class="ticket-font-small">Actural</span>
+                                                        <span class="ticket-font-small" style="align-self: center;">8:23</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ticket-col" style="padding: 2px;">
+                                                <span class="ticket-font-small" style="align-self: center;">Taiwan(TPE)</span>
+                                                <div class="ticket-row" style="padding: 0;">
+                                                    <span class="ticket-font-small">Departure Times</span>
+                                                    <span class="ticket-font-small">22 Nov 2021</span>
+                                                </div>
+                                                <div class="ticket-row" style="padding: 0;">
+                                                    <div class="ticket-col" style="padding: 0;">
+                                                        <span class="ticket-font-small">Scheduled</span>
+                                                        <span class="ticket-font-small" style="align-self: center;">10:42</span>
+                                                    </div>
+                                                    <div class="ticket-col" style="padding: 0;">
+                                                        <span class="ticket-font-small">Actural</span>
+                                                        <span class="ticket-font-small" style="align-self: center;">10:46</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--一張機票-->
+
+                                <div id="changeDate" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
+                                    <div style="display:flex;align-items: center; ">
+                                        <div class="" style="margin: 20px; max-width: 100%; height: auto; text-align: center;">
+                                            選擇要更改的日期 <input name="change_date" type='text' id='datepicker' />
+                                        </div>
+                                        <button class="btn btn-primary" style="height: fit-content;">確定</button>
+                                    </div>
+
+                                </div>
+
+                                <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="changeDate" onclick="ChangeBtn()">
+                                    <i class="fas fa-times fa-fw"></i>
+                                    修改日期
+                                </div>
+
+                                <script>function ChangeBtn() {
+                                        $("#changeDate").show();
+                                    }</script>
+
+                                <button name="delete_ticket" value="這邊放每個ticket的ID" class="btn btn-primary" href="#!" data-bs-dismiss="modal" style="margin-left: 80px;background-color:#d42b2b;border-color:#be1818">
+                                    <i class="fas fa-times fa-fw"></i>
+                                    刪除機票
+                                </button>
+
+
+                            </div>
+                        </form>
+                        <!--刪除、修改時要傳給後端的表單-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+</body>
+

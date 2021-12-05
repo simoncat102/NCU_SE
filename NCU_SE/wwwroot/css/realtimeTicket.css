@@ -156,10 +156,11 @@ td,th{
     align-items: center;
 }
 
-footer.footer {
+/*把其他人變正常*/
+/*footer.footer {
     padding-top: 2rem;
     padding-bottom: 2rem;
-}
+}*/
 
 @media screen and (max-width:650px){
     .realtime-contain,.realtime-title{

@@ -8,7 +8,12 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="~/css/Personal.css" rel="stylesheet" />
+    <link href="~/css/personstyles.css" rel="stylesheet" />
+    <!-- <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 </head>
@@ -17,7 +22,7 @@
     <!-- 增加個人檔案邊框 -->
     <div class="container d-flex align-items-center flex-column" style="border-width:4px;border-style:dashed;border-color:#f3e5e5;padding:10px;">
         <!-- Masthead Avatar Image-->
-        <img class="masthead-avatar mb-5" src="assets/img/avataaars.svg" alt="..." />
+        <img class="masthead-avatar mb-5" src="~/img/avataaars.svg" alt="..." />
         <!-- Masthead Heading-->
         <h1 class="masthead-heading text-uppercase mb-0" style="border:6px orange solid;padding:10px;">Sharon Huang</h1>
         <!-- Icon Divider-->
@@ -35,7 +40,7 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#example" style="border-color:#808080;background-color:#464242;color:#ffffff;font-family:Microsoft JhengHei;font-weight:bold">
             修改個人資料
         </button>
-        <a href="../project/personalTickets.html">
+        <a asp-controller="User" asp-action="UserTicket">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#example" style="border-color:#808080;background-color:#464242;color:#ffffff;font-family:Microsoft JhengHei;font-weight:bold">
                 個人機票
             </button>
@@ -140,4 +145,8 @@
                         </div>
                     </div>
                 </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" value="送出" class="btn btn-primary" data-dismiss="modal">Save changes</button>
             </div>
