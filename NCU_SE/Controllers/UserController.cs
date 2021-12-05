@@ -22,7 +22,13 @@ namespace NCU_SE.Controllers
         {
             return View();
         }
+
         public IActionResult PersonalInfo()
+        {
+            return View();
+        }
+
+        public IActionResult UserTicket()
         {
             return View();
         }
