@@ -1530,8 +1530,10 @@ body {
     /*大螢幕時個人檔案區塊*/
     @media (min-width: 992px) {
         .masthead {
-            padding-top: calc(3rem + 104px);
-            padding-bottom: 3rem;
+/*            padding-top: calc(3rem + 104px);
+            padding-bottom: 3rem;*/
+            padding-top: calc(1rem + 180px);
+            padding-bottom: 6rem;
         }
             .masthead .masthead-heading {
                 font-size: 4rem;
