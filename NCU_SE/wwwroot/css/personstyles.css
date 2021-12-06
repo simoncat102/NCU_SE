@@ -524,7 +524,7 @@ body {
   display: none;
 }
 
-.nav {
+/*.nav {
   display: flex;
   flex-wrap: wrap;
   padding-left: 0;
@@ -552,7 +552,7 @@ body {
   pointer-events: none;
   cursor: default;
 }
-
+*/
 /*.navbar {
   position: relative;
   display: flex;
