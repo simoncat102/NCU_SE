@@ -63,7 +63,7 @@
   box-sizing: border-box;
 }
 
-body {
+/*body {
   margin: 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
@@ -74,14 +74,14 @@ body {
   background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
+}*/
 
 .img-fluid {
   max-width: 100%;
   height: auto;
 }
 
-.container,
+/*.container,
 .container-fluid,
 .container-xxl,
 .container-xl,
@@ -99,7 +99,7 @@ body {
   .container-lg, .container-md, .container-sm, .container {
     max-width: 960px;
   }
-}
+}*/
 
 .row {
   --bs-gutter-x: 1.5rem;
@@ -1589,24 +1589,6 @@ body {
         }
         [type="date"]::-webkit-calendar-picker-indicator {
             opacity: 0;
-        }
-
-    /* 網頁捲軸【寬度】 */
-    ::-webkit-scrollbar {
-        width: 20px;
-    }
-    /* 網頁捲軸【背景】顏色 */
-    ::-webkit-scrollbar-track {
-        background: #448fc8;
-    }
-    /* 網頁捲軸【把手】顏色 */
-    ::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        background: #e1e5e8;
-    }
-        /* 網頁捲軸【滑過時】把手的顏色 */
-        ::-webkit-scrollbar-thumb:hover {
-            background: #fff;
         }
 
     /*個人機票*/
