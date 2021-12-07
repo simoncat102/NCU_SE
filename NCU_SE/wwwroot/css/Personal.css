@@ -1,27 +1,4 @@
-﻿
-/* 網頁捲軸【寬度】 */
-::-webkit-scrollbar {
-    width: 20px;
-}
-
-/* 網頁捲軸【背景】顏色 */
-::-webkit-scrollbar-track {
-    background: #448fc8;
-}
-
-/* 網頁捲軸【把手】顏色 */
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: #e1e5e8;
-}
-
-    /* 網頁捲軸【滑過時】把手的顏色 */
-    ::-webkit-scrollbar-thumb:hover {
-        background: #fff;
-    }
-
-
-/*個人機票*/
+﻿/*個人機票*/
 .ticketcontainer {
     border: 1px solid;
     background-color: #828282;
