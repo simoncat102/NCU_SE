@@ -140,6 +140,7 @@ td,th{
 
 .greeting_bg{
     position: absolute;
+    left: 0;
     height: 9rem;
     width: 100%;
     filter: blur(10px);
