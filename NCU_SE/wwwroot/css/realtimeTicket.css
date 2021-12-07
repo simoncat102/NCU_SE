@@ -187,3 +187,9 @@ td,th{
         font-size:larger;
     }
 }
+
+.footer-container {
+    margin-bottom: 65px;
+    height: 150px;
+    margin-top: 50px;
+}
