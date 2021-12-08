@@ -2,8 +2,8 @@ body{
     background-color: whitesmoke;
 }
 .masthead {
-    background-image: url('../img/elizabeth-camp.jpg');
-    /*  background-color: #8e9baf;*/
+    /*    background-image: url('../img/elizabeth-camp.jpg');*/
+    background-color: #69c6ba;
     padding: 40px 35px 20px;
     margin-bottom: 50px;
 }
