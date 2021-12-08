@@ -101,7 +101,7 @@ body {
 
 .login-img {
     width: 165%;
-    height: 100vh;
+    height: 120vh;
     -o-object-fit: cover;
     object-fit: cover;
     -o-object-position: left;

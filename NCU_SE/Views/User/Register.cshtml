@@ -5,9 +5,6 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-6 login-section-wrapper">
-            <!-- <div class="brand-wrapper">
-              <img src="img/logo.svg" alt="logo" class="logo" />
-            </div> -->
             <div class="login-wrapper my-auto">
                 <h1 class="login-title">註冊帳號密碼</h1>
                 <form action="#!">
@@ -17,7 +14,7 @@
                                name="email"
                                id="email"
                                class="form-control"
-                               placeholder="email@example.com" />
+                               placeholder="email@example.com" required />
                     </div>
                     <div class="form-group mb-4">
                         <label for="password">密碼</label>
@@ -25,29 +22,52 @@
                                name="password"
                                id="password"
                                class="form-control"
-                               placeholder="輸入您的密碼" />
+                               placeholder="輸入您的密碼" required />
                     </div>
                     <div class="form-group mb-4">
-                        @*<label for="password">密碼</label>*@
                         <input type="password"
-                               name="password"
-                               id="password"
+                               name="checkpassword"
+                               id="checkpassword"
                                class="form-control"
-                               placeholder="請再次輸入您的密碼" />
+                               placeholder="請再次輸入您的密碼" required />
                     </div>
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input type="text"
+                               name="name"
+                               id="name"
+                               class="form-control"
+                               placeholder="輸入您的姓名" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="birth">生日</label>
+                        <input type="date"
+                               name="birth"
+                               id="birth"
+                               class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">電話</label>
+                        <input type="tel"
+                               name="phone"
+                               id="phone"
+                               class="form-control"
+                               placeholder="輸入您的電話號碼" required />
+                    </div>
+
                     <!-- 送出 -->
                     <div>
-                        @*<a href="#!" class="forgot-password-link">忘記密碼?</a>*@
                         <input class="btn btn-login" type="submit" value="註冊" />
                     </div>
 
                     <!--  -->
                 </form>
-
-                <p class="login-wrapper-footer-text mt-3">
-                    已擁有帳號?
+                <div>
+                    <a class="login-wrapper-footer-text">
+                        已擁有帳號?
+                    </a>
                     <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Login">登入</a>
-                </p>
+                </div>
             </div>
         </div>
         <div class="col-sm-6 px-0 d-none d-sm-block">
