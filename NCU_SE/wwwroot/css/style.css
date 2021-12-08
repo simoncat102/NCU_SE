@@ -44,6 +44,12 @@
 	padding: 0px 25px;
 }
 
+
+.form-control:focus {
+    border-color: #69c6ba;
+    box-shadow: 0 0 0 0.1rem #69c6babf;
+}
+
 .booking-form .form-control::-webkit-input-placeholder {
 	color: rgba(82, 82, 84, 0.4);
 }
@@ -157,7 +163,7 @@
 
 .booking-form .submit-btn {
 	color: #fff;
-	background-color: #f23e3e;
+	background-color: #69c6ba;
 	font-weight: 400;
 	height: 50px;
 	font-size: 14px;
@@ -172,6 +178,7 @@
 .booking-form .submit-btn:hover,
 .booking-form .submit-btn:focus {
 	opacity: 0.9;
+	background: #c66995;
 }
 
 .navbar

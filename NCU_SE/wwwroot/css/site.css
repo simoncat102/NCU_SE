@@ -13,9 +13,9 @@ a {
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #69c6ba;
+    border-color: #69c6ba;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
@@ -50,27 +50,6 @@ button.accept-policy {
   font-size: 1rem;
   line-height: inherit;
 }
-
-/* 網頁捲軸【寬度】 */
-/*::-webkit-scrollbar {
-    width: 20px;
-}*/
-
-/* 網頁捲軸【背景】顏色 */
-/*::-webkit-scrollbar-track {
-    background: #448fc8;
-}*/
-
-/* 網頁捲軸【把手】顏色 */
-/*::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: #e1e5e8;
-}*/
-
-    /* 網頁捲軸【滑過時】把手的顏色 */
-    /*::-webkit-scrollbar-thumb:hover {
-        background: #fff;
-    }*/
 
 /* Sticky footer styles
 -------------------------------------------------- */
