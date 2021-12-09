@@ -123,12 +123,13 @@ body {
 }
 .btn-login:focus {
   color: #fff;
-  background-color: #286090;
+  background-color: #286090 ;
 }
 .btn-login:hover {
   color: #fff;
   background-color: #286090;
 }
+
 /* .btn-primary.active {
 
 } */
