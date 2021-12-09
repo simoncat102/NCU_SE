@@ -1,5 +1,5 @@
 ﻿@charset "UTF-8";
- */
+ 
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -118,7 +118,6 @@
   width: 50%;
 }
 
-@media (min-width: 992px) {
   .col-lg {
     flex: 1 0 0%;
   }
@@ -137,9 +136,8 @@
     flex: 0 0 auto;
     width: 66.66666667%;
   }
-}
 
-@media (min-width: 1200px) {
+
   .col-xl {
     flex: 1 0 0%;
   }
@@ -152,7 +150,7 @@
     flex: 0 0 auto;
     width: 58.33333333%;
   }
-}
+
 
 .form-control {
   display: block;
@@ -514,7 +512,6 @@
   display: none;
 }
 
-@media (min-width: 1200px) {
     .btn-close {
         box-sizing: content-box;
         width: 1em;
@@ -1463,4 +1460,3 @@
         margin: 5px;
         float: right;
     }
-}
