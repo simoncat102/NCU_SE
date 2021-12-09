@@ -118,6 +118,15 @@
   width: 50%;
 }
 
+@media screen and (max-width:990px) {
+
+    .col-6 {
+        flex: 0 0 auto;
+        width: 90%;
+        margin: 10px;
+    }
+}
+
   .col-lg {
     flex: 1 0 0%;
   }
@@ -1345,7 +1354,7 @@
     }
     /*小螢幕時個人檔案區塊*/
     .masthead {
-        padding-top: calc(3rem + 74px);
+        padding-top: calc(3rem + 20px);
         padding-bottom: 3rem;
     }
         .masthead .masthead-heading {
@@ -1363,7 +1372,7 @@
         .masthead {
 /*            padding-top: calc(3rem + 104px);
             padding-bottom: 3rem;*/
-            padding-top: calc(1rem + 180px);
+            padding-top: calc(1rem + 30px);
             padding-bottom: 6rem;
         }
             .masthead .masthead-heading {
@@ -1374,14 +1383,15 @@
                 font-size: 1.5rem;
             }
     }
-    .portfolio .portfolio-item {
-        cursor: pointer;
-        position: relative;
-        display: block;
-        max-width: 30rem;
-        border-radius: 0.5rem;
-        overflow: hidden;
-    }
+.portfolio .portfolio-item {
+    cursor: pointer;
+    position: relative;
+    display: block;
+    max-width: 35rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    width: fit-content;
+}
         .portfolio .portfolio-item .portfolio-item-caption {
             position: absolute;
             top: 0;
@@ -1432,31 +1442,130 @@
         color: white;
         padding: 7px;
     }
+
     .ticket_form {
-/*        margin: 20px;*/
+        /*        margin: 20px;*/
         max-width: 100%;
         height: auto;
         text-align: center
     }
-    .ticket-row {
+
+    .ticket-row, .ticket-row-bottom {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         padding: 5px;
     }
+    .ticket-row-border {
+        border-bottom: solid 1px;
+    }
+
     .ticket-col {
         display: flex;
         flex-direction: column;
         padding: 7px;
+    }
+    .ticket-col-left {
+        padding: 1rem;
+        border-right: 1px white solid;
+    }
+    .ticket-col-right {
+        padding: 1rem;
     }
     .ticket-font-small {
         font-size: small;
         padding: 5px;
         white-space: nowrap;
     }
+
     .modify_btn {
         border-radius: 25px;
         width: 85px;
         margin: 5px;
         float: right;
     }
+
+    .delete-btn {
+        margin-left: 80px;
+        background-color: #d42b2b;
+        border-color: #be1818
+    }
+
+@media screen and (max-width:600px) {
+    .ticketcontainer {
+        padding: 2px;
+    }
+    .ticket-col {
+        padding: 2px;
+    }
+
+    .ticket-col-left {
+        padding: 2px;
+        border-right: 1px white solid;
+    }
+
+    .ticket-col-right {
+        padding: 2px;
+    }
+
+}
+
+@media screen and (max-width:480px) {
+    .ticket-row {
+        padding: 2px 0;
+    }
+}
+
+@media screen and (max-width:425px) {
+    .portfolio .portfolio-item {
+        max-width: 18rem;
+    }
+
+    .ticketcontainer {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .ticket-row {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ticket-rwd-bg {
+        padding: 0;
+        background: #8d8d8d;
+        border-radius: 5px;
+        margin: 5px 2px;
+    }
+    .ticket-row-border {
+        border-bottom: unset;
+    }
+
+    .ticket-col img {
+        align-self: center;
+        transform: rotate(90deg);
+    }
+
+    .ticket-font-small {
+        white-space: pre-wrap;
+    }
+
+    .ticket-row-bottom {
+        display: flex;
+        flex-direction: row;
+        padding: unset;
+    }
+    .ticket-col-left {
+        border-right: solid 1px;
+        border-left: solid 1px;
+    }
+
+    .delete-btn {
+        margin-left: unset;
+    }
+
+    .form-container {
+        padding-right: unset;
+        padding-left: unset;
+    }
+}
