@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NCU_SE.Models;
-
+/// <summary>
+/// 使用者相關控制器
+/// </summary>
 namespace NCU_SE.Controllers
 {
     public class UserController : Controller
