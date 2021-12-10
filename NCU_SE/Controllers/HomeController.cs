@@ -11,12 +11,14 @@ namespace NCU_SE.Controllers
 {
     public class HomeController : Controller
     {
+        /*
         private readonly IConfiguration configuration;
-
+        
         public HomeController(IConfiguration config)
         {
             this.configuration = config;
         }
+
 
         //只能有一個建構子
         //private readonly ILogger<HomeController> _logger;
@@ -30,7 +32,7 @@ namespace NCU_SE.Controllers
         public IActionResult Index()
         {
             //測試有沒有連到
-            string connectionstring = configuration.GetConnectionString("DefaultConnection");
+            //string connectionstring = configuration.GetConnectionString("DefaultConnection");
 
             //找到SQLCONNECTION，新增了NuGet套件
             SqlConnection connection = new SqlConnection(connectionstring);
@@ -44,7 +46,7 @@ namespace NCU_SE.Controllers
 
             return View();
         }
-
+        
         public IActionResult Login()
         {
             return View();
@@ -56,10 +58,11 @@ namespace NCU_SE.Controllers
         }
 
         public ActionResult Logout() 
+
         {
             return Redirect("Register");
         }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

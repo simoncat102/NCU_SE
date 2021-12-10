@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "註冊帳號密碼";
+﻿@model Member
+@{
+    ViewData["Title"] = "使用者註冊";
 }
 
 <div class="container">
@@ -7,9 +8,9 @@
         <div class="col-sm-6 login-section-wrapper">
             <div class="login-wrapper my-auto">
                 <h1 class="login-title">註冊</h1>
-                <form action="#!">
+                <form method="post" asp-action="Register">
                     <div class="form-group">
-                        <label for="email">電子郵件</label>
+                        <label asp-for="Email" for="email">電子郵件</label>
                         <input type="email"
                                name="email"
                                id="email"
@@ -17,7 +18,7 @@
                                placeholder="email@example.com" required />
                     </div>
                     <div class="form-group mb-4">
-                        <label for="password">密碼</label>
+                        <label asp-for="Password" for="password">密碼</label>
                         <input type="password"
                                name="password"
                                id="password"
@@ -32,7 +33,7 @@
                                placeholder="請再次輸入您的密碼" required />
                     </div>
                     <div class="form-group">
-                        <label for="name">姓名</label>
+                        <label asp-for="Name" for="name">姓名</label>
                         <input type="text"
                                name="name"
                                id="name"
@@ -40,14 +41,14 @@
                                placeholder="輸入您的姓名" required />
                     </div>
                     <div class="form-group">
-                        <label for="birth">生日</label>
+                        <label asp-for="Birthday" for="birth">生日</label>
                         <input type="date"
                                name="birth"
                                id="birth"
                                class="form-control" required />
                     </div>
                     <div class="form-group">
-                        <label for="phone">電話</label>
+                        <label asp-for="phone" for="phone">電話</label>
                         <input type="tel"
                                name="phone"
                                id="phone"
