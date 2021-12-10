@@ -11,7 +11,7 @@ namespace NCU_SE.Controllers
 {
     public class HomeController : Controller
     {
-        /*
+        
         private readonly IConfiguration configuration;
         
         public HomeController(IConfiguration config)
@@ -32,7 +32,7 @@ namespace NCU_SE.Controllers
         public IActionResult Index()
         {
             //測試有沒有連到
-            //string connectionstring = configuration.GetConnectionString("DefaultConnection");
+            string connectionstring = configuration.GetConnectionString("DefaultConnection");
 
             //找到SQLCONNECTION，新增了NuGet套件
             SqlConnection connection = new SqlConnection(connectionstring);
