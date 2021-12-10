@@ -14,6 +14,7 @@ namespace NCU_SE.Models
         public int ID { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string Name { get; set; }
         public DateTime Birthday { get; set; }
         public string phone { get; set; }
         public int ValidState { get; set; }

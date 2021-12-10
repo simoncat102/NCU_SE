@@ -11,13 +11,14 @@ namespace NCU_SE.Controllers
 {
     public class HomeController : Controller
     {
+        /*
         private readonly IConfiguration configuration;
-
+        
         public HomeController(IConfiguration config)
         {
             this.configuration = config;
         }
-
+        */
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -30,7 +31,7 @@ namespace NCU_SE.Controllers
         public IActionResult Index()
         {
             //測試有沒有連到
-            string connectionstring = configuration.GetConnectionString("DefaultConnection");
+            //string connectionstring = configuration.GetConnectionString("DefaultConnection");
 
             //這邊我弄到一半 他找不到SQLCONNECTION
             //SqlConnection connection = new SqlConnection(connectionstring);
@@ -39,7 +40,7 @@ namespace NCU_SE.Controllers
 
             return View();
         }
-
+        
         public IActionResult Login()
         {
             return View();
@@ -49,21 +50,21 @@ namespace NCU_SE.Controllers
         {
             return View();
         }
-
+        
 
 
         //public IActionResult Register() 
         //{
         //    return View();
         //}
-
+        
         public ActionResult Logout() //侑霖打的
         {
             //Session.Abandon();
             return Redirect("Register");
             //return RedirectToAction("Index", "Login");
         }
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
