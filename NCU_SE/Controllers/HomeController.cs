@@ -7,10 +7,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NCU_SE.Models;
 
+//連線資料庫
+using Microsoft.Extensions.Configuration;
+
 namespace NCU_SE.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IConfiguration configuration;
+
+        public HomeController(IConfiguration config)
+        {
+            this.configuration = config;
+        }
+
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
