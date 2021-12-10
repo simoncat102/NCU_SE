@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NCU_SE.Data;
 using NCU_SE.Models;
-/// <summary>
-/// 使用者相關控制器
-/// </summary>
+// <summary>
+// 使用者相關控制器
+// </summary>
 namespace NCU_SE.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ILogger<UserController> _logger;
+        //private readonly ILogger<UserController> _logger;
         private readonly ApplicationDbContext _db; //使用資料庫實體
         /*
         public UserController(ILogger<UserController> logger)
