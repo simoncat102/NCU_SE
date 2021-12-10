@@ -33,7 +33,7 @@ namespace NCU_SE.Controllers
             string connectionstring = configuration.GetConnectionString("DefaultConnection");
 
             //這邊我弄到一半 他找不到SQLCONNECTION
-            SqlConnection connection = new SqlConnection(connectionstring);
+            //SqlConnection connection = new SqlConnection(connectionstring);
             
 
 
