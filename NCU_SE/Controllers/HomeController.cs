@@ -18,12 +18,12 @@ namespace NCU_SE.Controllers
             this.configuration = config;
         }
 
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        //只能有一個建構子
+        //private readonly ILogger<HomeController> _logger;
+        //public HomeController(ILogger<HomeController> logger)
+        //{
+        //    _logger = logger;
+        //}
 
         //這邊控制了navbar點什麼會顯示什麼頁面
         //return View 要看的是上面的名稱 他回去找Home資料夾有沒有相對應的頁面(VIEW)
@@ -32,10 +32,15 @@ namespace NCU_SE.Controllers
             //測試有沒有連到
             string connectionstring = configuration.GetConnectionString("DefaultConnection");
 
-            //這邊我弄到一半 他找不到SQLCONNECTION
-            //SqlConnection connection = new SqlConnection(connectionstring);
-            
+            //找到SQLCONNECTION，新增了NuGet套件
+            SqlConnection connection = new SqlConnection(connectionstring);
+            connection.Open();
+            SqlCommand com = new SqlCommand("Select count(*) from Member", connection);
+            var count = (int)com.ExecuteScalar();
 
+            ViewData["TotalData"] = count; //Member資料表的資料數量
+
+            connection.Close();
 
             return View();
         }
@@ -50,18 +55,9 @@ namespace NCU_SE.Controllers
             return View();
         }
 
-
-
-        //public IActionResult Register() 
-        //{
-        //    return View();
-        //}
-
-        public ActionResult Logout() //侑霖打的
+        public ActionResult Logout() 
         {
-            //Session.Abandon();
             return Redirect("Register");
-            //return RedirectToAction("Index", "Login");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
