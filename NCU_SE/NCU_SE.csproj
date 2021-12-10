@@ -7,6 +7,7 @@
   <ItemGroup>
     <None Remove="Views\User\" />
     <None Remove="Views\Ticket\" />
+    <None Remove="System.Data.SqlClient" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\User\" />
@@ -46,5 +47,8 @@
   <ItemGroup>
     <Compile Include="wwwroot\img\Program.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
     <Compile Include="wwwroot\img\Startup.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 </Project>
