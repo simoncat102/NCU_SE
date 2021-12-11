@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Member>
+@*選擇資料表*@
+@{
     ViewData["Title"] = "使用者機票";
 }
 
@@ -72,124 +74,88 @@
                 <div class="divider-custom-icon"><i class="fas fa-plane"></i></div>
                 <div class="divider-custom-line"></div>
             </div>
+
             <!-- Portfolio Grid Items-->
             <div class="row justify-content-center">
-                <!-- Portfolio Item 1-->
-                <div class="col-6">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
-                        <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <!--一張機票-->
-                        <div>
-                            <div class="ticket_form">
-                                <div class="ticketcontainer">
-                                    <div class="ticket-row ticket-row-border">
-                                        <div class="ticket-col ticket-rwd-bg">
-                                            <span style="align-self: center;">NH9647</span>
-                                            <span class="ticket-font-small">All Nippon Airways</span>
-                                        </div>
-                                        <div class="ticket-col ticket-rwd-bg">
-                                            <span>NRT</span>
-                                            <span class="ticket-font-small">Tokyo</span>
-                                        </div>
-                                        <div class="ticket-col" style="justify-content: center;"><img src="~/img/airplane-icon.png" alt=""></div>
-                                        <div class="ticket-col ticket-rwd-bg">
-                                            <span style="align-self: center;">TPE</span>
-                                            <span class="ticket-font-small">Taiwan</span>
-                                        </div>
-                                        <div class="ticket-font-small" style="color: #57ff65;">On-Time</div>
-                                    </div>
 
-                                    <div class="ticket-row-bottom">
-                                        <div class="ticket-col ticket-col-left">
-                                            <span class="ticket-font-small" style="text-align: center;">Tokyo(NRT)</span>
-                                            <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
-                                                <span class="ticket-font-small">Departure Times</span>
-                                                <span class="ticket-font-small">22 Nov 2021</span>
-                                            </div>
-                                            <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
-                                                <div class="ticket-col" style="padding: 0;">
-                                                    <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
-                                                    <span class="ticket-font-small" style="align-self: center;">8:07</span>
+                @if (Model.Count() > 0) //讀資料庫機票成功（先用member資料表的name來試），還差辨別機票屬於誰
+                {
+                    @foreach(var obj in Model)
+                    {
+                        <!-- Portfolio Item 1機票-->
+                        <div class="col-6" style="margin: 10px 0;">
+                            <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
+                                <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                    <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <!--一張機票-->
+                                <div>
+                                    <div class="ticket_form">
+                                        <div class="ticketcontainer">
+                                            <div class="ticket-row ticket-row-border">
+                                                <div class="ticket-col ticket-rwd-bg">
+                                                    <span style="align-self: center;">@obj.Name</span>
+                                                    <span class="ticket-font-small">All Nippon Airways</span>
                                                 </div>
-                                                <div class="ticket-col ticket-rwd-bg" style="padding: 0;">
-                                                    <span class="ticket-font-small">Actural</span>
-                                                    <span class="ticket-font-small" style="align-self: center;">8:23</span>
+                                                <div class="ticket-col ticket-rwd-bg">
+                                                    <span>NRT</span>
+                                                    <span class="ticket-font-small">Tokyo</span>
                                                 </div>
+                                                <div class="ticket-col" style="justify-content: center;"><img src="~/img/airplane-icon.png" alt=""></div>
+                                                <div class="ticket-col ticket-rwd-bg">
+                                                    <span style="align-self: center;">TPE</span>
+                                                    <span class="ticket-font-small">Taiwan</span>
+                                                </div>
+                                                <div class="ticket-font-small" style="color: #57ff65;">On-Time</div>
                                             </div>
-                                        </div>
 
-                                        <div class="ticket-col ticket-col-right">
-                                            <span class="ticket-font-small" style="align-self: center;">Taiwan(TPE)</span>
-                                            <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
-                                                <span class="ticket-font-small">Departure Times</span>
-                                                <span class="ticket-font-small">22 Nov 2021</span>
-                                            </div>
-                                            <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
-                                                <div class="ticket-col" style="padding: 0;">
-                                                    <span class="ticket-font-small">Scheduled</span>
-                                                    <span class="ticket-font-small" style="align-self: center;">10:42</span>
+                                            <div class="ticket-row-bottom">
+                                                <div class="ticket-col ticket-col-left">
+                                                    <span class="ticket-font-small" style="text-align: center;">Tokyo(NRT)</span>
+                                                    <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
+                                                        <span class="ticket-font-small">Departure Times</span>
+                                                        <span class="ticket-font-small">22 Nov 2021</span>
+                                                    </div>
+                                                    <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
+                                                        <div class="ticket-col" style="padding: 0;">
+                                                            <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
+                                                            <span class="ticket-font-small" style="align-self: center;">8:07</span>
+                                                        </div>
+                                                        <div class="ticket-col" style="padding: 0;">
+                                                            <span class="ticket-font-small">Actural</span>
+                                                            <span class="ticket-font-small" style="align-self: center;">8:23</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="ticket-col ticket-rwd-bg" style="padding: 0;">
-                                                    <span class="ticket-font-small">Actural</span>
-                                                    <span class="ticket-font-small" style="align-self: center;">10:46</span>
+
+                                                <div class="ticket-col ticket-col-right">
+                                                    <span class="ticket-font-small" style="align-self: center;">Taiwan(TPE)</span>
+                                                    <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
+                                                        <span class="ticket-font-small">Departure Times</span>
+                                                        <span class="ticket-font-small">22 Nov 2021</span>
+                                                    </div>
+                                                    <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
+                                                        <div class="ticket-col" style="padding: 0;">
+                                                            <span class="ticket-font-small">Scheduled</span>
+                                                            <span class="ticket-font-small" style="align-self: center;">10:42</span>
+                                                        </div>
+                                                        <div class="ticket-col" style="padding: 0;">
+                                                            <span class="ticket-font-small">Actural</span>
+                                                            <span class="ticket-font-small" style="align-self: center;">10:46</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!--一張機票-->
                             </div>
                         </div>
-                        <!--一張機票-->
-                    </div>
-                </div>
-
-                <!-- Portfolio Item 2-->
-                <div class="col-6">
-                    <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
-                        <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                            <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                        </div>
-                        <!--一張機票-->
-                        <div>
-                            <div class="ticket_form">
-                                <div class="ticketcontainer">
-                                    <div class="ticket-row ticket-row-border">
-                                        <div class="ticket-col ticket-rwd-bg">
-                                            <span style="align-self: center;">NH9647</span>
-                                            <span class="ticket-font-small">All Nippon Airways</span>
-                                        </div>
-                                        <div class="ticket-col ticket-rwd-bg">
-                                            <span>NRT</span>
-                                            <span class="ticket-font-small">Tokyo</span>
-                                        </div>
-                                        <div class="ticket-col" style="justify-content: center;"><img src="~/img/airplane-icon.png" alt=""></div>
-                                        <div class="ticket-col ticket-rwd-bg">
-                                            <span style="align-self: center;">TPE</span>
-                                            <span class="ticket-font-small">Taiwan</span>
-                                        </div>
-                                        <div class="ticket-font-small" style="color: #57ff65;">On-Time</div>
-                                    </div>
-
-                                    <div class="ticket-row-bottom">
-                                        <div class="ticket-col ticket-col-left">
-                                            <span class="ticket-font-small" style="text-align: center;">Tokyo(NRT)</span>
-                                            <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
-                                                <span class="ticket-font-small">Departure Times</span>
-                                                <span class="ticket-font-small">22 Nov 2021</span>
-                                            </div>
-                                            <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
-                                                <div class="ticket-col" style="padding: 0;">
-                                                    <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
-                                                    <span class="ticket-font-small" style="align-self: center;">8:07</span>
-                                                </div>
-                                                <div class="ticket-col ticket-rwd-bg" style="padding: 0;">
-                                                    <span class="ticket-font-small">Actural</span>
-                                                    <span class="ticket-font-small" style="align-self: center;">8:23</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                    }
+                    
+                }
+                
 
                                         <div class="ticket-col ticket-col-right">
                                             <span class="ticket-font-small" style="align-self: center;">Taiwan(TPE)</span>
@@ -263,7 +229,7 @@
                                     </div>
 
                                     <div class="ticket-row-bottom">
-                                        <div class="ticket-col ticket-col-left">
+                                        <div class="ticket-col ticket-col-left" style="padding: 5px;">
                                             <span class="ticket-font-small" style="text-align: center;">Tokyo(NRT)</span>
                                             <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
                                                 <span class="ticket-font-small">Departure Times</span>
@@ -274,14 +240,14 @@
                                                     <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
                                                     <span class="ticket-font-small" style="align-self: center;">8:07</span>
                                                 </div>
-                                                <div class="ticket-col ticket-rwd-bg" style="padding: 0;">
+                                                <div class="ticket-col" style="padding: 0;">
                                                     <span class="ticket-font-small">Actural</span>
                                                     <span class="ticket-font-small" style="align-self: center;">8:23</span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="ticket-col ticket-col-right">
+                                        <div class="ticket-col ticket-col-right" style="padding: 5px;">
                                             <span class="ticket-font-small" style="align-self: center;">Taiwan(TPE)</span>
                                             <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
                                                 <span class="ticket-font-small">Departure Times</span>
@@ -292,7 +258,7 @@
                                                     <span class="ticket-font-small">Scheduled</span>
                                                     <span class="ticket-font-small" style="align-self: center;">10:42</span>
                                                 </div>
-                                                <div class="ticket-col ticket-rwd-bg" style="padding: 0;">
+                                                <div class="ticket-col" style="padding: 0;">
                                                     <span class="ticket-font-small">Actural</span>
                                                     <span class="ticket-font-small" style="align-self: center;">10:46</span>
                                                 </div>
@@ -306,7 +272,7 @@
 
                                 <div id="changeDate" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
                                     <div style="display:flex;align-items: center; ">
-                                        <div class="" style="margin: 20px; max-width: 100%; height: auto; text-align: center;">
+                                        <div class="chooseDate">
                                             選擇要更改的日期 <input name="change_date" type='text' id='datepicker' />
                                         </div>
                                         <button class="btn btn-primary" style="height: fit-content;">確定</button>
