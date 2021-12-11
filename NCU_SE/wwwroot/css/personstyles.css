@@ -1402,6 +1402,7 @@
         }
             .portfolio .portfolio-item .portfolio-item-caption:hover {
                 opacity: 1;
+                z-index: 1;
             }
             .portfolio .portfolio-item .portfolio-item-caption .portfolio-item-caption-content {
                 font-size: 1.5rem;
@@ -1544,6 +1545,7 @@
     .ticket-col img {
         align-self: center;
         transform: rotate(90deg);
+        z-index: 0;
     }
 
     .ticket-font-small {
