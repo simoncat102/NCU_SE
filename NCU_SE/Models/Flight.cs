@@ -10,6 +10,8 @@ namespace NCU_SE.Models
         [Key]
         //設定這個資料表中有什麼資料
         public int FlightID { get; set; }
+        //航班主鍵
+        public int FlightCode { get; set; }
         //航班編號
         public int MemberID { get; set; }
         //使用者編號
