@@ -34,6 +34,7 @@ namespace NCU_SE.Controllers
         //[ValidateAntiForgeryToken]
         public IActionResult Register(Member obj)
         {
+            //新增資料語法
             _db.Member.Add(obj);
             _db.SaveChanges();
             return View();
@@ -46,7 +47,8 @@ namespace NCU_SE.Controllers
 
         public IActionResult UserTicket()
         {
-            IEnumerable<Member> objList = _db.Member;
+            //讀取資料語法
+            IEnumerable<Flight> objList = _db.Flight;
             return View(objList);
         }
 
