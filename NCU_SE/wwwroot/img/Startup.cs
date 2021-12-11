@@ -29,10 +29,6 @@ namespace NCU_SE
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
                 Configuration.GetConnectionString("DefaultConnection")));
-            //連接flight資料表
-            services.AddDbContext<FlightDbContext>(options =>
-            options.UseSqlServer(
-                Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllersWithViews();
 
