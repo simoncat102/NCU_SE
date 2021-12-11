@@ -14,7 +14,9 @@ namespace NCU_SE.Data
 
         }
         public DbSet<Member> Member { get; set; }
-        //public DbSet<Ticket> Tickets { get; set; }
+
+        public DbSet<Ticket> Ticket { get; set; }
+
     }
     
 }

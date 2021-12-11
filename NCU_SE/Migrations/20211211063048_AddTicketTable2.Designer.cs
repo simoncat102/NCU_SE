@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NCU_SE.Data;
 
 namespace NCU_SE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211211063048_AddTicketTable2")]
+    partial class AddTicketTable2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,40 +61,6 @@ namespace NCU_SE.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Member");
-                });
-
-            modelBuilder.Entity("NCU_SE.Models.Ticket", b =>
-                {
-                    b.Property<string>("TicketID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("ActualArrivedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ActualDepartureDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ArriveDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DepartAirport")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DepartureDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DestinationAirport")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FlightID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MemberID")
-                        .HasColumnType("int");
-
-                    b.HasKey("TicketID");
-
-                    b.ToTable("Ticket");
                 });
 #pragma warning restore 612, 618
         }
