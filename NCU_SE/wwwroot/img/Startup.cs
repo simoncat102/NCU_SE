@@ -25,10 +25,18 @@ namespace NCU_SE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //連接資料庫
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
-                Configuration.GetConnectionString("DefaultConnection")));//連接資料庫
+                Configuration.GetConnectionString("DefaultConnection")));
+            //連接flight資料表
+            services.AddDbContext<FlightDbContext>(options =>
+            options.UseSqlServer(
+                Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllersWithViews();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -29,6 +29,7 @@ namespace NCU_SE.Controllers
 
         //這邊控制了navbar點什麼會顯示什麼頁面
         //return View 要看的是上面的名稱 他回去找Home資料夾有沒有相對應的頁面(VIEW)
+        //少邦的影片
         public IActionResult Index()
         {
             //測試有沒有連到
