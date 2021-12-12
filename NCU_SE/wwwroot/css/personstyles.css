@@ -1483,7 +1483,7 @@ form .ticketcontainer {
 }
 .ticket-font-small {
     font-size: x-small;
-    padding: 2px;
+    padding: 2px 10px;
     white-space: nowrap;
 }
 
