@@ -11,11 +11,12 @@
                 <form method="post" asp-action="Register">
                     <div class="form-group">
                         <label asp-for="Email" for="email">電子郵件</label>
+                        <span class="alert-danger">@Html.ValidationMessageFor(m => m.Email)</span><!--重複註冊錯誤訊息-->
                         <input type="email"
                                name="email"
                                id="email"
                                class="form-control"
-                               placeholder="email@example.com" 
+                               placeholder="email@example.com"
                                asp-for="Email" required />
                     </div>
                     <div class="form-group mb-4">
