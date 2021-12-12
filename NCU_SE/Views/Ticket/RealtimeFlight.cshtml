@@ -7,6 +7,10 @@
     <link rel="stylesheet" type="text/css" href="~/css/slick.css" />
     <link rel="stylesheet" type="text/css" href="~/css/slick-theme.css" />
     <link rel="stylesheet" href="~/css/templatemo-style.css">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 
 <div class="tm-page-wrap mx-auto">
@@ -97,7 +101,7 @@
                             <p class="tm-text-highlight">降落時間: 14:00</p>
                             <p class="tm-text-gray">預估飛行時間...</p>
                         </div>
-                        <a href="#" class="tm-recommended-price-box">
+                        <a href="#!" class="tm-recommended-price-box"  data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
                             <p class="tm-recommended-price">CL-2234</p>
                             <p class="tm-recommended-price-link">儲存</p>
                         </a>
@@ -112,7 +116,7 @@
                             <p class="tm-text-gray">預估飛行時間...</p>
                         </div>
                         <div id="preload-hover-img"></div>
-                        <a href="#" class="tm-recommended-price-box">
+                        <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
                             <p class="tm-recommended-price">CL-2234</p>
                             <p class="tm-recommended-price-link">儲存</p>
                         </a>
@@ -126,7 +130,7 @@
                             <p class="tm-text-highlight">降落時間: 14:00</p>
                             <p class="tm-text-gray">預估飛行時間...</p>
                         </div>
-                        <a href="#" class="tm-recommended-price-box">
+                        <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
                             <p class="tm-recommended-price">CL-2234</p>
                             <p class="tm-recommended-price-link">儲存</p>
                         </a>
@@ -140,7 +144,7 @@
                             <p class="tm-text-highlight">降落時間: 14:00</p>
                             <p class="tm-text-gray">預估飛行時間...</p>
                         </div>
-                        <a href="#" class="tm-recommended-price-box">
+                        <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
                             <p class="tm-recommended-price">CL-2234</p>
                             <p class="tm-recommended-price-link">儲存</p>
                         </a>
@@ -150,5 +154,65 @@
                 <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">顯示更多搜尋結果</a>
             </div> <!-- tab-pane -->
 
+
+            <!-- 按下儲存後出現的 彈跳視窗 -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">儲存機票</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
+                    <form action="#" method="get" >
+                       <div class="form-group row">
+                        
+                        <label for="airline_name" class="col-sm-5 col-form-label">航班名稱</label>
+                        <div class="col-sm-5">
+                          <input type="text" readonly class="form-control-plaintext" id="airline_name" value="中華航空">
+                        </div>
+                        
+                        <label for="airline_name" class="col-sm-5 col-form-label">起飛時間</label>
+                        <div class="col-sm-5">
+                          <input type="text" readonly class="form-control-plaintext" id="airline_name" value="12:00">
+                        </div>
+                        
+                        <label for="airline_name" class="col-sm-5 col-form-label">降落時間</label>
+                        <div class="col-sm-5">
+                          <input type="text" readonly class="form-control-plaintext" id="airline_name" value="14:00">
+                        </div>
+
+                      </div>
+                      <div class="form-group">
+                        <label for="message-text" class="col-form-label">備註訊息:</label>
+                        <textarea class="form-control" id="message-text" name="note"></textarea>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                        <button type="submit" class="btn btn-primary" >Send message</button>
+                      </div>
+                    </form>
+
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+
         </div>
     </div>
+
+
+    <script>
+        $('#exampleModal').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') // Extract info from data-* attributes
+          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal = $(this)
+          modal.find('.modal-title').text('儲存'+ recipient+'的機票')
+        })
+    </script>

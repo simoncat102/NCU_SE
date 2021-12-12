@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NCU_SE.Data;
 
 namespace NCU_SE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211211143320_addFlightToDatabase")]
+    partial class addFlightToDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,21 +146,6 @@ namespace NCU_SE.Migrations
                     b.HasKey("TicketID");
 
                     b.ToTable("Ticket");
-                });
-
-            modelBuilder.Entity("NCU_SE.Models.test", b =>
-                {
-                    b.Property<int>("MyProperty")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("xx")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MyProperty");
-
-                    b.ToTable("test");
                 });
 #pragma warning restore 612, 618
         }

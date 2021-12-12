@@ -212,8 +212,8 @@
   opacity: 1;
 }
 .form-control:disabled, .form-control[readonly] {
-  background-color: #e9ecef;
-  opacity: 1;
+    background-color: #e9ecef;
+    opacity: 1;
 }
 .form-control::-webkit-file-upload-button {
   padding: 0.375rem 0.75rem;
@@ -1390,7 +1390,7 @@
     max-width: 35rem;
     border-radius: 0.5rem;
     overflow: hidden;
-    width: fit-content;
+    width: 70%;/*fit-content;*/
 }
         .portfolio .portfolio-item .portfolio-item-caption {
             position: absolute;
@@ -1402,6 +1402,7 @@
         }
             .portfolio .portfolio-item .portfolio-item-caption:hover {
                 opacity: 1;
+                z-index: 1;
             }
             .portfolio .portfolio-item .portfolio-item-caption .portfolio-item-caption-content {
                 font-size: 1.5rem;
@@ -1432,93 +1433,132 @@
             opacity: 0;
         }
 
-    /*個人機票*/
-    .ticketcontainer {
-        border: 1px solid;
-        background-color: #828282;
-        border-radius: 5px;
-        display: flex;
-        flex-direction: column;
-        color: white;
-        padding: 7px;
-    }
+/*個人機票*/
+.ticketcontainer {
+    border: 1px solid;
+    background-color: #828282;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    padding:7px;
+}
 
-    .ticket_form {
-        /*        margin: 20px;*/
-        max-width: 100%;
-        height: auto;
-        text-align: center
-    }
+form .ticketcontainer {
+    margin-bottom: 15px;
+    justify-content: center;
+}
 
-    .ticket-row, .ticket-row-bottom {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 5px;
-    }
-    .ticket-row-border {
-        border-bottom: solid 1px;
-    }
+.ticket_form {
+    /*        margin: 20px;*/
+    max-width: 100%;
+    height: auto;
+    text-align: center
+}
 
-    .ticket-col {
-        display: flex;
-        flex-direction: column;
-        padding: 7px;
-    }
-    .ticket-col-left {
-        padding: 1rem;
-        border-right: 1px white solid;
-    }
-    .ticket-col-right {
-        padding: 1rem;
-    }
-    .ticket-font-small {
-        font-size: small;
-        padding: 5px;
-        white-space: nowrap;
-    }
+.ticket-row, .ticket-row-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; /*space-between;*/
+    padding: 5px;
+    /*align-items: center;*/
+}
+.ticket-row-border {
+    border-bottom: solid 1px;
+}
 
-    .modify_btn {
-        border-radius: 25px;
-        width: 85px;
-        margin: 5px;
-        float: right;
-    }
+.ticket-col {
+    display: flex;
+    flex-direction: column;
+    /*padding: 7px;*/
+    padding: 2px;
+}
+.ticket-col-left {
+    /*padding: 1rem;
+    border-right: 1px white solid;
+    */
+}
+.ticket-col-right {
+    /*padding: 1rem;*/
+}
+.ticket-font-small {
+    font-size: x-small;
+    padding: 2px 10px;
+    white-space: nowrap;
+}
+.airportFromTo {
+    text-align: center;
+    font-size: medium;
+}
 
-    .delete-btn {
-        margin-left: 80px;
-        background-color: #d42b2b;
-        border-color: #be1818
-    }
+.modify_btn {
+    border-radius: 25px;
+    width: 85px;
+    margin: 5px;
+    float: right;
+}
 
+.delete-btn {
+    margin-left: 80px;
+    background-color: #d42b2b;
+    border-color: #be1818
+}
+.chooseDate {
+    margin: 20px;
+    max-width: 100%;
+    height: auto;
+    text-align: center;
+}
+
+
+@media screen and (min-width:1000px) {
+    form .ticket-font-small {
+        font-size: unset;
+    }
+    form .ticket-row-bottom {
+        justify-content: space-evenly;
+    }
+    .col-lg-auto {
+        width: 55%;
+    }
+    @media screen and (max-width:1200px) {
+        .col-lg-auto {
+            width: 80%;
+        }
+    }
+}
 @media screen and (max-width:600px) {
     .ticketcontainer {
         padding: 2px;
     }
+
     .ticket-col {
         padding: 2px;
     }
 
     .ticket-col-left {
         padding: 2px;
-        border-right: 1px white solid;
+        /*border-right: 1px white solid;*/
     }
 
     .ticket-col-right {
         padding: 2px;
     }
-
 }
 
 @media screen and (max-width:480px) {
     .ticket-row {
         padding: 2px 0;
     }
+    hr {
+        width: 0;
+    }
 }
 
-@media screen and (max-width:425px) {
+@media screen and (max-width:475px) {
     .portfolio .portfolio-item {
         max-width: 18rem;
+        width: 100%;
     }
 
     .ticketcontainer {
@@ -1537,6 +1577,7 @@
         border-radius: 5px;
         margin: 5px 2px;
     }
+
     .ticket-row-border {
         border-bottom: unset;
     }
@@ -1544,10 +1585,13 @@
     .ticket-col img {
         align-self: center;
         transform: rotate(90deg);
+        z-index: 0;
     }
 
     .ticket-font-small {
         white-space: pre-wrap;
+        padding: 3px;
+        font-size: small;
     }
 
     .ticket-row-bottom {
@@ -1555,6 +1599,7 @@
         flex-direction: row;
         padding: unset;
     }
+
     .ticket-col-left {
         border-right: solid 1px;
         border-left: solid 1px;
@@ -1567,5 +1612,17 @@
     .form-container {
         padding-right: unset;
         padding-left: unset;
+    }
+}
+
+@media screen and (max-width:300px) {
+    #datepicker {
+        width: 120px;
+    }
+    .chooseDate {
+        margin: 20px 5px;
+    }
+    .airportFromTo {
+        font-size:small;
     }
 }

@@ -37,11 +37,11 @@
     <br />
     <!-- Submit Button-->
     <div class="shape-ex1">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#example" style="border-color:#808080;background-color:#464242;color:#ffffff;font-family:Microsoft JhengHei;font-weight:bold">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#example" style="border-color:#808080;background-color:#464242;color:#ffffff;font-family:Microsoft JhengHei;font-weight:bold;margin: 0 10px;">
             修改個人資料
         </button>
         <a asp-controller="User" asp-action="UserTicket">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#example" style="border-color:#808080;background-color:#464242;color:#ffffff;font-family:Microsoft JhengHei;font-weight:bold">
+            <button type="button" class="btn btn-primary" style="border-color:#808080;background-color:#464242;color:#ffffff;font-family:Microsoft JhengHei;font-weight:bold;margin: 0 10px;">
                 個人機票
             </button>
         </a>
@@ -78,13 +78,14 @@
                                 <form id="contactForm" data-sb-form-api-token="API_TOKEN">
                                     <!-- Name input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="name" value="Name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                        <input class="form-control" id="name" value="君の名は。" type="text" placeholder="Enter your name..." data-sb-validations="required" />
                                         <label for="name">姓名</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                     </div>
                                     <!-- Date of birth input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="age" value="Age" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                        <input disabled="disabled" class="form-control" id="age" value="Age" type="text"  data-sb-validations="required" 
+                                            style="border-radius: 5px;height: 50px;padding: 0px 0px 0px 40px;" />
                                         <label for="name">年齡</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                     </div>

@@ -8,15 +8,14 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using NCU_SE.Data;
 using NCU_SE.Models;
-/// <summary>
-/// 使用者相關控制器
-/// </summary>
+// <summary>
+// 使用者相關控制器
+// </summary>
 namespace NCU_SE.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ILogger<UserController> _logger;
-        private readonly ApplicationDbContext _db; //使用資料庫實體
+        //private readonly ILogger<UserController> _logger;
         /*
         public UserController(ILogger<UserController> logger)
         {
@@ -24,8 +23,8 @@ namespace NCU_SE.Controllers
         }
         */
         //injector
-        
 
+        private readonly ApplicationDbContext _db; //使用資料庫實體
 
         public UserController(ApplicationDbContext db)
         {
@@ -52,6 +51,7 @@ namespace NCU_SE.Controllers
                 ModelState.AddModelError(nameof(Member.Email), "此帳號已被註冊");//將錯誤訊息附加到欄位上               
             }
             return View();           
+
         }
 
         public IActionResult PersonalInfo()
@@ -61,7 +61,9 @@ namespace NCU_SE.Controllers
 
         public IActionResult UserTicket()
         {
-            return View();
+            //讀取資料語法
+            IEnumerable<Flight> objList = _db.Flight;
+            return View(objList);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
