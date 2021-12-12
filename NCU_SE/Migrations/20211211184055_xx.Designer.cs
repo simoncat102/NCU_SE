@@ -3,72 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NCU_SE.Data;
 
 namespace NCU_SE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211211184055_xx")]
+    partial class xx
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("NCU_SE.Models.Flight", b =>
-                {
-                    b.Property<int>("FlightID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Airline")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AirportFrom")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AirportTo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ArriDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ArriTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CityFrom")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CityTo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DepDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DepTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FlightCode")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FlightNote")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MemberID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("FlightID");
-
-                    b.ToTable("Flight");
-                });
 
             modelBuilder.Entity("NCU_SE.Models.Member", b =>
                 {
@@ -77,8 +28,8 @@ namespace NCU_SE.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Birthday")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -144,21 +95,6 @@ namespace NCU_SE.Migrations
                     b.HasKey("TicketID");
 
                     b.ToTable("Ticket");
-                });
-
-            modelBuilder.Entity("NCU_SE.Models.test", b =>
-                {
-                    b.Property<int>("MyProperty")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("xx")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MyProperty");
-
-                    b.ToTable("test");
                 });
 #pragma warning restore 612, 618
         }

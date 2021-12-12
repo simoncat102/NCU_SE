@@ -17,8 +17,8 @@ namespace NCU_SE.Data
 
         public DbSet<Ticket> Ticket { get; set; }
 
+        public DbSet<test> test { get; set; }
         public DbSet<Flight> Flight { get; set; }
-
     }
     
 }

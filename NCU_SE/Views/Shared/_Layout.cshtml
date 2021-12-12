@@ -61,6 +61,28 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
     
+
+    <script type="text/javascript">var availableDates = ["2-1-2021", "3-1-2021", "4-1-2021"];
+
+        $(function () {
+            $('#datepicker').datepicker({
+                beforeShowDay:
+                    function (dt) {
+                        return [available(dt), ""];
+                    }
+                , changeMonth: true, changeYear: false
+            });
+        });
+
+        function available(date) {
+            dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+            if ($.inArray(dmy, availableDates) != -1) {
+                return true;
+            } else {
+                return false;
+            }
+        }</script>
+
     <script src="~/js/slick.min.js"></script>                  <!-- http://kenwheeler.github.io/slick/ -->
     <script src="~/js/jquery.scrollTo.min.js"></script>           <!-- https://github.com/flesler/jquery.scrollTo -->
     <script src="~/js/datepicker.min.js"></script>                <!-- https://github.com/qodesmith/datepicker -->
