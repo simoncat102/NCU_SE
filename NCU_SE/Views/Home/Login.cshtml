@@ -1,21 +1,25 @@
-﻿@{
+﻿@model Member
+@{
     ViewData["Title"] = "登入會員";
 }
 
 <div class="container">
     <div class="row">
         <div class="col-sm-6 login-section-wrapper">
- 
+
             <div class="login-wrapper my-auto">
                 <h1 class="login-title">登入系統</h1>
-                <form action="#!">
+                <form method="post" asp-action="Login">
+
                     <div class="form-group">
                         <label for="email">電子郵件</label>
                         <input type="email"
                                name="email"
                                id="email"
                                class="form-control"
-                               placeholder="email@example.com" required/>
+                               placeholder="email@example.com"
+                               asp-for="Email" required />
+
                     </div>
                     <div class="form-group mb-4">
                         <label for="password">密碼</label>
@@ -23,17 +27,21 @@
                                name="password"
                                id="password"
                                class="form-control"
-                               placeholder="輸入您的密碼" required/>
+                               placeholder="輸入您的密碼"
+                               asp-for="Password" required />
+
                     </div>
                     <!-- 送出 -->
                     <div>
                         <a href="#!" class="forgot-password-link mr-5">忘記密碼?</a>
-                        <input class="btn btn-login" type="submit" value="登入" />
+                        <input class="btn btn-login" type="submit" value="登入" asp-controller="Home" asp-action="Verify" />
                     </div>
 
                     <!--  -->
                 </form>
                 <div>
+                    <a>Account exist: @ViewData["Exist"]</a>
+
                     <a class="login-wrapper-footer-text">
                         尚未擁有帳號?
                     </a>
@@ -49,4 +57,4 @@
         </div>
     </div>
 </div>
-    
+
