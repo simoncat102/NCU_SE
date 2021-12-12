@@ -1486,6 +1486,10 @@ form .ticketcontainer {
     padding: 2px 10px;
     white-space: nowrap;
 }
+.airportFromTo {
+    text-align: center;
+    font-size: medium;
+}
 
 .modify_btn {
     border-radius: 25px;
@@ -1515,7 +1519,7 @@ form .ticketcontainer {
         justify-content: space-evenly;
     }
     .col-lg-auto {
-        width: 50%;
+        width: 55%;
     }
     @media screen and (max-width:1200px) {
         .col-lg-auto {
@@ -1617,5 +1621,8 @@ form .ticketcontainer {
     }
     .chooseDate {
         margin: 20px 5px;
+    }
+    .airportFromTo {
+        font-size:small;
     }
 }
