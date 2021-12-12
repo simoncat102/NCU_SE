@@ -56,11 +56,13 @@ namespace NCU_SE.Controllers
 
         public IActionResult PersonalInfo()
         {
+            ViewData["login"] = "登入/註冊";
             return View();
         }
 
         public IActionResult UserTicket()
         {
+            ViewData["login"] = "登入/註冊";
             //讀取資料語法
             IEnumerable<Flight> objList = _db.Flight;
             return View(objList);

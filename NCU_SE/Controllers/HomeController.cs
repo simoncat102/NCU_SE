@@ -67,6 +67,7 @@ namespace NCU_SE.Controllers
         {
             var SearchEmail = _db.Member.Where(x => x.Email.Equals(obj.Email.ToString()));
             var SearchPW = _db.Member.Where(x => x.Password.Equals(obj.Password.ToString()));
+  
 
             if (SearchEmail != null) //email存在
             {
@@ -85,12 +86,14 @@ namespace NCU_SE.Controllers
 
         public IActionResult Realtime() 
         {
+            ViewData["login"] = "登入/註冊";
             return View();
         }
 
         public ActionResult Logout() 
 
         {
+            ViewData["login"] = "登入/註冊";
             return Redirect("Register");
         }
         
