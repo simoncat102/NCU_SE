@@ -114,41 +114,45 @@
 
                                                 <div class="ticket-row-bottom">
                                                     <div class="ticket-col ticket-col-left">
-                                                        <span class="ticket-font-small" style="text-align: center;">@obj.AirportFrom</span>
-                                                        <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
+                                                        <span class="ticket-font-small" style="text-align: center;font-size: medium;">@obj.AirportFrom</span>
+                                                        <div class="ticket-col ticket-rwd-bg" style="padding: 0;">
                                                             <span class="ticket-font-small">Departure Times</span>
-                                                            <span class="ticket-font-small">@obj.DepDate.ToString("dd MMM yyyy")</span>
-                                                        </div>
-                                                        <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
-                                                            <div class="ticket-col" style="padding: 0;">
-                                                                <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
-                                                                <span class="ticket-font-small" style="align-self: center;">@obj.DepTime.ToString("HH:mm")</span>
-                                                            </div>
-                                                            @*實際時間要拿掉*@
-                                                            <div class="ticket-col" style="padding: 0;">
-                                                                <span class="ticket-font-small">Actural</span>
-                                                                <span class="ticket-font-small" style="align-self: center;">砍掉</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                            <span>@obj.DepDate.ToString("dd MMM yyyy")</span>
 
-                                                    <div class="ticket-col ticket-col-right">
-                                                        <span class="ticket-font-small" style="align-self: center;">@obj.AirportTo</span>
-                                                        <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
-                                                            <span class="ticket-font-small">Departure Times</span>
-                                                            <span class="ticket-font-small">@obj.ArriDate.ToString("dd MMM yyyy")</span>
                                                         </div>
-                                                        <div class="ticket-row ticket-rwd-bg" style="padding: 0;">
-                                                            <div class="ticket-col" style="padding: 0;">
-                                                                <span class="ticket-font-small">Scheduled</span>
-                                                                <span class="ticket-font-small" style="align-self: center;">@obj.ArriTime.ToString("HH:mm")</span>
+                                                        
+                                                        <!--<div class="ticket-row ticket-rwd-bg" style="padding: 0;">-->
+                                                            <div class="ticket-row" style="padding: 0;align-items: center;">
+                                                                <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
+                                                                <span style="align-self: center;padding: 2px;">@obj.DepTime.ToString("HH:mm")</span>
+
                                                             </div>
                                                             @*實際時間要拿掉*@
-                                                            <div class="ticket-col" style="padding: 0;">
+                                                            <!--<div class="ticket-col" style="padding: 0;">
                                                                 <span class="ticket-font-small">Actural</span>
                                                                 <span class="ticket-font-small" style="align-self: center;">砍掉</span>
                                                             </div>
+                                                        </div>-->
+                                                    </div>
+                                                    <hr width ="1" style="background-color: #f8f9fa;height: auto;margin: 0;" />
+                                                    <div class="ticket-col ticket-col-right">
+                                                        <span class="ticket-font-small" style="align-self: center;font-size: medium;">@obj.AirportTo</span>
+                                                        <div class="ticket-col ticket-rwd-bg" style="padding: 0;">
+                                                            <span class="ticket-font-small">Departure Times</span>
+                                                            <span>@obj.ArriDate.ToString("dd MMM yyyy")</span>
                                                         </div>
+                                                      
+                                                        <!--<div class="ticket-row ticket-rwd-bg" style="padding: 0;">-->
+                                                            <div class="ticket-row " style="padding: 0;align-items: center;">
+                                                                <span class="ticket-font-small">Scheduled</span>
+                                                                <span style="align-self: center;padding: 2px;">@obj.ArriTime.ToString("HH:mm")</span>
+                                                            </div>
+                                                            @*實際時間要拿掉*@
+                                                            <!--<div class="ticket-col" style="padding: 0;">
+                                                                <span class="ticket-font-small">Actural</span>
+                                                                <span class="ticket-font-small" style="align-self: center;">砍掉</span>
+                                                            </div>
+                                                        </div>-->
                                                     </div>
                                                 </div>
                                             </div>
