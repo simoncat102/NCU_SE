@@ -87,7 +87,7 @@
                         {
                             <!-- Portfolio Item 1機票-->
                             <div class="col-6" style="margin: 10px 0;">
-                                <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1" data-bs-whatever=@obj.FlightID>
+                                <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal@obj.FlightID" data-bs-whatever=@obj.FlightID>
                                     <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                         <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                                     </div>
@@ -149,6 +149,119 @@
                                     <!--一張機票-->
                                 </div>
                             </div>
+
+                            <!--測試彈跳視窗-->
+                            <!-- Portfolio Modal ID要改-->
+                            <div class="portfolio-modal modal fade" id="@obj.FlightID" tabindex="-1" aria-labelledby="@obj.FlightID" aria-hidden="true">
+                                <div class="modal-dialog modal-xl ">
+                                    <div class="modal-content">
+                                        <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                                        <div class="modal-body text-center pb-5">
+                                            <div class="container form-container ">
+                                                <!--刪除、修改時要傳給後端的表單-->
+                                                <form class="row justify-content-center" action="">
+                                                    <div class="col-lg-auto">
+                                                        <!-- Portfolio Modal - Title-->
+                                                        <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">@obj.FlightNote</h2>
+                                                        @*先試試看傳送數值*@
+                                                        <input type="text" class="form-control" id="recipient-name">
+                                                        <!-- Icon Divider-->
+                                                        <div class="divider-custom">
+                                                            <div class="divider-custom-line"></div>
+                                                            <div class="divider-custom-icon"><i class="fas fa-plane"></i></div>
+                                                            <div class="divider-custom-line"></div>
+                                                        </div>
+                                                        <!-- Portfolio Modal - Image-->
+                                                        <!--一張機票-->
+                                                        <div>
+                                                            <div class="ticket_form">
+                                                                <div class="ticketcontainer">
+                                                                    <div class="ticket-row ticket-row-border">
+                                                                        <div class="ticket-col ticket-rwd-bg">
+                                                                            <span style="align-self: center;">NH9647</span>
+                                                                            <span class="ticket-font-small">All Nippon Airways</span>
+                                                                        </div>
+                                                                        <div class="ticket-col ticket-rwd-bg">
+                                                                            <span>NRT</span>
+                                                                            <span class="ticket-font-small">Tokyo</span>
+                                                                        </div>
+                                                                        <div class="ticket-col" style="justify-content: center;"><img src="~/img/airplane-icon.png" alt=""></div>
+                                                                        <div class="ticket-col ticket-rwd-bg">
+                                                                            <span style="align-self: center;">TPE</span>
+                                                                            <span class="ticket-font-small">Taiwan</span>
+                                                                        </div>
+                                                                        <div class="ticket-font-small" style="color: #57ff65;">On-Time</div>
+                                                                    </div>
+
+                                                                    <div class="ticket-row-bottom">
+                                                                        <div class="ticket-col ticket-col-left">
+                                                                            <span class="ticket-font-small airportFromTo">Tokyo(NRT)</span>
+                                                                            <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
+                                                                                <span class="ticket-font-small">Departure Times</span>
+                                                                                <span>22 Nov 2021</span>
+
+                                                                            </div>
+
+                                                                            <div class="ticket-row" style="padding: 0;align-items: center;">
+                                                                                <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
+                                                                                <span style="align-self: center;padding: 2px;">8:07</span>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <hr width="1" style="background-color: #f8f9fa;height: auto;margin: 0;" />
+                                                                        <div class="ticket-col ticket-col-right">
+                                                                            <span class="ticket-font-small airportFromTo">Taiwan(TPE)</span>
+                                                                            <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
+                                                                                <span class="ticket-font-small">Arrival Times</span>
+                                                                                <span>22 Nov 2021</span>
+                                                                            </div>
+
+                                                                            <div class="ticket-row " style="padding: 0;align-items: center;">
+                                                                                <span class="ticket-font-small">Scheduled</span>
+                                                                                <span style="align-self: center;padding: 2px;">10:42</span>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--一張機票-->
+
+                                                        <div id="changeDate" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
+                                                            <div style="display:flex;align-items: center;justify-content: center; ">
+                                                                <div class="chooseDate">
+                                                                    選擇要更改的日期 <input name="change_date" type='text' id='datepicker' />
+                                                                </div>
+                                                                <button class="btn btn-primary" style="height: fit-content;">確定</button>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="changeDate" onclick="ChangeBtn()">
+                                                            <i class="fas fa-times fa-fw"></i>
+                                                            修改日期
+                                                        </div>
+
+                                                        <script>function ChangeBtn() {
+                                                                $("#changeDate").show();
+                                                            }</script>
+
+                                                        <button name="delete_ticket" value="這邊放每個ticket的ID" class="btn btn-primary delete-btn" href="#!" data-bs-dismiss="modal">
+                                                            <i class="fas fa-times fa-fw"></i>
+                                                            刪除機票
+                                                        </button>
+
+
+                                                    </div>
+                                                </form>
+                                                <!--刪除、修改時要傳給後端的表單-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         }
                     }
                 }
@@ -157,7 +270,7 @@
     </section>
 
     <!-- Portfolio Modal 1-->
-    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1" aria-hidden="true">
+    <div class="portfolio-modal modal fade" id="portfolioModal@obj.FlightID" tabindex="-1" aria-labelledby="portfolioModal@obj.FlightID" aria-hidden="true">
         <div class="modal-dialog modal-xl ">
             <div class="modal-content">
                 <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
@@ -167,7 +280,15 @@
                         <form class="row justify-content-center" action="">
                             <div class="col-lg-auto">
                                 <!-- Portfolio Modal - Title-->
-                                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">會員的備註/收藏原因</h2>
+                                @foreach (var obj in Model)
+                                {
+                                    @*這裡應該能辨別機票屬於誰*@
+                                    @if (@obj.FlightID == 1)
+                                    {
+                                        <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">@obj.FlightNote</h2>
+                                    }
+                                }
+                                @*<h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">會員的備註/收藏原因</h2>*@
                                 @*先試試看傳送數值*@
                                 <input type="text" class="form-control" id="recipient-name">
                                 <!-- Icon Divider-->
@@ -269,7 +390,8 @@
         </div>
     </div>
 
-    <script type="text/javascript">var exampleModal = document.getElementById('portfolioModal1')
+    <script type="text/javascript">
+        var exampleModal = document.getElementById('portfolioModal1')
         exampleModal.addEventListener('show.bs.modal', function (event) {
             // Button that triggered the modal
             var button = event.relatedTarget
