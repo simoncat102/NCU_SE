@@ -117,18 +117,20 @@
                                                         <span class="ticket-font-small" style="text-align: center;font-size: medium;">@obj.AirportFrom</span>
                                                         <div class="ticket-col ticket-rwd-bg" style="padding: 0;">
                                                             <span class="ticket-font-small">Departure Times</span>
-                                                            <span >@obj.DepDate</span>
+                                                            <span>@obj.DepDate.ToString("dd MMM yyyy")</span>
+
                                                         </div>
                                                         
                                                         <!--<div class="ticket-row ticket-rwd-bg" style="padding: 0;">-->
                                                             <div class="ticket-row" style="padding: 0;align-items: center;">
                                                                 <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
-                                                                <span style="align-self: center;padding: 2px;">8:07</span>
+                                                                <span style="align-self: center;padding: 2px;">@obj.DepTime.ToString("HH:mm")</span>
+
                                                             </div>
                                                             @*實際時間要拿掉*@
                                                             <!--<div class="ticket-col" style="padding: 0;">
                                                                 <span class="ticket-font-small">Actural</span>
-                                                                <span class="ticket-font-small" style="align-self: center;">8:23</span>
+                                                                <span class="ticket-font-small" style="align-self: center;">砍掉</span>
                                                             </div>
                                                         </div>-->
                                                     </div>
@@ -136,18 +138,19 @@
                                                     <div class="ticket-col ticket-col-right">
                                                         <span class="ticket-font-small" style="align-self: center;font-size: medium;">@obj.AirportTo</span>
                                                         <div class="ticket-col ticket-rwd-bg" style="padding: 0;">
-                                                            <span class="ticket-font-small">Arrival Times</span>
-                                                            <span >@obj.ArriDate</span>
+                                                            <span class="ticket-font-small">Departure Times</span>
+                                                            <span>@obj.ArriDate.ToString("dd MMM yyyy")</span>
                                                         </div>
+                                                      
                                                         <!--<div class="ticket-row ticket-rwd-bg" style="padding: 0;">-->
                                                             <div class="ticket-row " style="padding: 0;align-items: center;">
                                                                 <span class="ticket-font-small">Scheduled</span>
-                                                                <span style="align-self: center;padding: 2px;">10:42</span>
+                                                                <span style="align-self: center;padding: 2px;">@obj.ArriTime.ToString("HH:mm")</span>
                                                             </div>
                                                             @*實際時間要拿掉*@
                                                             <!--<div class="ticket-col" style="padding: 0;">
                                                                 <span class="ticket-font-small">Actural</span>
-                                                                <span class="ticket-font-small" style="align-self: center;">10:46</span>
+                                                                <span class="ticket-font-small" style="align-self: center;">砍掉</span>
                                                             </div>
                                                         </div>-->
                                                     </div>
