@@ -20,6 +20,7 @@ namespace NCU_SE.Controllers
 
         public IActionResult RealtimeFlight()
         {
+            ViewData["login"] = "登入/註冊";
             return View();
         }
 
