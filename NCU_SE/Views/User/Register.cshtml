@@ -2,13 +2,17 @@
 @{
     ViewData["Title"] = "使用者註冊";
 }
+<link href="~/css/register.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+<script src="https://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
 
 <div class="container">
     <div class="row">
         <div class="col-sm-6 login-section-wrapper">
             <div class="login-wrapper my-auto">
                 <h1 class="login-title">註冊</h1>
-                <form method="post" asp-action="Register">
+                <form id="registerForm" method="post" asp-action="Register">
                     <div class="form-group">
                         <label asp-for="Email" for="email">電子郵件</label>
                         <span class="alert-danger">@Html.ValidationMessageFor(m => m.Email)</span><!--重複註冊錯誤訊息-->
@@ -65,13 +69,13 @@
                     
                     <!-- 送出 -->
                     <div>
-                        <input class="btn btn-login" type="submit" value="註冊" />
+                        <input class="btn btn-login" type="submit" value="註冊"/>
                     </div>
 
-                    <!--  -->
                 </form>
+
                 <div>
-                    <a class="login-wrapper-footer-text">
+                    <a class="login-wrapper-footer-text" >
                         已擁有帳號?
                     </a>
                     <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Login">登入</a>
@@ -83,3 +87,30 @@
         </div>
     </div>
 </div>
+
+
+<script type="text/javascript">
+    /* 表單驗證 */
+    jQuery.validator.setDefaults({
+      debug: true,
+      success: "valid"
+    });
+    $( "#registerForm" ).validate({
+      rules: {
+        password: "required",
+        checkpassword: {
+          equalTo: "#password",
+          minlength:10,
+          required:true
+        }
+      }
+    });
+    jQuery.extend(jQuery.validator.messages, {
+      required: "必選欄位",
+      email: "請輸入正確格式的電子郵件",
+      equalTo: "請再次輸入相同的值",
+      minlength: jQuery.validator.format("請輸入一個 長度最少是 {0} 的字串"),
+      /*參考：https://iter01.com/917.html */
+    });
+
+</script>
