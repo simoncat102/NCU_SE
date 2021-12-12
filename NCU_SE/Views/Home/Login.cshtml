@@ -9,6 +9,7 @@
 
             <div class="login-wrapper my-auto">
                 <h1 class="login-title">登入系統</h1>
+                <span class="alert-danger">@Html.ValidationMessageFor(m => m.Email)</span><!--重複註冊錯誤訊息"by Eric"-->
                 <form method="post" asp-action="Login">
 
                     <div class="form-group">
