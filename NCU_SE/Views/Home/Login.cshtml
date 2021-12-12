@@ -2,7 +2,10 @@
 @{
     ViewData["Title"] = "登入會員";
 }
-
+<link href="~/css/register.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+<script src="https://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
 <div class="container">
     <div class="row">
         <div class="col-sm-6 login-section-wrapper">
@@ -55,6 +58,26 @@
         <div class="col-sm-6 px-0 d-none d-sm-block">
             <img class="login-img" />
         </div>
+
+        <button id="test">click(測試成功訊息用)</button>
+        <div class="alert alert-success" role="alert">
+            註冊成功
+        </div>
     </div>
 </div>
 
+<script>
+    /* 註冊彈出視窗 1.5秒自動消失*/
+    /* 可能需要接受到註冊完成後的訊息，判斷註冊成功之後再執行下方函數*/
+    /*
+    if("接收到成功訊息"){
+        $(".alert-success").css("display","block").delay(1500).fadeOut();
+    }
+    */
+
+   //這個是按click按鈕會顯示訊息(測試用)
+    $("#test").click(function(){
+       $(".alert-success").css("display","block").delay(1500).fadeOut();
+    });
+    
+</script>

@@ -36,7 +36,7 @@
                         <input type="password"
                                name="checkpassword"
                                id="checkpassword"
-                               class="form-control"
+                               class="form-control" 
                                placeholder="請再次輸入您的密碼" required />
                     </div>
                     <div class="form-group">
@@ -69,7 +69,7 @@
                     
                     <!-- 送出 -->
                     <div>
-                        <input class="btn btn-login" type="submit" value="註冊"/>
+                        <input id="register" class="btn btn-login" type="submit" value="註冊"/>
                     </div>
 
                 </form>
@@ -85,6 +85,12 @@
         <div class="col-sm-6 px-0 d-none d-sm-block">
             <img class="login-img" />
         </div>
+
+        <!--
+        <div class="alert alert-success" role="alert">
+            註冊成功
+        </div>
+        -->
     </div>
 </div>
 
@@ -113,4 +119,9 @@
       /*參考：https://iter01.com/917.html */
     });
 
+    /* 註冊彈出視窗 1.5秒自動消失*/
+    /* 目前是做點了註冊button後就會出現，但應該要等註冊完成再顯示?(可能需要接受到註冊完成後的訊息)*/
+    /*$("#register").click(function(){
+       $(".alert-success").css("display","block").delay(1500).fadeOut();
+    });*/
 </script>
