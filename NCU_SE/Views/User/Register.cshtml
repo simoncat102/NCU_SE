@@ -15,7 +15,8 @@
                                name="email"
                                id="email"
                                class="form-control"
-                               placeholder="email@example.com" required />
+                               placeholder="email@example.com" 
+                               asp-for="Email" required />
                     </div>
                     <div class="form-group mb-4">
                         <label asp-for="Password" for="password">密碼</label>
@@ -23,7 +24,8 @@
                                name="password"
                                id="password"
                                class="form-control"
-                               placeholder="輸入您的密碼" required />
+                               placeholder="輸入您的密碼"
+                                asp-for="Password" required />
                     </div>
                     <div class="form-group mb-4">
                         <input type="password"
@@ -38,14 +40,16 @@
                                name="name"
                                id="name"
                                class="form-control"
-                               placeholder="輸入您的姓名" required />
+                               placeholder="輸入您的姓名"
+                               asp-for="Name" required />
                     </div>
                     <div class="form-group">
-                        <label asp-for="Birthday" for="birth">生日</label>
-                        <input type="date"
-                               name="birth"
+                        <label asp-for="Birthday" for="birthday">生日</label>
+                        <input type="date"                              
+                               name="birthday"
                                id="birth"
-                               class="form-control" required />
+                               class="form-control" 
+                               asp-for="Birthday" required />
                     </div>
                     <div class="form-group">
                         <label asp-for="phone" for="phone">電話</label>
@@ -53,9 +57,11 @@
                                name="phone"
                                id="phone"
                                class="form-control"
-                               placeholder="輸入您的電話號碼" required />
+                               placeholder="輸入您的電話號碼"
+                               asp-for="phone" required />
                     </div>
-
+                    
+                    
                     <!-- 送出 -->
                     <div>
                         <input class="btn btn-login" type="submit" value="註冊" />
