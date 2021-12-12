@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NCU_SE.Models;
+using NCU_SE.Data;
+using System.Linq;
+
+
 
 //連線資料庫
 using Microsoft.Extensions.Configuration;
@@ -11,20 +15,19 @@ namespace NCU_SE.Controllers
 {
     public class HomeController : Controller
     {
-        
-        private readonly IConfiguration configuration;
-        
-        public HomeController(IConfiguration config)
+        private readonly ApplicationDbContext _db; //使用資料庫實體
+
+        public HomeController(ApplicationDbContext db)
         {
-            this.configuration = config;
+            _db = db;
         }
 
 
-        //只能有一個建構子
-        //private readonly ILogger<HomeController> _logger;
-        //public HomeController(ILogger<HomeController> logger)
+        //private readonly IConfiguration configuration;
+
+        //public HomeController(IConfiguration config)
         //{
-        //    _logger = logger;
+        //    this.configuration = config;
         //}
 
         //這邊控制了navbar點什麼會顯示什麼頁面
@@ -32,25 +35,52 @@ namespace NCU_SE.Controllers
         //少邦的影片
         public IActionResult Index()
         {
-            //測試有沒有連到
-            string connectionstring = configuration.GetConnectionString("DefaultConnection");
+            //跟_db衝突了 暫時用不到我先註解掉 但留著參考
+            ////測試有沒有連到
+            //string connectionstring = configuration.GetConnectionString("DefaultConnection");
 
-            //找到SQLCONNECTION，新增了NuGet套件
-            SqlConnection connection = new SqlConnection(connectionstring);
-            connection.Open();
-            SqlCommand com = new SqlCommand("Select count(*) from Member", connection);
-            var count = (int)com.ExecuteScalar();
+            ////找到SQLCONNECTION，新增了NuGet套件
+            //SqlConnection connection = new SqlConnection(connectionstring);
+            //connection.Open();
+            //SqlCommand com = new SqlCommand("Select count(*) from Member", connection);
+            //var count = (int)com.ExecuteScalar();
 
-            ViewData["TotalData"] = count; //Member資料表的資料數量
+            //ViewData["TotalData"] = count; //Member資料表的資料數量
 
-            connection.Close();
-
+            //connection.Close();
+            ViewData["login"] = "登入/註冊";
             return View();
         }
-        
-        public IActionResult Login()
+
+
+        public IActionResult Login(Member obj)
+
         {
+            
+            // 測試是否有抓到值
+            ViewData["Exist"] = obj.Email;
+            ViewData["login"] = "登入/註冊";
             return View();
+
+        }
+        public IActionResult Verify(Member obj)
+        {
+            var SearchEmail = _db.Member.Where(x => x.Email.Equals(obj.Email.ToString()));
+            var SearchPW = _db.Member.Where(x => x.Password.Equals(obj.Password.ToString()));
+
+            if (SearchEmail != null) //email存在
+            {
+                if (SearchPW != null)
+                {
+                    @ViewData["login"] = "歡迎登入 " + obj.Email;
+                    return View("Index");
+                    
+                }
+
+
+            }
+            return View("Login");
+
         }
 
         public IActionResult Realtime() 
