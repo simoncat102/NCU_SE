@@ -29,8 +29,7 @@ namespace NCU_SE.Controllers
         public HomeController(ApplicationDbContext db, IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
-            session = httpContextAccessor;
-            //httpContextAccessor.HttpContext.Session.Set("account", null);
+            session = httpContextAccessor;           
         }
 
 
@@ -71,6 +70,10 @@ namespace NCU_SE.Controllers
         {
             
             // 測試是否有抓到值
+
+            ViewData["Exist"] = LoginStat()? session.HttpContext.Session.GetString("acc") : "";
+            ViewData["login"] = "登入/註冊";
+
             ViewData["log_action"] = Login_Var.login_action;
             return View();
 
@@ -95,7 +98,8 @@ namespace NCU_SE.Controllers
             return View("Login");
             */
 
-            //冠廷 感謝：）
+            //冠廷
+            /*
             try//檢測session 'acc'是否存在，若存在且不為空則表示已經登入
             {
                 if(session.HttpContext.Session.GetString("acc") != null)//若已登入
@@ -107,6 +111,11 @@ namespace NCU_SE.Controllers
             catch
             {
                 Debug.Print("Session不存在!");
+            }
+            */
+            if (LoginStat())
+            {
+                return View("Index");
             }
             int AccExist =(obj.Email==null && obj.Password == null) ? -1: _db.Member.Where(u => u.Email == (obj.Email.ToString()) && u.Password == obj.Password.ToString()).Count();
             if(AccExist == 1)
@@ -159,6 +168,23 @@ namespace NCU_SE.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        //檢測登入狀態
+        public bool LoginStat()
+        {
+            try//檢測session 'acc'是否存在，若存在且不為空則表示已經登入
+            {
+                if (session.HttpContext.Session.GetString("acc") != null)//若已登入
+                {
+                    return true;//跳到首頁
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
