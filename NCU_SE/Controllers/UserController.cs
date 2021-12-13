@@ -56,13 +56,13 @@ namespace NCU_SE.Controllers
 
         public IActionResult PersonalInfo()
         {
-            ViewData["login"] = "登入/註冊";
+            ViewData["login"] = Login_Var.login_status;
             return View();
         }
 
         public IActionResult UserTicket()
         {
-            ViewData["login"] = "登入/註冊";
+            ViewData["login"] = Login_Var.login_status;
             //讀取資料語法
             IEnumerable<Flight> objList = _db.Flight;
             return View(objList);
@@ -74,6 +74,5 @@ namespace NCU_SE.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        
     }
 }
