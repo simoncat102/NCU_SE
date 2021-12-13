@@ -74,24 +74,6 @@ namespace NCU_SE.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public int validation(string sql)
-        {
-            /*
-            //測試有沒有連到
-            string connectionstring = configuration.GetConnectionString("DefaultConnection");
-
-            //找到SQLCONNECTION，新增了NuGet套件
-            SqlConnection connection = new SqlConnection(connectionstring);
-            connection.Open();
-            SqlCommand com = new SqlCommand("Select count(*) from Member", connection);
-            var count = (int)com.ExecuteScalar();
-
-            ViewData["TotalData"] = count; //Member資料表的資料數量
-
-            connection.Close(); 
-            */
-            return 0;
-           
-        }
+        
     }
 }
