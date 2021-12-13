@@ -20,7 +20,8 @@ namespace NCU_SE.Controllers
 
         public IActionResult RealtimeFlight()
         {
-            ViewData["login"] = "登入/註冊";
+            ViewData["login"] = Login_Var.login_status;
+            ViewData["log_status"] = Login_Var.login_action;
             return View();
         }
 

@@ -15,6 +15,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace NCU_SE.Controllers
 {
+    public static class Login_Var
+    {
+        public static string login_status { get; set; } = "登入/登出";
+        public static string login_action { get; set; } = "Login";
+    }
+
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _db; //使用資料庫實體
@@ -53,7 +59,8 @@ namespace NCU_SE.Controllers
             //ViewData["TotalData"] = count; //Member資料表的資料數量
 
             //connection.Close();
-            ViewData["login"] = "登入/註冊";
+            ViewData["login"] = Login_Var.login_status = "登入/註冊";
+            ViewData["log_action"] = Login_Var.login_action;
             return View();
         }
 
@@ -63,8 +70,7 @@ namespace NCU_SE.Controllers
         {
             
             // 測試是否有抓到值
-            ViewData["Exist"] = obj.Email;
-            ViewData["login"] = "登入/註冊";
+            ViewData["log_action"] = Login_Var.login_action;
             return View();
 
         }
@@ -88,7 +94,7 @@ namespace NCU_SE.Controllers
             return View("Login");
             */
 
-            //冠廷
+            //冠廷 感謝：）
             try//檢測session 'acc'是否存在，若存在且不為空則表示已經登入
             {
                 if(session.HttpContext.Session.GetString("acc") != null)//若已登入
@@ -104,18 +110,21 @@ namespace NCU_SE.Controllers
             if(AccExist == 1)
             {
                 session.HttpContext.Session.SetString("acc", obj.Email.ToString());//登入成功時加入session
+                ViewData["login"] = Login_Var.login_status = obj.Email+ " 按此登出";
+                Login_Var.login_action = "Logout";
                 return View("Index");
             }
             else if(AccExist == 0)
             {
                 ModelState.AddModelError(nameof(Member.Email), "帳號或密碼錯誤，請重新輸入");//將錯誤訊息附加到欄位上           
             }
+            ViewData["login"] = Login_Var.login_status;
+            
             return View("Login");
         }
 
         public IActionResult Realtime() 
         {
-            ViewData["login"] = "登入/註冊";
             return View();
         }
 
@@ -126,15 +135,21 @@ namespace NCU_SE.Controllers
             ViewData["login"] = "登入/註冊";
             return Redirect("Register");
             */
+            Login_Var.login_status = "登入/註冊";
+            Login_Var.login_action = "Login";
             try
             {
                 session.HttpContext.Session.Remove("acc");
+           
+
             }
             catch
             {
 
             }
-            return View("Index");
+           
+            return View("Login");
+            
         }
         
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
