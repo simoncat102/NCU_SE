@@ -121,7 +121,14 @@ namespace NCU_SE.Controllers
             if(AccExist == 1)
             {
                 session.HttpContext.Session.SetString("acc", obj.Email.ToString());//登入成功時加入session
-                ViewData["login"] = Login_Var.login_status = obj.Email+ " 按此登出";
+                //取得會員ID
+                int uid = _db.Member.Where(u => u.Email == obj.Email.ToString()).Select(u => u.ID).First();               
+                session.HttpContext.Session.SetString("uid", uid.ToString());
+                //取得會員姓名
+                string name = _db.Member.Where(u => u.Email == obj.Email.ToString()).Select(u => u.Name).First();
+                session.HttpContext.Session.SetString("uname", uid.ToString());
+
+                ViewData["login"] = Login_Var.login_status = getSession("uname")+ "，您好 按此登出";
                 Login_Var.login_action = "Logout";
                 return View("Index");
             }
@@ -152,8 +159,6 @@ namespace NCU_SE.Controllers
             try
             {
                 session.HttpContext.Session.Remove("acc");
-           
-
             }
             catch
             {
@@ -185,6 +190,20 @@ namespace NCU_SE.Controllers
             {
                 return false;
             }
+        }
+        //取得Session用的模組==>getSession([Session名稱])==>一律回傳字串，若不存在會傳回null且非字串型態無法取得
+        public string getSession(string name)
+        {
+            string result = null;
+            try
+            {
+                result = session.HttpContext.Session.GetString(name);
+            }
+            catch
+            {
+
+            }
+            return result;
         }
     }
 }
