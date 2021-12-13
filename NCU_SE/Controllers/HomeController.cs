@@ -125,6 +125,7 @@ namespace NCU_SE.Controllers
 
         public IActionResult Realtime() 
         {
+            ViewData["login"] = Login_Var.login_status;
             return View();
         }
 
