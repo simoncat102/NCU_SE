@@ -59,7 +59,8 @@ namespace NCU_SE.Controllers
             //ViewData["TotalData"] = count; //Member資料表的資料數量
 
             //connection.Close();
-            ViewData["login"] = Login_Var.login_status = "登入/註冊";
+
+            ViewData["login"] = Login_Var.login_status;
             ViewData["log_action"] = Login_Var.login_action;
             return View();
         }
@@ -100,6 +101,7 @@ namespace NCU_SE.Controllers
                 if(session.HttpContext.Session.GetString("acc") != null)//若已登入
                 {
                     return View("Index");//跳到首頁
+                    Login_Var.login_status = obj.Email;
                 }
             }
             catch
