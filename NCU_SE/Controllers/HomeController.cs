@@ -19,6 +19,7 @@ namespace NCU_SE.Controllers
     {
         public static string login_status { get; set; } = "登入/登出";
         public static string login_action { get; set; } = "Login";
+        public static int login_uid { get; set; } = 0;
     }
 
     public class HomeController : Controller
@@ -61,6 +62,7 @@ namespace NCU_SE.Controllers
 
             ViewData["login"] = Login_Var.login_status;
             ViewData["log_action"] = Login_Var.login_action;
+            ViewData["log_uid"] = Login_Var.login_uid;
             return View();
         }
 
@@ -126,8 +128,8 @@ namespace NCU_SE.Controllers
                 session.HttpContext.Session.SetString("uid", uid.ToString());
                 //取得會員姓名
                 string name = _db.Member.Where(u => u.Email == obj.Email.ToString()).Select(u => u.Name).First();
-                session.HttpContext.Session.SetString("uname", uid.ToString());
-
+                session.HttpContext.Session.SetString("uname", name.ToString());
+                ViewData["logid"] = Login_Var.login_uid = uid;
                 ViewData["login"] = Login_Var.login_status = getSession("uname")+ "，您好 按此登出";
                 Login_Var.login_action = "Logout";
                 return View("Index");
@@ -137,13 +139,16 @@ namespace NCU_SE.Controllers
                 ModelState.AddModelError(nameof(Member.Email), "帳號或密碼錯誤，請重新輸入");//將錯誤訊息附加到欄位上           
             }
             ViewData["login"] = Login_Var.login_status;
-            
+            ViewData["logid"] = Login_Var.login_uid;
+
+
             return View("Login");
         }
 
         public IActionResult Realtime() 
         {
             ViewData["login"] = Login_Var.login_status;
+            ViewData["logid"] = Login_Var.login_uid;
             return View();
         }
 
