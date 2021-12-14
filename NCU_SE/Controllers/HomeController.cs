@@ -5,6 +5,7 @@ using NCU_SE.Models;
 using NCU_SE.Data;
 using System.Linq;
 using Microsoft.AspNetCore.Session;
+using System.Text.Json;
 
 
 
@@ -12,6 +13,12 @@ using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.Security.Cryptography;
+using System.Text;
+using System.IO;
+using System.Net.Http;
+using System.Collections.Generic;
 
 namespace NCU_SE.Controllers
 {
@@ -155,6 +162,7 @@ namespace NCU_SE.Controllers
         {
             ViewData["login"] = Login_Var.login_status;
             ViewData["logid"] = Login_Var.login_uid;
+            getRealtimeFlight();
             return View();
         }
 
@@ -209,6 +217,66 @@ namespace NCU_SE.Controllers
             }
             catch{}
             return result;
+        }
+
+        //取得即時航班
+        public List<Flight> getRealtimeFlight()
+        {
+            //取得即時航班API網址(僅限當日)
+            string url = "https://ptx.transportdata.tw/MOTC/v2/Air/FIDS/Flight/?$format=JSON&$select=AirlineID,FlightNumber,DepartureAirportID,ArrivalAirportID,DepartureRemark,ArrivalRemark&$filter=%20ArrivalRemark%20ne%20%27?%27%20and%20DepartureRemark%20ne%20%27?%27";
+            #region API KEY
+            //申請的APPID
+            //（FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF 為 Guest 帳號，以IP作為API呼叫限制，請替換為註冊的APPID & APPKey）
+            string APPID = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
+            //申請的APPKey
+            string APPKey = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
+
+            //取得當下UTC時間
+            string xdate = DateTime.Now.ToUniversalTime().ToString("r");
+            string SignDate = "x-date: " + xdate;
+
+            //加密簽章產生
+            Encoding _encode = Encoding.GetEncoding("utf-8");
+            byte[] _byteData = Encoding.GetEncoding("utf-8").GetBytes(SignDate);
+            HMACSHA1 _hmac = new HMACSHA1(_encode.GetBytes(APPKey));
+            using (CryptoStream _cs = new CryptoStream(Stream.Null, _hmac, CryptoStreamMode.Write))
+            {
+                _cs.Write(_byteData, 0, _byteData.Length);
+            }
+            //取得加密簽章
+            string Signature = Convert.ToBase64String(_hmac.Hash);
+            string sAuth = "hmac username=\"" + APPID + "\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"" + Signature + "\"";
+            #endregion
+
+            //取得API資料(官方提供方法)
+            string json = null;
+            using (HttpClient Client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
+            {
+                Client.DefaultRequestHeaders.Add("Authorization", sAuth);
+                Client.DefaultRequestHeaders.Add("x-date", xdate);
+                json = Client.GetStringAsync(url).Result;
+            }
+
+            json = json.Replace("[", "").Replace("]", "");//將json外面的陣列括號去除
+            string[] FlightList = json.Split(',');//將json集合分開
+
+            //儲存即時航班資料的List
+            List<Flight> FL = new List<Flight>();
+            //解析每個json-->將解析結果放入List中
+            for(int i=0; i<FlightList.Length; i++)
+            {                
+                Flight flight = JsonSerializer.Deserialize<Flight>(FlightList[i]);
+                FL.Add(flight);
+                Debug.Print(FL[i].FlightNumber + "\n");
+            }            
+            return FL;
+        }
+
+        //即時航班格式
+        public class Flight
+        {
+            public string FlightNumber { get; set; }
+            public string AirlineID { get; set; }
         }
     }
 }
