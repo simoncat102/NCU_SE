@@ -257,8 +257,8 @@ namespace NCU_SE.Controllers
                 json = Client.GetStringAsync(url).Result;
             }
 
-            json = json.Replace("[", "").Replace("]", "");//將json外面的陣列括號去除
-            string[] FlightList = json.Split(',');//將json集合分開
+            json = json.Replace("[", "").Replace("]", "").Replace(",{","`{");//將json外面的陣列括號去除，並將分割多個json的逗號改為`方便切分
+            string[] FlightList = json.Split('`');//將json集合分開
 
             //儲存即時航班資料的List
             List<Flight> FL = new List<Flight>();
