@@ -67,7 +67,7 @@
     <section class="page-section portfolio" id="portfolio">
         <div>
             <!-- Portfolio Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">個人機票</h2>
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">@ViewData["logid"]</h2>
             <!-- Icon Divider-->
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>
@@ -83,7 +83,7 @@
                     @foreach (var obj in Model)
                     {
                         @*這裡應該能辨別機票屬於誰*@
-                        @if (@obj.MemberID == 1)
+                        @if (@obj.MemberID.Equals(@ViewData["logid"]))
                         {
                             <!-- Portfolio Item 1機票-->
                             <div class="col-6" style="margin: 10px 0;">
@@ -161,7 +161,7 @@
     {
         @foreach (var obj in Model)
         {
-            @if (@obj.MemberID == 1)
+            @if (@obj.MemberID.Equals(@ViewData["logid"]))
             {
                 <!-- Portfolio Modal 1-->
                 <div class="portfolio-modal modal fade" id="portfolioModal-@obj.FlightID" tabindex="-1" aria-labelledby="portfolioModal-@obj.FlightID" aria-hidden="true">

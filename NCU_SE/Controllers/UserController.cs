@@ -57,12 +57,14 @@ namespace NCU_SE.Controllers
         public IActionResult PersonalInfo()
         {
             ViewData["login"] = Login_Var.login_status;
+            ViewData["logid"] = Login_Var.login_uid;
             return View();
         }
 
         public IActionResult UserTicket()
         {
             ViewData["login"] = Login_Var.login_status;
+            ViewData["logid"] = Login_Var.login_uid;
             //讀取資料語法
             IEnumerable<Flight> objList = _db.Flight;
             return View(objList);
