@@ -100,7 +100,7 @@ namespace NCU_SE.Controllers
                 session.HttpContext.Session.SetString("uname", name.ToString());//將會員姓名寫入session
                 ViewData["login"] = Login_Var.login_uid = uid;//將會員ID放入全域變數+??顯示-->顯示在哪?
                 ViewData["login"] = Login_Var.login_status = getSession("uname") + "，您好 按此登出";//將會員姓名(歡迎訊息)放入全域變數+右上角顯示的歡迎訊息(兼登出按鈕)                
-                Login_Var.login_action = "Logout";//設定"登入/登出"按鈕動作
+                ViewData["log_action"] = Login_Var.login_action = "Logout";//設定"登入/登出"按鈕動作
                 return View("Index");//登入成功時跳轉到首頁
             }
             else if (AccExist == 0)
