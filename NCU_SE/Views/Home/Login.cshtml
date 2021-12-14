@@ -34,13 +34,13 @@
                     <!-- 送出 -->
                     <div>
                         <a href="#!" class="forgot-password-link mr-5">忘記密碼?</a>
-                        <input class="btn btn-login" type="submit" value="登入" asp-controller="Home" asp-action="Verify" />
+                        <input class="btn btn-login" type="submit" value="登入"/>
                     </div>
 
                     <!--  -->
                 </form>
                 <div>
-                    <a>Account exist: @ViewData["Exist"]</a>
+                    <a>@ViewData["Exist"]</a>
 
                     <a class="login-wrapper-footer-text">
                         尚未擁有帳號?
