@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="~/css/realtimeTicket.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--回到頂端的js-->
+    <script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
 </head>
 
 <header class="masthead">
@@ -60,16 +62,45 @@
 
         </tbody>
     </table>
+
+    <button class="js-back-to-top back-to-top" title="回到頂端">&#65085;</button>
+
+
+
+
 </div>
 
-<script>$(document).ready(function(){
-          $("#search").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function() {
-              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-          });
-        });</script>
+<script>
+/* 搜尋table */
+$(document).ready(function(){
+    $("#search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+    });
+});
+   
+/* 回到頂端 */
+$(function () {
+  var $win = $(window);
+  var $backToTop = $('.js-back-to-top');
+  // 當用戶滾動到離頂部100像素時，展示回到頂部按鈕
+  $win.scroll(function (){
+    if ($win.scrollTop() > 100){
+       $backToTop.show();
+    }
+    else{
+        $backToTop.hide();
+    }
+  });
+    // 當用戶點擊按鈕時，通過動畫效果返回頭部
+    $backToTop.click(function () {
+        $('html, body').animate({scrollTop: 0}, 200);
+    });
+});
+
+</script>
 
 <div class="container footer-container">
     <img src="../img/bg-realtimeTicket.jpg" alt="" class="greeting_bg">
