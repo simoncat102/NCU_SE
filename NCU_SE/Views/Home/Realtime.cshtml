@@ -26,7 +26,7 @@
     <table style="width: 90%; margin: 10px auto;">
         <thead>
             <tr class="realtime-title">
-                <th>時間</th>
+                <th>降落時間</th>
                 <th>航空名稱</th>
                 <th>班機編號</th>
                 <th>出發地</th>
@@ -35,30 +35,29 @@
             </tr>
         </thead>
         <tbody id="myTable">
+            @*固定的ViewBag Data*@
             <tr class="realtime-contain">
-                <td>05:20</td>
-                <td>XX航空</td>
-                <td>NH9647</td>
-                <td>東京成田機場</td>
-                <td>新加坡樟宜</td>
-                <td>飛行中</td>
+                <td>@ViewBag.Flight.ActualArrivalTime</td>
+                <td>@ViewBag.Flight.AirlineID</td>
+                <td>@ViewBag.Flight.FlightNumber</td>
+                <td>@ViewBag.Flight.DepartureAirportID</td>
+                <td>@ViewBag.Flight.ArrivalAirportID</td>
+                <td>@ViewBag.Flight.ArrivalRemark</td>
+
             </tr>
-            <tr class="realtime-contain">
-                <td>05:45</td>
-                <td>長榮航空</td>
-                <td>BR-766</td>
-                <td>成都雙流機場</td>
-                <td>台灣桃園機場</td>
-                <td>在登機門</td>
-            </tr>
-            <tr class="realtime-contain">
-                <td>05:50</td>
-                <td>中華航空</td>
-                <td>CI-784</td>
-                <td>新山一機場</td>
-                <td>台灣桃園機場</td>
-                <td>已排程</td>
-            </tr>
+            @*跑迴圈把資料拿出來 但是將時間沒辦法只留時間 日期都會在*@
+            @foreach (var allFlight in ViewBag.AllFlight)
+            {
+                <tr class="realtime-contain">
+                    <td>@allFlight.ActualArrivalTime</td>
+                    <td>@allFlight.AirlineID</td>
+                    <td>@allFlight.AirlineID@allFlight.FlightNumber</td>
+                    <td>@allFlight.DepartureAirportID</td>
+                    <td>@allFlight.ArrivalAirportID</td>
+                    <td>@allFlight.ArrivalRemark</td>
+                </tr>
+            }
+
         </tbody>
     </table>
 </div>
