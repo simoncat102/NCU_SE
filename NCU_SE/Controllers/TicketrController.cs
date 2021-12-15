@@ -26,6 +26,8 @@ namespace NCU_SE.Controllers
             ViewData["login"] = Login_Var.login_status;
             ViewData["log_status"] = Login_Var.login_action;
             ViewData["logid"] = Login_Var.login_uid;
+            ViewData["log_uname"] = Login_Var.login_uname;
+            ViewData["log_uemail"] = Login_Var.login_uemail;
             return View();
         }
 

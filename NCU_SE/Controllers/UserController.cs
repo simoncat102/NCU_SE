@@ -53,6 +53,8 @@ namespace NCU_SE.Controllers
             if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
             ViewData["login"] = Login_Var.login_status;
             ViewData["logid"] = Login_Var.login_uid;
+            ViewData["log_uname"] = Login_Var.login_uname;
+            ViewData["log_uemail"] = Login_Var.login_uemail;
             return View();
         }
 
@@ -61,6 +63,8 @@ namespace NCU_SE.Controllers
             if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
             ViewData["login"] = Login_Var.login_status;
             ViewData["logid"] = Login_Var.login_uid;
+            ViewData["log_uname"] = Login_Var.login_uname;
+            ViewData["log_uemail"] = Login_Var.login_uemail;
             //讀取資料語法
             IEnumerable<Flight> objList = _db.Flight;
             return View(objList);
