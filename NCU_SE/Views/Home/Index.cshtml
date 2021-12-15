@@ -1,4 +1,5 @@
-﻿@{
+﻿@model FixedFlight
+@{
     ViewData["Title"] = "查詢首頁";
 }
 
@@ -14,14 +15,15 @@
                 </div>
                 <div class="col-md-7 col-md-offset-1">
                     <div class="booking-form">
-                        <form>
+                        <form method="post" asp-controller="Ticket" asp-action="FixedFlight">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <span class="form-label">出發地</span>
                                         <input class="form-control"
                                                type="text"
-                                               placeholder="輸入城市或機場名" />
+                                               placeholder="輸入城市或機場名" 
+                                               asp-for="Origin"/>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -29,7 +31,8 @@
                                         <span class="form-label">目的地</span>
                                         <input class="form-control"
                                                type="text"
-                                               placeholder="輸入城市或機場名" />
+                                               placeholder="輸入城市或機場名" 
+                                               asp-for="Destination"/>
                                     </div>
                                 </div>
                                 <datalist id="location-flavors">
@@ -44,23 +47,24 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <span class="form-label">出發時間</span>
-                                        <input class="form-control" type="date" required />
+                                        <input class="form-control" type="date" required  asp-for="DeartureDate"/>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <span class="form-label">回程時間</span>
-                                        <input class="form-control" type="date" required />
+                                        <input class="form-control" type="date" required asp-for="ReturnDate"/>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <span class="form-label">機票代碼（optional）</span>
+                                        <span class="form-label">班機編號（選填）</span>
                                         <input class="form-control"
                                                type="text"
-                                               placeholder="輸入機票代碼" />
+                                               placeholder="請輸入班機編號" 
+                                               asp-for="FlightNumber"/>
                                     </div>
                                 </div>
 
@@ -68,7 +72,7 @@
                             <div class="form-btn">
                                 <button class="submit-btn">查詢</button>
                             </div>
-                            <a asp-area="" asp-controller="Ticket" asp-action="RealtimeFlight">即時動態</a>
+                            <a asp-area="" asp-controller="Ticket" asp-action="FixedFlight">即時動態</a>
                         </form>
                     </div>
                 </div>

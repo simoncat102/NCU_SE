@@ -223,13 +223,13 @@ namespace NCU_SE.Controllers
         public List<Flight> getRealtimeFlight()
         {
             //取得即時航班API網址(僅限當日)
-            string url = "https://ptx.transportdata.tw/MOTC/v2/Air/FIDS/Flight/?$format=JSON&$select=AirlineID,FlightNumber,DepartureAirportID,ArrivalAirportID,DepartureRemark,ArrivalRemark&$filter=%20ArrivalRemark%20ne%20%27?%27%20and%20DepartureRemark%20ne%20%27?%27";
+            const string url = "https://ptx.transportdata.tw/MOTC/v2/Air/FIDS/Flight/?$format=JSON&$select=AirlineID,FlightNumber,DepartureAirportID,ArrivalAirportID,DepartureRemark,ArrivalRemark&$filter=%20ArrivalRemark%20ne%20%27?%27%20and%20DepartureRemark%20ne%20%27?%27";
             #region API KEY
             //申請的APPID
             //（FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF 為 Guest 帳號，以IP作為API呼叫限制，請替換為註冊的APPID & APPKey）
-            string APPID = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
+            const string APPID = "8a8ffddac5af4e42a3fb1ed014472ece";
             //申請的APPKey
-            string APPKey = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
+            const string APPKey = "cRraTKB4MRKUsfMseiq0UxislXA";
 
             //取得當下UTC時間
             string xdate = DateTime.Now.ToUniversalTime().ToString("r");
