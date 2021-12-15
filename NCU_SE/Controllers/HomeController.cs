@@ -174,6 +174,7 @@ namespace NCU_SE.Controllers
             ViewData["log_name"] = Login_Var.login_name;
             ViewData["log_email"] = Login_Var.login_email;
             getRealtimeFlight();
+            ViewBag.AllFlight = getRealtimeFlight(); //Viewbag存資料
             return View();
         }
 
@@ -268,19 +269,34 @@ namespace NCU_SE.Controllers
                 json = Client.GetStringAsync(url).Result;
             }
 
-            json = json.Replace("[", "").Replace("]", "").Replace(",{","`{");//將json外面的陣列括號去除，並將分割多個json的逗號改為`方便切分
+            json = json.Replace("[", "").Replace("]", "").Replace(",{", "`{");//將json外面的陣列括號去除，並將分割多個json的逗號改為`方便切分
             string[] FlightList = json.Split('`');//將json集合分開
 
             //儲存即時航班資料的List
-            List<Flight> FL = new List<Flight>();
+            List<Flight> flightlist = new List<Flight>();
             //解析每個json-->將解析結果放入List中
-            for(int i=0; i<FlightList.Length; i++)
-            {                
+            for (int i = 0; i < FlightList.Length; i++)
+            {
                 Flight flight = JsonSerializer.Deserialize<Flight>(FlightList[i]);
-                FL.Add(flight);
-                Debug.Print(FL[i].FlightNumber + "\n");
-            }            
-            return FL;
+                flightlist.Add(flight); //原本的code
+
+                Debug.Print(flightlist[i].FlightNumber + "\n");
+
+            }
+
+            //固定的ViewBag 測試用 用不到了 
+            string ArrivalTime = flightlist[1].ActualArrivalTime.Substring(flightlist[1].ActualArrivalTime.Length - 5);
+            ViewBag.Flight = new Flight()
+            {
+                ActualArrivalTime = ArrivalTime,
+                AirlineID = flightlist[1].AirlineID,
+                FlightNumber = flightlist[1].AirlineID + flightlist[1].FlightNumber,
+                DepartureAirportID = flightlist[1].DepartureAirportID,
+                ArrivalAirportID = flightlist[1].ArrivalAirportID,
+                ArrivalRemark = flightlist[1].ArrivalRemark
+            };
+
+            return flightlist;
         }
 
         //即時航班格式
@@ -288,6 +304,15 @@ namespace NCU_SE.Controllers
         {
             public string FlightNumber { get; set; }
             public string AirlineID { get; set; }
+            public string DepartureAirportID { get; set; }
+            public string ArrivalAirportID { get; set; }
+            public string ScheduleDepartureTime { get; set; }
+            public string ActualDepartureTime { get; set; }
+            public string ScheduleArrivalTime { get; set; }
+            public string ActualArrivalTime { get; set; }
+            public string DepartureRemark { get; set; } //出發狀態
+            public string ArrivalRemark { get; set; } //抵達狀態
+
         }
     }
 }
