@@ -17,23 +17,66 @@
     <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 </head>
+<script>
+    function get_num(num) {
+        document.getElementById('img').src = "/img/img" + num + ".png";
+    }
+</script>
 
 <header class="masthead text-white text-center bg-primary">
     <!-- 增加個人檔案邊框 -->
     <div class="container d-flex align-items-center flex-column" style="border-width:4px;border-style:dashed;border-color:#f3e5e5;padding:10px;">
         <!-- Masthead Avatar Image-->
-        <img class="masthead-avatar mb-5" src="~/img/avataaars.svg" alt="..." />
-        <!-- Masthead Heading-->
-        <h1 class="masthead-heading text-uppercase mb-0" style="border: 6px #286090 solid; padding: 10px;">Sharon Huang</h1>
-        <!-- Icon Divider-->
-        <div class="divider-custom divider-light">
-            <div class="divider-custom-line"></div>
-            <div class="divider-custom-icon"><i class="fas fa-plane"></i></div>
-            <div class="divider-custom-line"></div>
+        <img id="img" width=200 src="~/img/img0.png">
+        <!-- <img class="masthead-avatar mb-5" src="~/img/avataaars.svg" alt="..." />-->
+        <br />
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#example" style="border-color:#808080;background-color:#464242;color:#ffffff;font-family:Microsoft JhengHei;font-weight:bold;margin: 0 10px;">
+            修改頭貼角色
+        </button>
+        <br />
+
+        <!-- Modal -->
+        <div class="modal fade" id="example">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">會員資料修改</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Contact Section-->
+                        <section class="page-section" id="contact">
+                            <!--  <button onclick="get_num('0')" type="button" class="btn btn-secondary" data-dismiss="modal">角色1</button>
+           <button onclick="get_num('1')" type="button" class="btn btn-secondary" data-dismiss="modal">角色2</button>
+           <button onclick="get_num('2')" type="button" class="btn btn-secondary" data-dismiss="modal">角色3</button>
+           <button onclick="get_num('3')" type="button" class="btn btn-secondary" data-dismiss="modal">角色4</button>
+           <button onclick="get_num('4')" type="button" class="btn btn-secondary" data-dismiss="modal">角色5</button>
+           <button onclick="get_num('5')" type="button" class="btn btn-secondary" data-dismiss="modal">角色6</button>-->
+
+                            <button onclick="get_num('0')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img src="~/img/img0.png"></button>
+                            <button onclick="get_num('1')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img src="~/img/img1.png"></button>
+                            <button onclick="get_num('2')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img src="~/img/img2.png"></button>
+                            <button onclick="get_num('3')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img src="~/img/img3.png"></button>
+                            <button onclick="get_num('4')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img src="~/img/img4.png"></button>
+                            <button onclick="get_num('5')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img src="~/img/img5.png"></button>
+                        </section>
+                </div>
+            </div>
         </div>
-        <!-- Masthead Subheading-->
-        <p class="masthead-subheading font-weight-light mb-0">110423039@gms.tku.edu.tw</p>
     </div>
+
+
+    <!-- Masthead Heading-->
+                            <h1 class="masthead-heading text-uppercase mb-0" style="border: 6px #286090 solid; padding: 10px;">Sharon Huang</h1>
+                            <!-- Icon Divider-->
+                            <div class="divider-custom divider-light">
+                                <div class="divider-custom-line"></div>
+                                <div class="divider-custom-icon"><i class="fas fa-plane"></i></div>
+                                <div class="divider-custom-line"></div>
+                            </div>
+                            <!-- Masthead Subheading-->
+                            <p class="masthead-subheading font-weight-light mb-0">110423039@gms.tku.edu.tw</p>
+</div>
     <br />
     <!-- Submit Button-->
     <div class="shape-ex1">
@@ -84,8 +127,8 @@
                                     </div>
                                     <!-- Date of birth input-->
                                     <div class="form-floating mb-3">
-                                        <input disabled="disabled" class="form-control" id="age" value="Age" type="text"  data-sb-validations="required" 
-                                            style="border-radius: 5px;height: 50px;padding: 0px 0px 0px 40px;" />
+                                        <input disabled="disabled" class="form-control" id="age" value="Age" type="text" data-sb-validations="required"
+                                               style="border-radius: 5px;height: 50px;padding: 0px 0px 0px 40px;" />
                                         <label for="name">年齡</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                     </div>
