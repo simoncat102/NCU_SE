@@ -118,10 +118,10 @@
                                 <!-- To make this form functional, sign up at-->
                                 <!-- https://startbootstrap.com/solution/contact-forms-->
                                 <!-- to get an API token!-->
-                                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                                <form id="contactForm" data-sb-form-api-token="API_TOKEN" action="post">
                                     <!-- Name input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="name" value="君の名は。" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                        <input class="form-control" id="name" value=@ViewData["log_name"] type="text" placeholder="Enter your name..." data-sb-validations="required" />
                                         <label for="name">姓名</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                     </div>
@@ -141,7 +141,7 @@
     </div>-->
                                     <!-- Email address input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="email" value="sharon1225yu@gmail.com" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
+                                        <input class="form-control" id="email" value=@ViewData["log_email"] type="email" placeholder="name@example.com" data-sb-validations="required,email" />
                                         <label for="email">電子信箱</label>
                                         <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
                                         <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
@@ -158,7 +158,7 @@
                                         <div>
                                             <br />
                                             <label for="bday">生日</label>
-                                            <input id="datepicker" width="276" max="" />
+                                            <input id="datepicker" width="276" max="" value=@ViewData["log_birthday"] />
                                             <script>$('#datepicker').datepicker();</script>
                                         </div>
                                         <br />
@@ -193,7 +193,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" value="送出" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                <input type="submit" value="Save changes" class="btn btn-primary" data-dismiss="modal" />
+                @*<button type="submit" value="送出" class="btn btn-primary" data-dismiss="modal">Save changes</button>*@
             </div>
         </div>
     </div>
