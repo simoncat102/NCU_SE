@@ -1,4 +1,5 @@
-﻿@{
+﻿@model FixedFlight
+@{
     ViewData["Title"] = "航班搜尋結果";
 }
 
@@ -29,12 +30,12 @@
                 </div> <!-- row -->
                 <div class="row tm-banner-row" id="tm-section-search">
 
-                    <form action="index.html" method="get" class="tm-search-form tm-section-pad-2">
+                    <form asp-action="FixedFlight" method="get" class="tm-search-form tm-section-pad-2">
                         <div class="form-row tm-search-form-row">
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
                                 <label for="inputCity">請選擇您的出發地</label>
-                                <input list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice" class="form-control" placeholder="Type your destination..." />
-
+                                <input asp-for="Origin" list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice" class="form-control" placeholder="Type your destination..." />
+                                
                                 <datalist id="ice-cream-flavors">
                                     <option value="Chocolate"></option>
                                     <option value="Coconut"></option>
@@ -46,7 +47,7 @@
                             </div>
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
                                 <label for="inputCity">請選擇您的目的地</label>
-                                <input list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice" class="form-control" placeholder="Type your destination..." />
+                                <input asp-for="Destination" list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice" class="form-control" placeholder="Type your destination..." />
 
                                 <datalist id="ice-cream-flavors">
                                     <option value="Chocolate">></option>
@@ -63,12 +64,12 @@
 
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
                                 <label for="inputCheckIn">出發時間</label>
-                                <input class="form-control" type="date" required />
+                                <input asp-for="DepartureDate" class="form-control" type="date" required />
                                 <input name="check-in" type="text" class="form-control" id="inputCheckIn" placeholder="Check In">
                             </div>
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
                                 <label for="inputCheckOut">回程時間</label>
-                                <input class="form-control" type="date" required />
+                                <input asp-for="ReturnDate" class="form-control" type="date" required />
                                 <input name="check-out" type="text" class="form-control" id="inputCheckOut" placeholder="Check Out">
                             </div>
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
@@ -93,6 +94,23 @@
             <div class="tab-pane fade show active" id="4a">
                 <!-- Current Active Tab WITH "show active" classes in DIV tag -->
                 <div class="tm-recommended-place-wrap">
+                    @foreach (var flight in ViewBag.Depart)
+                    {
+                        <div class="tm-recommended-place">
+                            <img src="~/img/chinaairlines.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                            <div class="tm-recommended-description-box">
+                                <h3 class="tm-recommended-title">@flight.AirlineID</h3>
+                                <p class="tm-text-highlight">起飛時間: @flight.DepartureTime</p>
+                                <p class="tm-text-highlight">降落時間: @flight.ArrivalTime</p>
+                                <p class="tm-text-gray">預估飛行時間：@flight.FlightTime</p>
+                            </div>
+                            <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
+                                <p class="tm-recommended-price">@flight.FlightNumber</p>
+                                <p class="tm-recommended-price-link">儲存</p>
+                            </a>
+                        </div>
+                    }
+
                     <div class="tm-recommended-place">
                         <img src="~/img/chinaairlines.jpg" alt="Image" class="img-fluid tm-recommended-img">
                         <div class="tm-recommended-description-box">
@@ -101,7 +119,7 @@
                             <p class="tm-text-highlight">降落時間: 14:00</p>
                             <p class="tm-text-gray">預估飛行時間...</p>
                         </div>
-                        <a href="#!" class="tm-recommended-price-box"  data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
+                        <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
                             <p class="tm-recommended-price">CL-2234</p>
                             <p class="tm-recommended-price-link">儲存</p>
                         </a>

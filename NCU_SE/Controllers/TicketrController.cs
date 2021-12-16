@@ -30,9 +30,9 @@ namespace NCU_SE.Controllers
         public IActionResult FixedFlight(FixedFlight obj)
         {
             QueryFlight QF = new QueryFlight();
-            if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DeartureDate, obj.ReturnDate, obj.FlightNumber);
-            //取得日期
-            //查詢固定航班
+            if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
+            ViewBag.Depart = QF.Depart;
+            ViewBag.Return = QF.Return;
             ViewData["login"] = Login_Var.login_status;
             ViewData["log_status"] = Login_Var.login_action;
             ViewData["logid"] = Login_Var.login_uid;
@@ -115,7 +115,7 @@ namespace NCU_SE.Controllers
             string[] place = { origin, destnation };
             DateTime[] time = { departureDate, returnDate };
             QueryFlight QF = new QueryFlight();
-            #region 取得機場代號
+            #region 取得機場代號           
             for (int i =0; i<2; i++)
             {
                 string AirportQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airport?$select=AirportID&$filter=AirportID ne '' and (AirportID eq '{0}' or AirportName/Zh_tw eq '{0}' or AirportName/En eq '{0}' or AirportCityName/Zh_tw eq '{0}' or AirportCityName/En eq '{0}')&$top=2&$format=JSON", place[i]);
@@ -138,9 +138,11 @@ namespace NCU_SE.Controllers
                     place[i] = "";
                 }
             }
+            
             #endregion
+            #region 取得班機
             //取得來回班機資訊
-            for(int i = 0; i<2; i++)
+            for (int i = 0; i<2; i++)
             {               
                 string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= ScheduleStartDate ge {0} and ScheduleEndDate le {0} and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' and {3} {4}&$format=JSON"
                     , time[i].ToString("yyyy-MM-dd"),(i==0?place[0]:place[1]), (i==0?place[1]:place[0]), (time[i].ToString("dddd",new CultureInfo("en-US")) + " eq true"), (FlightNumber == null ? "" : ("and FlightNumber eq'" + FlightNumber + "'")));
@@ -158,8 +160,19 @@ namespace NCU_SE.Controllers
                     for(int j =0; j<flights.Length; j++)
                     {    
                         //將所有找到的相關班機資訊放入List
-                        FixFlight FF = JsonSerializer.Deserialize<FixFlight>(json);
+                        FixFlight FF = JsonSerializer.Deserialize<FixFlight>(flights[j]);
                         FF.FlightDate = time[i];//將出發日期加入
+                        FF.FlightNumber = FF.FlightNumber.Insert(2, "-");
+                        FF.AirlineID = getAirlineName(FF.AirlineID);
+                        if (TimeSpan.Parse(FF.ArrivalTime.Replace("+1","")) < TimeSpan.Parse(FF.DepartureTime))
+                        {
+                            FF.FlightTime = ""+(TimeSpan.Parse("23:59") + TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")) - TimeSpan.Parse(FF.DepartureTime));
+                        }
+                        else
+                        {
+                            FF.FlightTime = "" + (TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")) - TimeSpan.Parse(FF.DepartureTime));
+                        }
+                        FF.FlightTime = FF.FlightTime.Substring(0, 5).Replace(":","小時")+"分鐘";
                         if (i == 0)
                         {
                             QF.Depart = new List<FixFlight>();
@@ -177,28 +190,24 @@ namespace NCU_SE.Controllers
                     Debug.Print(ex.Message);                   
                 }
             }
-            /*
-            //取得API資料(官方提供方法)
-            using (HttpClient Client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
-            {
-                Client.DefaultRequestHeaders.Add("Authorization", sAuth);
-                Client.DefaultRequestHeaders.Add("x-date", xdate);
-                json = Client.GetStringAsync(url).Result;
-            }
+            #endregion
 
-            json = json.Replace("[", "").Replace("]", "").Replace(",{", "`{");//將json外面的陣列括號去除，並將分割多個json的逗號改為`方便切分
-            string[] FlightList = json.Split('`');//將json集合分開
-
-            //儲存即時航班資料的List
-            List<FixFlight> FL = new List<FixFlight>();
-            //解析每個json-->將解析結果放入List中
-            for (int i = 0; i < FlightList.Length; i++)
-            {
-                FixFlight flight = JsonSerializer.Deserialize<FixFlight>(FlightList[i]);
-                FL.Add(flight);
-                Debug.Print(FL[i].FlightNumber + "\n");
+            #region 取得航空公司名稱
+            string getAirlineName(string AirlineID)
+            {                
+                string AirlineQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airline?$select=AirlineName&$filter=AirlineID eq '{0}'&$format=JSON", AirlineID);
+                string AirlineJson = null;
+                using (HttpClient Client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
+                {
+                    Client.DefaultRequestHeaders.Add("Authorization", sAuth);
+                    Client.DefaultRequestHeaders.Add("x-date", xdate);
+                    AirlineJson = Client.GetStringAsync(AirlineQuery).Result.Replace("[{\"AirlineName\":", "").Replace("},",",").Replace("]", "");
+                }
+                AirlineInfo AI = JsonSerializer.Deserialize<AirlineInfo>(AirlineJson);
+                Debug.Print("機場名稱：" + AI.Zh_tw);
+                return AI.Zh_tw;
             }
-            */
+            #endregion
             Debug.Print(place[0] + " --> " + place[1]);
             return QF;
         }
@@ -211,6 +220,7 @@ namespace NCU_SE.Controllers
             public string DepartureTime { get; set; }
             public string ArrivalTime { get; set; }
             public DateTime FlightDate { get; set; }
+            public string FlightTime { get; set; }
         }
 
         //來回班機回傳格式
@@ -224,6 +234,12 @@ namespace NCU_SE.Controllers
         public class AirportInfo
         {
             public string AirportID { get; set; }           
+        }
+
+        //航空公司資訊
+        public class AirlineInfo
+        {
+            public string Zh_tw { get; set; }
         }
     }
 }
