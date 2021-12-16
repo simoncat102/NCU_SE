@@ -29,6 +29,7 @@ namespace NCU_SE.Controllers
         public static int login_uid { get; set; } = 0;
         public static string login_name { get; set; } = "無";
         public static string login_email { get; set; } = "無";
+        public static string login_birthday { get; set; } = "無";
     }
 
     public class HomeController : Controller
@@ -77,6 +78,7 @@ namespace NCU_SE.Controllers
             ViewData["log_uid"] = Login_Var.login_uid;
             ViewData["log_name"] = Login_Var.login_name;
             ViewData["log_email"] = Login_Var.login_email;
+            ViewData["log_birthday"] = Login_Var.login_birthday;
             return View();
         }
 
@@ -110,11 +112,13 @@ namespace NCU_SE.Controllers
                 string name = _db.Member.Where(u => u.Email == obj.Email.ToString()).Select(u => u.Name).First();
                 session.HttpContext.Session.SetString("uname", name.ToString());//將會員姓名寫入session
                 string email = _db.Member.Where(u => u.Email == obj.Email.ToString()).Select(u => u.Email).First();
+                DateTime birthday = _db.Member.Where(u => u.Email == obj.Email.ToString()).Select(u => u.Birthday).First();
                 ViewData["login"] = Login_Var.login_uid = uid;//將會員ID放入全域變數+??顯示-->顯示在哪?
                 ViewData["login"] = Login_Var.login_status = getSession("uname") + "，您好 按此登出";//將會員姓名(歡迎訊息)放入全域變數+右上角顯示的歡迎訊息(兼登出按鈕)                
                 ViewData["log_action"] = Login_Var.login_action = "Logout";//設定"登入/登出"按鈕動作
                 ViewData["log_name"] = Login_Var.login_name = getSession("uname");
                 ViewData["log_email"] = Login_Var.login_email = email;
+                ViewData["log_birthday"] = Login_Var.login_birthday = birthday.ToString("MM/dd/yyyy");
                 return View("Index");//登入成功時跳轉到首頁
             }
             else if (AccExist == 0)
@@ -125,6 +129,7 @@ namespace NCU_SE.Controllers
             ViewData["logid"] = Login_Var.login_uid = -1;//在??顯示會員ID-->有需要顯示嗎?
             ViewData["log_name"] = Login_Var.login_name = "無";
             ViewData["log_email"] = Login_Var.login_email = "無";
+            ViewData["log_birthday"] = Login_Var.login_birthday = "無";
             return View();
         }
         public IActionResult Verify(Member obj)
@@ -173,6 +178,7 @@ namespace NCU_SE.Controllers
             ViewData["logid"] = Login_Var.login_uid;
             ViewData["log_name"] = Login_Var.login_name;
             ViewData["log_email"] = Login_Var.login_email;
+            ViewData["log_birthday"] = Login_Var.login_birthday;
             getRealtimeFlight();
             ViewBag.AllFlight = getRealtimeFlight(); //Viewbag存資料
             return View();
