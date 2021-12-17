@@ -113,7 +113,7 @@ namespace NCU_SE.Controllers
                 session.HttpContext.Session.SetString("uname", name.ToString());//將會員姓名寫入session
                 string email = _db.Member.Where(u => u.Email == obj.Email.ToString()).Select(u => u.Email).First();
                 DateTime birthday = _db.Member.Where(u => u.Email == obj.Email.ToString()).Select(u => u.Birthday).First();
-                ViewData["login"] = Login_Var.login_uid = uid;//將會員ID放入全域變數+??顯示-->顯示在哪?
+                ViewData["logid"] = Login_Var.login_uid = uid;//將會員ID放入全域變數+??顯示-->顯示在哪?
                 ViewData["login"] = Login_Var.login_status = getSession("uname") + "，您好 按此登出";//將會員姓名(歡迎訊息)放入全域變數+右上角顯示的歡迎訊息(兼登出按鈕)                
                 ViewData["log_action"] = Login_Var.login_action = "Logout";//設定"登入/登出"按鈕動作
                 ViewData["log_name"] = Login_Var.login_name = getSession("uname");

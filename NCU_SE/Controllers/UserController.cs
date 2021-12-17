@@ -73,7 +73,6 @@ namespace NCU_SE.Controllers
             ViewData["logid"] = Login_Var.login_uid;
             ViewData["log_name"] = Login_Var.login_name;
             ViewData["log_email"] = Login_Var.login_email;
-            ViewData["log_birthday"] = Login_Var.login_birthday;
             //讀取資料語法
             IEnumerable<Flight> objList = _db.Flight;
             return View(objList);
