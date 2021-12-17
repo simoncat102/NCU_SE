@@ -185,7 +185,7 @@ namespace NCU_SE.Controllers
             ViewData["log_name"] = Login_Var.login_name;
             ViewData["log_email"] = Login_Var.login_email;
             ViewData["log_birthday"] = Login_Var.login_birthday;
-            getRealtimeFlight();
+           
             ViewBag.AllFlight = getRealtimeFlight(); //Viewbag存資料
             return View();
         }
@@ -291,22 +291,27 @@ namespace NCU_SE.Controllers
             {
                 Flight flight = JsonSerializer.Deserialize<Flight>(FlightList[i]);
                 flightlist.Add(flight); //原本的code
+                try
+                {
+                    flightlist[i].ActualArrivalTime = flightlist[i].ActualArrivalTime == null ? null : flightlist[i].ActualArrivalTime.Substring(flightlist[i].ActualArrivalTime.Length - 5);
+                }
+                catch { }
 
                 Debug.Print(flightlist[i].FlightNumber + "\n");
 
             }
 
             //固定的ViewBag 測試用 用不到了 
-            string ArrivalTime = flightlist[1].ActualArrivalTime.Substring(flightlist[1].ActualArrivalTime.Length - 5);
-            ViewBag.Flight = new Flight()
-            {
-                ActualArrivalTime = ArrivalTime,
-                AirlineID = flightlist[1].AirlineID,
-                FlightNumber = flightlist[1].AirlineID + flightlist[1].FlightNumber,
-                DepartureAirportID = flightlist[1].DepartureAirportID,
-                ArrivalAirportID = flightlist[1].ArrivalAirportID,
-                ArrivalRemark = flightlist[1].ArrivalRemark
-            };
+            //string ArrivalTime = flightlist[1].ActualArrivalTime.Substring(flightlist[1].ActualArrivalTime.Length - 5);
+            //ViewBag.Flight = new Flight()
+            //{
+            //    ActualArrivalTime = ArrivalTime,
+            //    AirlineID = flightlist[1].AirlineID,
+            //    FlightNumber = flightlist[1].AirlineID + flightlist[1].FlightNumber,
+            //    DepartureAirportID = flightlist[1].DepartureAirportID,
+            //    ArrivalAirportID = flightlist[1].ArrivalAirportID,
+            //    ArrivalRemark = flightlist[1].ArrivalRemark
+            //};
 
             return flightlist;
         }
