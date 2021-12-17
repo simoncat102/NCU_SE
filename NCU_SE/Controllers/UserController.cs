@@ -53,7 +53,17 @@ namespace NCU_SE.Controllers
             if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
             ViewData["login"] = Login_Var.login_status;
             ViewData["logid"] = Login_Var.login_uid;
+            ViewData["log_name"] = Login_Var.login_name;
+            ViewData["log_email"] = Login_Var.login_email;
+            ViewData["log_birthday"] = Login_Var.login_birthday;
             return View();
+        }
+
+        public IActionResult EditPersonalInfo(int id)
+        {
+            var memberdetail = _db.Member.Find(id);
+
+            return View("PersonalInfo");
         }
 
         public IActionResult UserTicket()
@@ -61,6 +71,9 @@ namespace NCU_SE.Controllers
             if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
             ViewData["login"] = Login_Var.login_status;
             ViewData["logid"] = Login_Var.login_uid;
+            ViewData["log_name"] = Login_Var.login_name;
+            ViewData["log_email"] = Login_Var.login_email;
+            ViewData["log_birthday"] = Login_Var.login_birthday;
             //讀取資料語法
             IEnumerable<Flight> objList = _db.Flight;
             return View(objList);

@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="~/css/realtimeTicket.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--回到頂端的js-->
+    <script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
 </head>
 
 <header class="masthead">
@@ -26,7 +28,7 @@
     <table style="width: 90%; margin: 10px auto;">
         <thead>
             <tr class="realtime-title">
-                <th>時間</th>
+                <th>降落時間</th>
                 <th>航空名稱</th>
                 <th>班機編號</th>
                 <th>出發地</th>
@@ -35,42 +37,70 @@
             </tr>
         </thead>
         <tbody id="myTable">
+            @*固定的ViewBag Data*@
             <tr class="realtime-contain">
-                <td>05:20</td>
-                <td>XX航空</td>
-                <td>NH9647</td>
-                <td>東京成田機場</td>
-                <td>新加坡樟宜</td>
-                <td>飛行中</td>
+                <td>@ViewBag.Flight.ActualArrivalTime</td>
+                <td>@ViewBag.Flight.AirlineID</td>
+                <td>@ViewBag.Flight.FlightNumber</td>
+                <td>@ViewBag.Flight.DepartureAirportID</td>
+                <td>@ViewBag.Flight.ArrivalAirportID</td>
+                <td>@ViewBag.Flight.ArrivalRemark</td>
+
             </tr>
-            <tr class="realtime-contain">
-                <td>05:45</td>
-                <td>長榮航空</td>
-                <td>BR-766</td>
-                <td>成都雙流機場</td>
-                <td>台灣桃園機場</td>
-                <td>在登機門</td>
-            </tr>
-            <tr class="realtime-contain">
-                <td>05:50</td>
-                <td>中華航空</td>
-                <td>CI-784</td>
-                <td>新山一機場</td>
-                <td>台灣桃園機場</td>
-                <td>已排程</td>
-            </tr>
+            @*跑迴圈把資料拿出來 但是將時間沒辦法只留時間 日期都會在*@
+            @foreach (var allFlight in ViewBag.AllFlight)
+            {
+                <tr class="realtime-contain">
+                    <td>@allFlight.ActualArrivalTime</td>
+                    <td>@allFlight.AirlineID</td>
+                    <td>@allFlight.AirlineID@allFlight.FlightNumber</td>
+                    <td>@allFlight.DepartureAirportID</td>
+                    <td>@allFlight.ArrivalAirportID</td>
+                    <td>@allFlight.ArrivalRemark</td>
+                </tr>
+            }
+
         </tbody>
     </table>
+
+    <button class="js-back-to-top back-to-top" title="回到頂端">&#65085;</button>
+
+
+
+
 </div>
 
-<script>$(document).ready(function(){
-          $("#search").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function() {
-              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-          });
-        });</script>
+<script>
+/* 搜尋table */
+$(document).ready(function(){
+    $("#search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+    });
+});
+   
+/* 回到頂端 */
+$(function () {
+  var $win = $(window);
+  var $backToTop = $('.js-back-to-top');
+  // 當用戶滾動到離頂部100像素時，展示回到頂部按鈕
+  $win.scroll(function (){
+    if ($win.scrollTop() > 100){
+       $backToTop.show();
+    }
+    else{
+        $backToTop.hide();
+    }
+  });
+    // 當用戶點擊按鈕時，通過動畫效果返回頭部
+    $backToTop.click(function () {
+        $('html, body').animate({scrollTop: 0}, 200);
+    });
+});
+
+</script>
 
 <div class="container footer-container">
     <img src="../img/bg-realtimeTicket.jpg" alt="" class="greeting_bg">

@@ -170,6 +170,28 @@ td,th{
     line-height: 60px; /* Vertically center the text there */
 }
 
+/*回到頂端*/
+.back-to-top {
+    display: none; /* 默認是隱藏的，這樣在第一屏才不顯示 */
+    position: fixed; /* 位置是固定的 */
+    bottom: 20px; /* 顯示在頁面底部 */
+    right: 30px; /* 顯示在頁面的右邊 */
+    z-index: 99; /* 確保不被其他功能覆蓋 */
+    border: 1px solid #69c6ba; /* 顯示邊框 */
+    outline: none; /* 不顯示外框 */
+    background-color: #fff; /* 設置背景背景顏色 */
+    color: #69c6ba; /* 設置文本顏色 */
+    cursor: pointer; /* 滑鼠移到按鈕上顯示手型 */
+    padding: 10px 15px 15px 15px; /* 增加一些內邊距 */
+    border-radius: 10px; /* 增加圓角 */
+}
+.back-to-top:hover {
+    background-color: #69c6ba; /* 滑鼠移上去時，反轉顏色 */
+    color: #fff;
+}
+/*回到頂端*/
+
+
 @media screen and (max-width:1000px) {
     .search-box {
         width: 60%;
@@ -208,17 +230,23 @@ td,th{
         width: 80%;
         height: 50px;
     }
+
     .search_container .icon {
         margin-top: 10px;
     }
+
     .search_container input#search {
         height: 50px;
     }
+
     .realtime-contain, .realtime-title {
         font-size: smaller;
     }
-}
 
+    .back-to-top {
+        padding: 8px 13px 13px 13px;
+    }
+}
 @media screen and (max-width:300px) {
     .realtime-title {
         width: 250px;

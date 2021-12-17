@@ -27,6 +27,9 @@ namespace NCU_SE.Controllers
         public static string login_status { get; set; } = "登入/註冊";
         public static string login_action { get; set; } = "Login";
         public static int login_uid { get; set; } = 0;
+        public static string login_name { get; set; } = "無";
+        public static string login_email { get; set; } = "無";
+        public static string login_birthday { get; set; } = "無";
     }
 
     public class HomeController : Controller
@@ -73,6 +76,9 @@ namespace NCU_SE.Controllers
             ViewData["login"] = Login_Var.login_status;
             ViewData["log_action"] = Login_Var.login_action;
             ViewData["log_uid"] = Login_Var.login_uid;
+            ViewData["log_name"] = Login_Var.login_name;
+            ViewData["log_email"] = Login_Var.login_email;
+            ViewData["log_birthday"] = Login_Var.login_birthday;
             return View();
         }
 
@@ -105,9 +111,14 @@ namespace NCU_SE.Controllers
                 //取得會員姓名
                 string name = _db.Member.Where(u => u.Email == obj.Email.ToString()).Select(u => u.Name).First();
                 session.HttpContext.Session.SetString("uname", name.ToString());//將會員姓名寫入session
+                string email = _db.Member.Where(u => u.Email == obj.Email.ToString()).Select(u => u.Email).First();
+                DateTime birthday = _db.Member.Where(u => u.Email == obj.Email.ToString()).Select(u => u.Birthday).First();
                 ViewData["login"] = Login_Var.login_uid = uid;//將會員ID放入全域變數+??顯示-->顯示在哪?
                 ViewData["login"] = Login_Var.login_status = getSession("uname") + "，您好 按此登出";//將會員姓名(歡迎訊息)放入全域變數+右上角顯示的歡迎訊息(兼登出按鈕)                
                 ViewData["log_action"] = Login_Var.login_action = "Logout";//設定"登入/登出"按鈕動作
+                ViewData["log_name"] = Login_Var.login_name = getSession("uname");
+                ViewData["log_email"] = Login_Var.login_email = email;
+                ViewData["log_birthday"] = Login_Var.login_birthday = birthday.ToString("MM/dd/yyyy");
                 return View("Index");//登入成功時跳轉到首頁
             }
             else if (AccExist == 0)
@@ -116,6 +127,9 @@ namespace NCU_SE.Controllers
             }
             ViewData["login"] = Login_Var.login_status = "登入/註冊";//右上角顯示的"登入/註冊"按鈕
             ViewData["logid"] = Login_Var.login_uid = -1;//在??顯示會員ID-->有需要顯示嗎?
+            ViewData["log_name"] = Login_Var.login_name = "無";
+            ViewData["log_email"] = Login_Var.login_email = "無";
+            ViewData["log_birthday"] = Login_Var.login_birthday = "無";
             return View();
         }
         public IActionResult Verify(Member obj)
@@ -162,7 +176,11 @@ namespace NCU_SE.Controllers
         {
             ViewData["login"] = Login_Var.login_status;
             ViewData["logid"] = Login_Var.login_uid;
+            ViewData["log_name"] = Login_Var.login_name;
+            ViewData["log_email"] = Login_Var.login_email;
+            ViewData["log_birthday"] = Login_Var.login_birthday;
             getRealtimeFlight();
+            ViewBag.AllFlight = getRealtimeFlight(); //Viewbag存資料
             return View();
         }
 
@@ -257,19 +275,34 @@ namespace NCU_SE.Controllers
                 json = Client.GetStringAsync(url).Result;
             }
 
-            json = json.Replace("[", "").Replace("]", "").Replace(",{","`{");//將json外面的陣列括號去除，並將分割多個json的逗號改為`方便切分
+            json = json.Replace("[", "").Replace("]", "").Replace(",{", "`{");//將json外面的陣列括號去除，並將分割多個json的逗號改為`方便切分
             string[] FlightList = json.Split('`');//將json集合分開
 
             //儲存即時航班資料的List
-            List<Flight> FL = new List<Flight>();
+            List<Flight> flightlist = new List<Flight>();
             //解析每個json-->將解析結果放入List中
-            for(int i=0; i<FlightList.Length; i++)
-            {                
+            for (int i = 0; i < FlightList.Length; i++)
+            {
                 Flight flight = JsonSerializer.Deserialize<Flight>(FlightList[i]);
-                FL.Add(flight);
-                Debug.Print(FL[i].FlightNumber + "\n");
-            }            
-            return FL;
+                flightlist.Add(flight); //原本的code
+
+                Debug.Print(flightlist[i].FlightNumber + "\n");
+
+            }
+
+            //固定的ViewBag 測試用 用不到了 
+            string ArrivalTime = flightlist[1].ActualArrivalTime.Substring(flightlist[1].ActualArrivalTime.Length - 5);
+            ViewBag.Flight = new Flight()
+            {
+                ActualArrivalTime = ArrivalTime,
+                AirlineID = flightlist[1].AirlineID,
+                FlightNumber = flightlist[1].AirlineID + flightlist[1].FlightNumber,
+                DepartureAirportID = flightlist[1].DepartureAirportID,
+                ArrivalAirportID = flightlist[1].ArrivalAirportID,
+                ArrivalRemark = flightlist[1].ArrivalRemark
+            };
+
+            return flightlist;
         }
 
         //即時航班格式
@@ -277,6 +310,15 @@ namespace NCU_SE.Controllers
         {
             public string FlightNumber { get; set; }
             public string AirlineID { get; set; }
+            public string DepartureAirportID { get; set; }
+            public string ArrivalAirportID { get; set; }
+            public string ScheduleDepartureTime { get; set; }
+            public string ActualDepartureTime { get; set; }
+            public string ScheduleArrivalTime { get; set; }
+            public string ActualArrivalTime { get; set; }
+            public string DepartureRemark { get; set; } //出發狀態
+            public string ArrivalRemark { get; set; } //抵達狀態
+
         }
     }
 }

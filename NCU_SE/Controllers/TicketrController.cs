@@ -36,6 +36,7 @@ namespace NCU_SE.Controllers
             ViewData["login"] = Login_Var.login_status;
             ViewData["log_action"] = Login_Var.login_action;
             ViewData["log_uid"] = Login_Var.login_uid;
+
             return View("RealtimeFlight");
         }
 
