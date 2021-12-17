@@ -27,8 +27,7 @@
     <!-- 增加個人檔案邊框 -->
     <div class="container d-flex align-items-center flex-column" style="border-width:4px;border-style:dashed;border-color:#f3e5e5;padding:10px;">
         <!-- Masthead Avatar Image-->
-        <img id="img" width=200 src="~/img/img0.png">
-        <!-- <img class="masthead-avatar mb-5" src="~/img/avataaars.svg" alt="..." />-->
+        <img id="img" width=200 src=@ViewData["log_profile"]>
         <br />
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#example" style="border-color:#808080;background-color:#464242;color:#ffffff;font-family:Microsoft JhengHei;font-weight:bold;margin: 0 10px;">
             修改頭貼角色
@@ -46,13 +45,6 @@
                     <div class="modal-body" style="background-color: #2d3e50;">
                         <!-- Contact Section-->
                         <section class="page-section" id="contact">
-                            <!--  <button onclick="get_num('0')" type="button" class="btn btn-secondary" data-dismiss="modal">角色1</button>
-           <button onclick="get_num('1')" type="button" class="btn btn-secondary" data-dismiss="modal">角色2</button>
-           <button onclick="get_num('2')" type="button" class="btn btn-secondary" data-dismiss="modal">角色3</button>
-           <button onclick="get_num('3')" type="button" class="btn btn-secondary" data-dismiss="modal">角色4</button>
-           <button onclick="get_num('4')" type="button" class="btn btn-secondary" data-dismiss="modal">角色5</button>
-           <button onclick="get_num('5')" type="button" class="btn btn-secondary" data-dismiss="modal">角色6</button>-->
-
                             <button onclick="get_num('0')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img width=200 src="~/img/img0.png"></button>
                             <button onclick="get_num('1')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img width=200 src="~/img/img1.png"></button>
                             <button onclick="get_num('2')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img width=200 src="~/img/img2.png"></button>
@@ -98,7 +90,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">會員資料修改</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">➖</button>
             </div>
             <div class="modal-body">
                 <!-- Contact Section-->

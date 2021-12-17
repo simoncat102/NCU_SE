@@ -203,31 +203,31 @@
                       <form asp-action="SaveFlight" method="post">
                           <div class="form-group row">
 
-                              <label for="airline_name" class="col-sm-5 col-form-label">航班名稱</label>
+
+                              <label for="airlineName" class="col-sm-5 col-form-label">航班名稱</label>
                               <div class="col-sm-5">
                                   <input type="text" readonly class="form-control-plaintext" id="airlineName" value="N/A">
                               </div>
 
-                              <label for="airline_name" class="col-sm-5 col-form-label">起飛日期</label>
+                              <label for="departureDate" class="col-sm-5 col-form-label">起飛日期</label>
                               <div class="col-sm-5">
                                   <input type="text" readonly class="form-control-plaintext" id="departureDate" value="N/A">
                               </div>
 
-                              <label for="airline_name" class="col-sm-5 col-form-label">起飛時間</label>
+                              <label for="departureTime" class="col-sm-5 col-form-label">起飛時間</label>
                               <div class="col-sm-5">
                                   <input type="text" readonly class="form-control-plaintext" id="departureTime" value="N/A">
                               </div>
 
-                              <label for="airline_name" class="col-sm-5 col-form-label">降落日期</label>
+                              <label for="arriveDate" class="col-sm-5 col-form-label">降落日期</label>
                               <div class="col-sm-5">
                                   <input type="text" readonly class="form-control-plaintext" id="arriveDate" value="N/A">
                               </div>
 
-                              <label for="airline_name" class="col-sm-5 col-form-label">降落時間</label>
+                              <label for="arriveTime" class="col-sm-5 col-form-label">降落時間</label>
                               <div class="col-sm-5">
                                   <input type="text" readonly class="form-control-plaintext" id="arriveTime" value="N/A">
                               </div>
-
                           </div>
                           <div class="form-group">
                               <label for="message-text" class="col-form-label">備註訊息:</label>
@@ -244,9 +244,6 @@
                               <button type="reset" class="btn btn-secondary" data-dismiss="modal">關閉</button>
                               <button type="submit" class="btn btn-primary">儲存此班機</button>
                           </div>
-
-
-
                       </form>
 
                   </div>
