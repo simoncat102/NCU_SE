@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -17,8 +18,33 @@ using NCU_SE.Models;
 
 namespace NCU_SE.Controllers
 {
+    //來回班機回傳格式
+    public class QueryFlight
+    {
+        public List<FixFlight> Depart { get; set; }
+        public List<FixFlight> Return { get; set; }
+        public string Origin { get; set; }
+        public string Destination { get; set; }
+    }
+
+    public static class ticket
+    {
+        public static int saveTicketState = 0;
+        public static QueryFlight tmp = new QueryFlight();
+    }
+
+    //即時航班格式
+    public class FixFlight
+    {
+        public string FlightNumber { get; set; }
+        public string AirlineID { get; set; }
+        public string DepartureTime { get; set; }
+        public string ArrivalTime { get; set; }
+        public DateTime FlightDate { get; set; }
+        public string FlightTime { get; set; }
+    }
     public class TicketController : Controller
-    {   
+    {
         /*
         private readonly ILogger<TicketController> _logger;
 
@@ -27,17 +53,56 @@ namespace NCU_SE.Controllers
             _logger = logger;
         }
         */
+        
         public IActionResult FixedFlight(FixedFlight obj)
         {
             QueryFlight QF = new QueryFlight();
-            if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
-            ViewBag.Depart = QF.Depart;
-            ViewBag.Return = QF.Return;
+            if(ticket.saveTicketState == 1)
+            {
+                QF = ticket.tmp;
+                ViewBag.Depart = QF.Return;
+            }
+            else
+            {
+                if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
+                ViewBag.Depart = QF.Depart;
+                ticket.tmp = QF;
+            }
+             
+            //if (obj != null) ViewBag.Return = QF.Return;
+            ViewData["origin"] = QF.Origin;
+            ViewData["destination"] = QF.Destination;
             ViewData["login"] = Login_Var.login_status;
             ViewData["log_action"] = Login_Var.login_action;
             ViewData["log_uid"] = Login_Var.login_uid;
 
             return View("RealtimeFlight");
+        }
+
+        public IActionResult SaveFlight(FixedFlight ff)
+        {
+            if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
+            
+            Ticket obj = new Ticket();
+            obj.DepartAirport = ff.Origin;
+            obj.DestinationAirport = ff.Destination;
+            obj.DepartureDateTime = ff.DepartureDate;
+            obj.ArriveDateTime = ff.ReturnDate;
+            obj.FlightID = ff.FlightNumber;
+            obj.Note = ff.Note;            
+            obj.MemberID = Login_Var.login_uid;
+            obj.TicketID = DateTime.Now.ToString("yyyyMMddmmssfffff") + obj.MemberID + obj.FlightID;
+            _db.Ticket.Add(obj);
+            _db.SaveChanges();
+            ticket.saveTicketState++;
+            if(ticket.saveTicketState == 2)
+            {
+                return View("PersonalTicket");
+            }
+            else
+            {
+                return RedirectToAction("FixedFlight", "Ticket");
+            }           
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -112,10 +177,14 @@ namespace NCU_SE.Controllers
             string Signature = Convert.ToBase64String(_hmac.Hash);
             string sAuth = "hmac username=\"" + APPID + "\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"" + Signature + "\"";
             #endregion
-
+            
             string[] place = { origin, destnation };
             DateTime[] time = { departureDate, returnDate };
             QueryFlight QF = new QueryFlight();
+            QF.Depart = new List<FixFlight>();
+            QF.Return = new List<FixFlight>();
+            QF.Origin = origin;
+            QF.Destination = destnation;
             #region 取得機場代號           
             for (int i =0; i<2; i++)
             {
@@ -175,13 +244,11 @@ namespace NCU_SE.Controllers
                         }
                         FF.FlightTime = FF.FlightTime.Substring(0, 5).Replace(":","小時")+"分鐘";
                         if (i == 0)
-                        {
-                            QF.Depart = new List<FixFlight>();
+                        {                            
                             QF.Depart.Add(FF);//將資料存放到class中==>去程
                         }
                         else
-                        {
-                            QF.Return = new List<FixFlight>();
+                        {                            
                             QF.Return.Add(FF);//將資料存放到class中==>回程
                         }
                     }                   
@@ -213,23 +280,9 @@ namespace NCU_SE.Controllers
             return QF;
         }
 
-        //即時航班格式
-        public class FixFlight
-        {
-            public string FlightNumber { get; set; }
-            public string AirlineID { get; set; }
-            public string DepartureTime { get; set; }
-            public string ArrivalTime { get; set; }
-            public DateTime FlightDate { get; set; }
-            public string FlightTime { get; set; }
-        }
 
-        //來回班機回傳格式
-        public class QueryFlight
-        {
-            public List<FixFlight> Depart { get; set; }
-            public List<FixFlight> Return { get; set; }
-        }
+
+
 
         //機場資訊
         public class AirportInfo
@@ -242,5 +295,6 @@ namespace NCU_SE.Controllers
         {
             public string Zh_tw { get; set; }
         }
+
     }
 }

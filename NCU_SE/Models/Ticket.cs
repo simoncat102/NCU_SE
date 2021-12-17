@@ -18,5 +18,6 @@ namespace NCU_SE.Models
         public string DestinationAirport { get; set; } //目的地機場
         public DateTime ActualDepartureDateTime { get; set; } //實際起飛時間
         public DateTime ActualArrivedTime { get; set; } //實際降落時間
+        public string Note { get; set; }//機票備註
     }
 }
