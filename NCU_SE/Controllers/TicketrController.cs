@@ -34,8 +34,8 @@ namespace NCU_SE.Controllers
             ViewBag.Depart = QF.Depart;
             ViewBag.Return = QF.Return;
             ViewData["login"] = Login_Var.login_status;
-            ViewData["log_status"] = Login_Var.login_action;
-            ViewData["logid"] = Login_Var.login_uid;
+            ViewData["log_action"] = Login_Var.login_action;
+            ViewData["log_uid"] = Login_Var.login_uid;
             return View("RealtimeFlight");
         }
 
