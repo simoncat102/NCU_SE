@@ -69,6 +69,7 @@
                                         <input class="form-control"
                                                type="text"
                                                placeholder="請輸入班機編號" 
+                                               id="flightNumber"
                                                asp-for="FlightNumber"/>
                                     </div>
                                 </div>
@@ -145,5 +146,35 @@
     $( "#destination" ).autocomplete({
       source: availableDestination
     });
+
+    //阿 那班機編號也順便XD 謝謝!!!
+    var availableFlightNumber = [
+      "我是班機1號",
+      "我是班機2號",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    $( "#flightNumber" ).autocomplete({
+      source: availableFlightNumber
+    });
+
   });
   </script>
