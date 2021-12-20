@@ -64,6 +64,7 @@ namespace NCU_SE.Controllers
                 ViewData["log_email"] = Login_Var.login_email;
                 ViewData["log_birthday"] = Login_Var.login_birthday;
                 ViewData["log_profile"] = Login_Var.login_profile;
+                ViewData["log_age"] = Login_Var.login_age;
             }
 
             return View();
