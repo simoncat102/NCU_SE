@@ -2,6 +2,9 @@
 @{
     ViewData["Title"] = "查詢首頁";
 }
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
 <div id="booking" class="section">
     <div class="section-center">
@@ -23,6 +26,7 @@
                                         <input class="form-control"
                                                type="text"
                                                placeholder="輸入城市或機場名" 
+                                               id="origin"
                                                asp-for="Origin"/>
                                     </div>
                                 </div>
@@ -32,6 +36,7 @@
                                         <input class="form-control"
                                                type="text"
                                                placeholder="輸入城市或機場名" 
+                                               id="destination"
                                                asp-for="Destination"/>
                                     </div>
                                 </div>
@@ -64,6 +69,7 @@
                                         <input class="form-control"
                                                type="text"
                                                placeholder="請輸入班機編號" 
+                                               id="flightNumber"
                                                asp-for="FlightNumber"/>
                                     </div>
                                 </div>
@@ -81,4 +87,94 @@
     </div>
 </div>
 
+<script>
+  $(function() {
+      //這邊是出發地的關鍵字，再麻煩後端把所有出發地放進來了，感謝
+    var availableOrigin = [
+      "出發地1號",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    $( "#origin" ).autocomplete({
+      source: availableOrigin
+    });
 
+    //這邊是目的地的關鍵字，再麻煩後端把所有目的地放進來了，感謝
+    var availableDestination = [
+      "目的地1號",
+      "目的地2號",
+      "目的地3號",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    $( "#destination" ).autocomplete({
+      source: availableDestination
+    });
+
+    //阿 那班機編號也順便XD 謝謝!!!
+    var availableFlightNumber = [
+      "我是班機1號",
+      "我是班機2號",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+    $( "#flightNumber" ).autocomplete({
+      source: availableFlightNumber
+    });
+
+  });
+  </script>

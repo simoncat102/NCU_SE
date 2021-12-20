@@ -31,6 +31,7 @@ namespace NCU_SE.Controllers
         public static string login_email { get; set; } = "無";
         public static string login_birthday { get; set; } = "無";
         public static string login_profile { get; set; } = "無";
+        public static int login_age { get; set; } = 0;
     }
 
     public class HomeController : Controller
@@ -81,6 +82,7 @@ namespace NCU_SE.Controllers
             ViewData["log_email"] = Login_Var.login_email;
             ViewData["log_birthday"] = Login_Var.login_birthday;
             ViewData["log_profile"] = Login_Var.login_profile;
+            ViewData["log_age"] = Login_Var.login_age;
             return View();
         }
 
@@ -88,15 +90,7 @@ namespace NCU_SE.Controllers
         public IActionResult Login(Member obj)
 
         {
-            #region login與verify合併前
-            // 測試是否有抓到值
-            /*
-            ViewData["Exist"] = LoginStat()? session.HttpContext.Session.GetString("acc") : "";
-            ViewData["login"] = "登入/註冊";
-            ViewData["log_action"] = Login_Var.login_action;
-            return View();
-            */
-            #endregion
+            ViewData["log_action"] = Login_Var.login_action = "Login";//預設還沒登入的按鈕動作
             if (LoginStat())
             {
                 return View("Index");
@@ -122,8 +116,12 @@ namespace NCU_SE.Controllers
                 ViewData["log_name"] = Login_Var.login_name = getSession("uname");
                 ViewData["log_email"] = Login_Var.login_email = email;
                 ViewData["log_birthday"] = Login_Var.login_birthday = birthday.ToString("MM/dd/yyyy");
-                //string p = profile.ToString();
                 ViewData["log_profile"] = Login_Var.login_profile = "/img/img" + profile.ToString() + ".png";//~/img/img1.png
+                //計算年齡
+                int birth = int.Parse(birthday.ToString("yyyyMMdd"));
+                int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
+                int age = (now - birth) / 10000;
+                ViewData["log_age"] = Login_Var.login_age = age;
                 return View("Index");//登入成功時跳轉到首頁
             }
             else if (AccExist == 0)
@@ -136,11 +134,12 @@ namespace NCU_SE.Controllers
             ViewData["log_email"] = Login_Var.login_email = "無";
             ViewData["log_birthday"] = Login_Var.login_birthday = "無";
             ViewData["log_profile"] = Login_Var.login_profile = "無";
+            ViewData["log_age"] = Login_Var.login_age = 0;
             return View();
         }
         public IActionResult Verify(Member obj)
         {
-            #region 註解(少邦)
+            #region 
             /*少邦
             var SearchEmail = _db.Member.Where(x => x.Email.Equals(obj.Email.ToString()));
             var SearchPW = _db.Member.Where(x => x.Password.Equals(obj.Password.ToString()));
@@ -180,12 +179,13 @@ namespace NCU_SE.Controllers
 
         public IActionResult Realtime() 
         {
+            ViewData["log_action"] = Login_Var.login_action;
             ViewData["login"] = Login_Var.login_status;
             ViewData["logid"] = Login_Var.login_uid;
             ViewData["log_name"] = Login_Var.login_name;
             ViewData["log_email"] = Login_Var.login_email;
             ViewData["log_birthday"] = Login_Var.login_birthday;
-            getRealtimeFlight();
+           
             ViewBag.AllFlight = getRealtimeFlight(); //Viewbag存資料
             return View();
         }
@@ -200,6 +200,7 @@ namespace NCU_SE.Controllers
             */
             #endregion
             ViewData["login"] = Login_Var.login_status = "登入/註冊";
+            ViewData["log_action"] = Login_Var.login_action="Login";
             Login_Var.login_action = "Login";
             try
             {
@@ -287,26 +288,35 @@ namespace NCU_SE.Controllers
             //儲存即時航班資料的List
             List<Flight> flightlist = new List<Flight>();
             //解析每個json-->將解析結果放入List中
-            for (int i = 0; i < FlightList.Length; i++)
+            //for (int i = 0; i < FlightList.Length; i++)
+            for (int i = 0; i < 30; i++)
             {
                 Flight flight = JsonSerializer.Deserialize<Flight>(FlightList[i]);
-                flightlist.Add(flight); //原本的code
+
+                    flightlist.Add(flight); //原本的code
+                try
+                {
+                    flightlist[i].ActualArrivalTime = flightlist[i].ActualArrivalTime == null ? null : flightlist[i].ActualArrivalTime.Substring(flightlist[i].ActualArrivalTime.Length - 11,5)+" "+flightlist[i].ActualArrivalTime.Substring(flightlist[i].ActualArrivalTime.Length - 5);
+                                                                                                                    //path.Substring(path.Length - 14, 10)    
+                }
+                catch { }
 
                 Debug.Print(flightlist[i].FlightNumber + "\n");
+
 
             }
 
             //固定的ViewBag 測試用 用不到了 
-            string ArrivalTime = flightlist[1].ActualArrivalTime.Substring(flightlist[1].ActualArrivalTime.Length - 5);
-            ViewBag.Flight = new Flight()
-            {
-                ActualArrivalTime = ArrivalTime,
-                AirlineID = flightlist[1].AirlineID,
-                FlightNumber = flightlist[1].AirlineID + flightlist[1].FlightNumber,
-                DepartureAirportID = flightlist[1].DepartureAirportID,
-                ArrivalAirportID = flightlist[1].ArrivalAirportID,
-                ArrivalRemark = flightlist[1].ArrivalRemark
-            };
+            //string ArrivalTime = flightlist[1].ActualArrivalTime.Substring(flightlist[1].ActualArrivalTime.Length - 5);
+            //ViewBag.Flight = new Flight()
+            //{
+            //    ActualArrivalTime = ArrivalTime,
+            //    AirlineID = flightlist[1].AirlineID,
+            //    FlightNumber = flightlist[1].AirlineID + flightlist[1].FlightNumber,
+            //    DepartureAirportID = flightlist[1].DepartureAirportID,
+            //    ArrivalAirportID = flightlist[1].ArrivalAirportID,
+            //    ArrivalRemark = flightlist[1].ArrivalRemark
+            //};
 
             return flightlist;
         }
