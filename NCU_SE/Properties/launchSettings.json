@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -8,6 +8,14 @@
     }
   },
   "profiles": {
+    "NCU_SE": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
@@ -15,11 +23,10 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "NCU_SE": {
+    "Custom": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "applicationUrl": "https://localhost:64968;http://localhost:64547",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
