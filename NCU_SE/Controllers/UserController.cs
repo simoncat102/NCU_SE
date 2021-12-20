@@ -50,13 +50,22 @@ namespace NCU_SE.Controllers
 
         public IActionResult PersonalInfo()
         {
-            if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
-            ViewData["login"] = Login_Var.login_status;
-            ViewData["logid"] = Login_Var.login_uid;
-            ViewData["log_name"] = Login_Var.login_name;
-            ViewData["log_email"] = Login_Var.login_email;
-            ViewData["log_birthday"] = Login_Var.login_birthday;
-            ViewData["log_profile"] = Login_Var.login_profile;
+            if (!LoginStat())
+            {
+                return RedirectToAction("Login", "Home");
+            }//若未登入轉跳到登入畫面
+            else
+            {
+                ViewData["log_action"] = Login_Var.login_action;
+                //反正能進來就是以登入 我要登出才會按！
+                ViewData["login"] = Login_Var.login_status;
+                ViewData["logid"] = Login_Var.login_uid;
+                ViewData["log_name"] = Login_Var.login_name;
+                ViewData["log_email"] = Login_Var.login_email;
+                ViewData["log_birthday"] = Login_Var.login_birthday;
+                ViewData["log_profile"] = Login_Var.login_profile;
+            }
+
             return View();
         }
 

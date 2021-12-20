@@ -140,7 +140,7 @@ namespace NCU_SE.Controllers
         }
         public IActionResult Verify(Member obj)
         {
-            #region 註解(少邦)
+            #region 
             /*少邦
             var SearchEmail = _db.Member.Where(x => x.Email.Equals(obj.Email.ToString()));
             var SearchPW = _db.Member.Where(x => x.Password.Equals(obj.Password.ToString()));
@@ -180,6 +180,7 @@ namespace NCU_SE.Controllers
 
         public IActionResult Realtime() 
         {
+            ViewData["log_action"] = Login_Var.login_action;
             ViewData["login"] = Login_Var.login_status;
             ViewData["logid"] = Login_Var.login_uid;
             ViewData["log_name"] = Login_Var.login_name;
