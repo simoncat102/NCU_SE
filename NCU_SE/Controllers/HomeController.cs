@@ -88,15 +88,7 @@ namespace NCU_SE.Controllers
         public IActionResult Login(Member obj)
 
         {
-            #region login與verify合併前
-            // 測試是否有抓到值
-            /*
-            ViewData["Exist"] = LoginStat()? session.HttpContext.Session.GetString("acc") : "";
-            ViewData["login"] = "登入/註冊";
-            ViewData["log_action"] = Login_Var.login_action;
-            return View();
-            */
-            #endregion
+            ViewData["log_action"] = Login_Var.login_action = "Login";//預設還沒登入的按鈕動作
             if (LoginStat())
             {
                 return View("Index");
