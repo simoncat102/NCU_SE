@@ -193,6 +193,7 @@ namespace NCU_SE.Controllers
             */
             #endregion
             ViewData["login"] = Login_Var.login_status = "登入/註冊";
+            ViewData["log_action"] = Login_Var.login_action="Login";
             Login_Var.login_action = "Login";
             try
             {
