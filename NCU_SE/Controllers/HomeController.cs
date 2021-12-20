@@ -31,6 +31,7 @@ namespace NCU_SE.Controllers
         public static string login_email { get; set; } = "無";
         public static string login_birthday { get; set; } = "無";
         public static string login_profile { get; set; } = "無";
+        public static int login_age { get; set; } = 0;
     }
 
     public class HomeController : Controller
@@ -81,6 +82,7 @@ namespace NCU_SE.Controllers
             ViewData["log_email"] = Login_Var.login_email;
             ViewData["log_birthday"] = Login_Var.login_birthday;
             ViewData["log_profile"] = Login_Var.login_profile;
+            ViewData["log_age"] = Login_Var.login_age;
             return View();
         }
 
@@ -114,8 +116,12 @@ namespace NCU_SE.Controllers
                 ViewData["log_name"] = Login_Var.login_name = getSession("uname");
                 ViewData["log_email"] = Login_Var.login_email = email;
                 ViewData["log_birthday"] = Login_Var.login_birthday = birthday.ToString("MM/dd/yyyy");
-                //string p = profile.ToString();
                 ViewData["log_profile"] = Login_Var.login_profile = "/img/img" + profile.ToString() + ".png";//~/img/img1.png
+                //計算年齡
+                int birth = int.Parse(birthday.ToString("yyyyMMdd"));
+                int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
+                int age = (now - birth) / 10000;
+                ViewData["log_age"] = Login_Var.login_age = age;
                 return View("Index");//登入成功時跳轉到首頁
             }
             else if (AccExist == 0)
@@ -128,6 +134,7 @@ namespace NCU_SE.Controllers
             ViewData["log_email"] = Login_Var.login_email = "無";
             ViewData["log_birthday"] = Login_Var.login_birthday = "無";
             ViewData["log_profile"] = Login_Var.login_profile = "無";
+            ViewData["log_age"] = Login_Var.login_age = 0;
             return View();
         }
         public IActionResult Verify(Member obj)
