@@ -94,21 +94,29 @@
                 <div class="tm-recommended-place-wrap">
                     @foreach (var flight in ViewBag.Depart)
                     {
-                        <div class="tm-recommended-place">
-                            <img src="~/img/chinaairlines.jpg" alt="Image" class="img-fluid tm-recommended-img">
-                            <div class="tm-recommended-description-box">
-                                <h3 class="tm-recommended-title">@flight.AirlineID</h3>
-                                <p class="tm-text-highlight">起飛時間: @flight.DepartureTime</p>
-                                <p class="tm-text-highlight">降落時間: @flight.ArrivalTime</p>
-                                <p class="tm-text-gray">預估飛行時間：@flight.FlightTime</p>
-                            </div>
-                            <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="@flight.FlightNumber">
-                                <p class="tm-recommended-price">@flight.FlightNumber</p>
-                                <p class="tm-recommended-price-link">儲存</p>
-                            </a>
+                    <div class="tm-recommended-place">
+                        <img src="~/img/chinaairlines.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                        <div class="tm-recommended-description-box">
+                            <h3 class="tm-recommended-title">@flight.AirlineID</h3>
+                            <p class="tm-text-highlight">起飛時間: @flight.DepartureTime</p>
+                            <p class="tm-text-highlight">降落時間: @flight.ArrivalTime</p>
+                            <p class="tm-text-gray">預估飛行時間：@flight.FlightTime</p>
                         </div>
-                    }
+                        @{DateTime ArriveDate = flight.ArrivalTime.Contains("+1") ? flight.FlightDate.AddDays(1) : flight.FlightDate;}
+                        <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal"
+                           data-whatever="@flight.FlightNumber"
+                           data-aName="@flight.AirlineID"
+                           data-ddate="@flight.FlightDate.ToString("yyyy/MM/dd")"
+                           data-dtime="@flight.DepartureTime"
+                           data-adate="@ArriveDate.ToString("yyyy/MM/dd")"
+                           data-atime="@flight.ArrivalTime">
 
+                            <p class="tm-recommended-price">@flight.FlightNumber</p>
+                            <p class="tm-recommended-price-link">儲存</p>
+                        </a>
+                    </div>
+                    }
+                    <!--
                     <div class="tm-recommended-place">
                         <img src="~/img/chinaairlines.jpg" alt="Image" class="img-fluid tm-recommended-img">
                         <div class="tm-recommended-description-box">
@@ -173,6 +181,7 @@
                             <p class="tm-recommended-price-link">儲存</p>
                         </a>
                     </div>
+                    -->
                 </div>
 
                 <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">顯示更多搜尋結果</a>
@@ -191,44 +200,51 @@
                   </div>
                   <div class="modal-body">
 
-                    <form action="#" method="get" >
-                       <div class="form-group row">
-                        
-                        <label for="airline_name" class="col-sm-5 col-form-label">航班名稱</label>
-                        <div class="col-sm-5">
-                          <input type="text" readonly class="form-control-plaintext" id="airline_name" value="中華航空">
-                        </div>
+                      <form asp-action="SaveFlight" method="post">
+                          <div class="form-group row">
 
-                        <label for="departure_date" class="col-sm-5 col-form-label">起飛日期</label>
-                        <div class="col-sm-5">
-                          <input type="text" readonly class="form-control-plaintext" id="departure_date" value="2021/12/16">
-                        </div>
-                        
-                        <label for="departure_time" class="col-sm-5 col-form-label">起飛時間</label>
-                        <div class="col-sm-5">
-                          <input type="text" readonly class="form-control-plaintext" id="departure_time" value="12:00">
-                        </div>
 
-                        <label for="arrival_date" class="col-sm-5 col-form-label">降落日期</label>
-                        <div class="col-sm-5">
-                          <input type="text" readonly class="form-control-plaintext" id="arrival_date" value="2021/12/16">
-                        </div>
-                        
-                        <label for="arrival_time" class="col-sm-5 col-form-label">降落時間</label>
-                        <div class="col-sm-5">
-                          <input type="text" readonly class="form-control-plaintext" id="arrival_time" value="14:00">
-                        </div>
+                              <label for="airlineName" class="col-sm-5 col-form-label">航班名稱</label>
+                              <div class="col-sm-5">
+                                  <input type="text" readonly class="form-control-plaintext" id="airlineName" value="N/A">
+                              </div>
 
-                      </div>
-                      <div class="form-group">
-                        <label for="note" class="col-form-label">備註訊息:</label>
-                        <textarea class="form-control" id="message-text" name="note"></textarea>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="reset" class="btn btn-secondary" data-dismiss="modal" >Close</button>
-                        <button type="submit" class="btn btn-primary" >Send message</button>
-                      </div>
-                    </form>
+                              <label for="departureDate" class="col-sm-5 col-form-label">起飛日期</label>
+                              <div class="col-sm-5">
+                                  <input type="text" readonly class="form-control-plaintext" id="departureDate" value="N/A">
+                              </div>
+
+                              <label for="departureTime" class="col-sm-5 col-form-label">起飛時間</label>
+                              <div class="col-sm-5">
+                                  <input type="text" readonly class="form-control-plaintext" id="departureTime" value="N/A">
+                              </div>
+
+                              <label for="arriveDate" class="col-sm-5 col-form-label">降落日期</label>
+                              <div class="col-sm-5">
+                                  <input type="text" readonly class="form-control-plaintext" id="arriveDate" value="N/A">
+                              </div>
+
+                              <label for="arriveTime" class="col-sm-5 col-form-label">降落時間</label>
+                              <div class="col-sm-5">
+                                  <input type="text" readonly class="form-control-plaintext" id="arriveTime" value="N/A">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label for="message-text" class="col-form-label">備註訊息:</label>
+                              <textarea asp-for="Note" class="form-control" id="message-text" name="note"></textarea>
+                          </div>
+                          <!--儲存班機專用-->
+                          <input type="hidden" asp-for="FlightNumber" id="FlightNumber" />
+                          <input type="hidden" asp-for="Origin" id="Origin" value="@ViewData["origin"]"/>
+                          <input type="hidden" asp-for="Destination" id="Destination" value="@ViewData["destination"]"/>
+                          <input type="hidden" asp-for="DepartureDate" id="DepartureDateTime" />
+                          <input type="hidden" asp-for="ReturnDate" id="ArriveDateTime" />
+
+                          <div class="modal-footer">
+                              <button type="reset" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                              <button type="submit" class="btn btn-primary">儲存此班機</button>
+                          </div>
+                      </form>
 
                   </div>
                   
@@ -242,11 +258,34 @@
 
     <script>
         $('#exampleModal').on('show.bs.modal', function (event) {
-          var button = $(event.relatedTarget) // Button that triggered the modal
-          var recipient = button.data('whatever') // Extract info from data-* attributes
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var recipient = button.data('whatever'); // Extract info from data-* attributes
+            //var airlineName = button.data('aName');
+            // departureDate = button.data('ddate');
+            //var departureTime = button.data('dtime');
+            //var arriveDate = button.data('adate');
+            //var arriveTime = button.data('atime');
           // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
           // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-          var modal = $(this)
-          modal.find('.modal-title').text('儲存'+ recipient+'的機票')
+            
+            var modal = $(this);
+            modal.find('.modal-title').text('儲存' + recipient + '的機票');
+            modal.find('#airlineName').val(button.attr('data-aName'));
+            modal.find('#departureDate').val(button.attr('data-ddate'));
+            modal.find('#departureTime').val(button.attr('data-dtime'));
+            modal.find('#arriveDate').val(button.attr('data-adate'));
+            modal.find('#arriveTime').val(button.attr('data-atime'));
+
+            //儲存機票專用
+            modal.find('#FlightNumber').val(recipient);
+            console.log(button.attr('data-ddate') + ' ' + button.attr('data-dtime').replace('+1', ''))
+            modal.find('#DepartureDateTime').val(button.attr('data-ddate') + ' ' + button.attr('data-dtime').replace('+1', ''));
+            modal.find('#ArriveDateTime').val(button.attr('data-adate') + ' ' + button.attr('data-atime').replace('+1', ''));
+
+            //modal.find('#airlineName').val(airlineName);
+            //modal.find('#departureDate').val(departureDate);
+            //modal.find('#departureTime').val(departureTime);
+            //modal.find('#arriveDate').val(arriveDate);
+            //modal.find('#arriveTime').val(arriveTime);           
         })
     </script>

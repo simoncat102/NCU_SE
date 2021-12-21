@@ -38,7 +38,7 @@
         </thead>
         <tbody id="myTable">
             @*固定的ViewBag Data*@
-            <tr class="realtime-contain">
+            @*<tr class="realtime-contain">
                 <td>@ViewBag.Flight.ActualArrivalTime</td>
                 <td>@ViewBag.Flight.AirlineID</td>
                 <td>@ViewBag.Flight.FlightNumber</td>
@@ -46,7 +46,7 @@
                 <td>@ViewBag.Flight.ArrivalAirportID</td>
                 <td>@ViewBag.Flight.ArrivalRemark</td>
 
-            </tr>
+            </tr>*@
             @*跑迴圈把資料拿出來 但是將時間沒辦法只留時間 日期都會在*@
             @foreach (var allFlight in ViewBag.AllFlight)
             {
