@@ -115,7 +115,7 @@ namespace NCU_SE.Controllers
                 ViewData["log_action"] = Login_Var.login_action = "Logout";//設定"登入/登出"按鈕動作
                 ViewData["log_name"] = Login_Var.login_name = getSession("uname");
                 ViewData["log_email"] = Login_Var.login_email = email;
-                ViewData["log_birthday"] = Login_Var.login_birthday = birthday.ToString("MM/dd/yyyy");
+                ViewData["log_birthday"] = Login_Var.login_birthday = birthday.ToString("yyyy-MM-dd");//原本是("MM/dd/yyyy")
                 ViewData["log_profile"] = Login_Var.login_profile = "/img/img" + profile.ToString() + ".png";//~/img/img1.png
                 //計算年齡
                 int birth = int.Parse(birthday.ToString("yyyyMMdd"));

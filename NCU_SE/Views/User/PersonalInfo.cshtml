@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Member
+@{
     ViewData["Title"] = "會員專區";
 }
 <head>
@@ -10,7 +11,7 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="~/css/personstyles.css" rel="stylesheet" />
     <!-- <link rel="stylesheet"
-              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">-->
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -45,31 +46,34 @@
                     </div>
                     <div class="modal-body" style="background-color: #2d3e50;">
                         <!-- Contact Section-->
-                        <section class="page-section" id="contact">
-                            <button onclick="get_num('0')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img width=200 src="~/img/img0.png"></button>
-                            <button onclick="get_num('1')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img width=200 src="~/img/img1.png"></button>
-                            <button onclick="get_num('2')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img width=200 src="~/img/img2.png"></button>
-                            <button onclick="get_num('3')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img width=200 src="~/img/img3.png"></button>
-                            <button onclick="get_num('4')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img width=200 src="~/img/img4.png"></button>
-                            <button onclick="get_num('5')" width=200 type="button" class="btn btn-secondary" data-dismiss="modal"><img width=200 src="~/img/img5.png"></button>
-                        </section>
+                        <form asp-action="PersonalInfo" method="post">
+                            <input asp-for="ID" value=@ViewData["logid"] name="id" hidden />
+                            <section class="page-section" id="contact">
+                                <input asp-for="profile" onclick="get_num('0')" width=200 type="submit" class="btn btn-secondary" data-dismiss="modal" value="0"><img width=200 src="~/img/img0.png" />
+                                <input asp-for="profile" onclick="get_num('1')" width=200 type="submit" class="btn btn-secondary" data-dismiss="modal" value="1"><img width=200 src="~/img/img1.png" />
+                                <input asp-for="profile" onclick="get_num('2')" width=200 type="submit" class="btn btn-secondary" data-dismiss="modal" value="2"><img width=200 src="~/img/img2.png" />
+                                <input asp-for="profile" onclick="get_num('3')" width=200 type="submit" class="btn btn-secondary" data-dismiss="modal" value="3"><img width=200 src="~/img/img3.png" />
+                                <input asp-for="profile" onclick="get_num('4')" width=200 type="submit" class="btn btn-secondary" data-dismiss="modal" value="4"><img width=200 src="~/img/img4.png" />
+                                <input asp-for="profile" onclick="get_num('5')" width=200 type="submit" class="btn btn-secondary" data-dismiss="modal" value="5"><img width=200 src="~/img/img5.png" />
+                            </section>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
+
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0" style="border: 6px #286090 solid; padding: 10px;">@ViewData["log_name"]</h1>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-plane"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Masthead Subheading-->
+        <p class="masthead-subheading font-weight-light mb-0">@ViewData["log_email"]</p>
     </div>
-
-
-    <!-- Masthead Heading-->
-                            <h1 class="masthead-heading text-uppercase mb-0" style="border: 6px #286090 solid; padding: 10px;">@ViewData["log_name"]</h1>
-                            <!-- Icon Divider-->
-                            <div class="divider-custom divider-light">
-                                <div class="divider-custom-line"></div>
-                                <div class="divider-custom-icon"><i class="fas fa-plane"></i></div>
-                                <div class="divider-custom-line"></div>
-                            </div>
-                            <!-- Masthead Subheading-->
-                            <p class="masthead-subheading font-weight-light mb-0">@ViewData["log_email"]</p>
-</div>
     <br />
     <!-- Submit Button-->
     <div class="shape-ex1">
@@ -111,32 +115,33 @@
                                 <!-- To make this form functional, sign up at-->
                                 <!-- https://startbootstrap.com/solution/contact-forms-->
                                 <!-- to get an API token!-->
-                                <form id="contactForm" method="get" action="" >
+                                <form id="contactForm" method="post" asp-action="PersonalInfo">
+                                    <input asp-for="ID" value=@ViewData["logid"] name="id" hidden />
                                     <!-- Name input-->
                                     <div class="form-floating mb-3">
-                                        <input required class="form-control" id="name" value=@ViewData["log_name"] type="text" placeholder="Enter your name..."  />
-                                        <label for="name">姓名</label>
+                                        <input required class="form-control" id="name" value=@ViewData["log_name"] type="text" placeholder="Enter your name..." asp-for="Name" name="name" />
+                                        <label asp-for="Name" for="name">姓名</label>
                                         <span></span><!--這裡會顯示驗證的錯誤訊息-->
                                     </div>
 
 
                                     <!-- Date of birth input-->
                                     <div class="form-floating mb-3">
-                                        <input disabled="disabled" class="form-control" id="age" value=@ViewData["log_age"] type="text" 
+                                        <input disabled="disabled" class="form-control" id="age" value=@ViewData["log_age"] type="text"
                                                style="border-radius: 5px;height: 50px;padding: 0px 0px 0px 40px;" />
                                         <label for="name">年齡</label>
                                     </div>
 
                                     <!-- Gender input-->
                                     <!--<div class="form-floating mb-3">
-        <input class="form-control" id="gender" value="女" type="text" placeholder="Enter your message here..." data-sb-validations="required" />
-        <label for="message">性別</label>
-        <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
-    </div>-->
+                                        <input class="form-control" id="gender" value="女" type="text" placeholder="Enter your message here..." data-sb-validations="required" />
+                                        <label for="message">性別</label>
+                                        <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                                    </div>-->
                                     <!-- Email address input-->
                                     <div class="form-floating mb-3">
-                                        <input  class="form-control" id="email" name="email" value=@ViewData["log_email"] type="email" placeholder="name@example.com" />
-                                        <label for="email">電子信箱</label>
+                                        <input class="form-control" id="email" name="email" value=@ViewData["log_email"] type="email" placeholder="name@example.com" asp-for="Email" />
+                                        <label asp-for="Email" for="email">電子信箱</label>
                                         <span></span><!--這裡會顯示驗證的錯誤訊息-->
                                     </div>
                                     <!-- Phone number input
@@ -150,11 +155,14 @@
                                     <div class="form-floating mb-3">
                                         <div>
                                             <br />
-                                            <label for="bday">生日</label>
-                                            <input required id="bday" name="bday" width="276" value=@ViewData["log_birthday"] />
+                                            <label asp-for="Birthday" for="bday">生日</label>
+                                            <input required id="bday" type="date" name="Birthday" width="276" value='' asp-for="Birthday" />
                                             <label></label>
                                             <span></span><!--這裡會顯示驗證的錯誤訊息-->
-                                            <script>$('#bday').datepicker();</script>
+                                            <script>
+                                                $('#bday').datepicker({ format: 'yyyy-mm-dd' });//選擇的日期沒辦法出現
+                                                $('#bday').val('@ViewData["log_birthday"]');
+                                            </script>
                                         </div>
                                         <br />
                                         <div class="invalid-feedback">A name is required.</div>
@@ -179,7 +187,7 @@
                                     <!-- This is what your users will see when there is-->
                                     <!-- an error submitting the form-->
                                     <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-                                   
+                                    <input type="submit" value="Save changes" class="btn btn-primary" data-dismiss="modal" />
                                 </form>
                             </div>
                         </div>
@@ -198,25 +206,25 @@
 <script type="text/javascript">
     /* 表單驗證 */
     jQuery.validator.setDefaults({
-      debug: false,
-      success: "valid"
+        debug: false,
+        success: "valid"
     });
-    $( "#contactForm" ).validate({
-      rules: {
-        name: "required",
-        email:"required",
-        bday:"required",
-      },
-       errorPlacement:function(error, element){
-        error.appendTo(element.next('label').next('span'));
-       }
+    $("#contactForm").validate({
+        rules: {
+            name: "required",
+            email: "required",
+            bday: "required",
+        },
+        errorPlacement: function (error, element) {
+            error.appendTo(element.next('label').next('span'));
+        }
     });
     jQuery.extend(jQuery.validator.messages, {
-      required: "必選欄位",
-      email: "請輸入正確格式的電子郵件",
-      equalTo: "請再次輸入相同的值",
-      minlength: jQuery.validator.format("請輸入一個 長度最少是 {0} 的字串"),
-      /*參考：https://iter01.com/917.html */
+        required: "必選欄位",
+        email: "請輸入正確格式的電子郵件",
+        equalTo: "請再次輸入相同的值",
+        minlength: jQuery.validator.format("請輸入一個 長度最少是 {0} 的字串"),
+        /*參考：https://iter01.com/917.html */
     });
 
 </script>
