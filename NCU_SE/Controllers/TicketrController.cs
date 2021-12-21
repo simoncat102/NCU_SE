@@ -57,16 +57,17 @@ namespace NCU_SE.Controllers
         public IActionResult FixedFlight(FixedFlight obj)
         {
             QueryFlight QF = new QueryFlight();
-            if(ticket.saveTicketState == 1)
+            if(ticket.saveTicketState == 1) //0表示尚未儲存去程票 1表示以儲存去程票
             {
-                QF = ticket.tmp;
-                ViewBag.Depart = QF.Return;
+                QF = ticket.tmp;//回程票資料
+                ViewBag.Depart = QF.Return;//將Viewbag當中的資料替換為回程機票資料
             }
-            else
+            else //第一次查詢時
             {
+                //取得固定航班資料
                 if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
-                ViewBag.Depart = QF.Depart;
-                ticket.tmp = QF;
+                ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中
+                ticket.tmp = QF;//將回程機票資料先暫存
             }
              
             //if (obj != null) ViewBag.Return = QF.Return;
@@ -82,26 +83,27 @@ namespace NCU_SE.Controllers
         public IActionResult SaveFlight(FixedFlight ff)
         {
             if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
-            
+            //因為一個view難以套用兩個model，因此使用FixedFlight先取回資料，再換容器
             Ticket obj = new Ticket();
-            obj.DepartAirport = ff.Origin;
-            obj.DestinationAirport = ff.Destination;
-            obj.DepartureDateTime = ff.DepartureDate;
-            obj.ArriveDateTime = ff.ReturnDate;
-            obj.FlightID = ff.FlightNumber;
-            obj.Note = ff.Note;            
-            obj.MemberID = Login_Var.login_uid;
-            obj.TicketID = DateTime.Now.ToString("yyyyMMddmmssfffff") + obj.MemberID + obj.FlightID;
-            _db.Ticket.Add(obj);
-            _db.SaveChanges();
-            ticket.saveTicketState++;
-            if(ticket.saveTicketState == 2)
+            //將資料置入Ticket內
+            obj.DepartAirport = ff.Origin;//出發地
+            obj.DestinationAirport = ff.Destination;//目的地
+            obj.DepartureDateTime = ff.DepartureDate;//預計起飛日期時間
+            obj.ArriveDateTime = ff.ReturnDate;//預計降落日期時間
+            obj.FlightID = ff.FlightNumber;//航班編號
+            obj.Note = ff.Note;//機票備註            
+            obj.MemberID = Login_Var.login_uid;//會員ID
+            obj.TicketID = DateTime.Now.ToString("yyyyMMddmmssfffff") + obj.MemberID + obj.FlightID;//系統機票號碼
+            _db.Ticket.Add(obj);//新增個人機票
+            _db.SaveChanges();//更新至資料庫
+            ticket.saveTicketState++;//單次儲存機票的數量
+            if(ticket.saveTicketState == 2)//若為2時(來回票都訂好了)轉跳到個人機票頁面
             {
                 return View("PersonalTicket");
             }
             else
             {
-                return RedirectToAction("FixedFlight", "Ticket");
+                return RedirectToAction("FixedFlight", "Ticket");//若為1時繼續找回程票
             }           
         }
 
