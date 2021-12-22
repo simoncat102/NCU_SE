@@ -56,19 +56,11 @@ namespace NCU_SE.Controllers
         
         public IActionResult FixedFlight(FixedFlight obj)
         {
-            QueryFlight QF = new QueryFlight();
-            if(ticket.saveTicketState == 1) //0表示尚未儲存去程票 1表示以儲存去程票
-            {
-                QF = ticket.tmp;//回程票資料
-                ViewBag.Depart = QF.Return;//將Viewbag當中的資料替換為回程機票資料
-            }
-            else //第一次查詢時
-            {
+            QueryFlight QF = new QueryFlight();          
                 //取得固定航班資料
                 if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
                 ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中
                 ticket.tmp = QF;//將回程機票資料先暫存
-            }
              
             //if (obj != null) ViewBag.Return = QF.Return;
             ViewData["origin"] = QF.Origin;
@@ -97,14 +89,7 @@ namespace NCU_SE.Controllers
             _db.Ticket.Add(obj);//新增個人機票
             _db.SaveChanges();//更新至資料庫
             ticket.saveTicketState++;//單次儲存機票的數量
-            if(ticket.saveTicketState == 2)//若為2時(來回票都訂好了)轉跳到個人機票頁面
-            {
-                return View("PersonalTicket");
-            }
-            else
-            {
-                return RedirectToAction("FixedFlight", "Ticket");//若為1時繼續找回程票
-            }           
+            return View("PersonalTicket");           
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -152,7 +137,7 @@ namespace NCU_SE.Controllers
             session = httpContextAccessor;
         }
         #endregion
-        //取得即時航班
+        //取得航班
         public QueryFlight getFixedFlight(string origin, string destnation, DateTime departureDate, DateTime returnDate, string FlightNumber)
         {
             string json = null;
