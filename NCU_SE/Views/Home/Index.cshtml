@@ -52,13 +52,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <span class="form-label">出發時間</span>
-                                        <input class="form-control" type="date" required  asp-for="DepartureDate"/>
+                                        <input id="departureDate" class="form-control" type="date" required  asp-for="DepartureDate"/>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <span class="form-label">回程時間</span>
-                                        <input class="form-control" type="date" required asp-for="ReturnDate"/>
+                                        <input id="returnDate" class="form-control" type="date" required asp-for="ReturnDate"/>
                                     </div>
                                 </div>
                             </div>
@@ -177,4 +177,13 @@
     });
 
   });
-  </script>
+
+//限定日期為3個月內可選擇
+var threeMDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 90);
+var threeMDateDay = threeMDate.getDate();
+var threeMDateMonth = threeMDate.getMonth() + 1;
+var threeMDateYear = threeMDate.getFullYear();
+if(threeMDateDay<10){threeMDateDay='0'+threeMDateDay} if(threeMDateMonth<10){threeMDateMonth='0'+threeMDateMonth} threeMDate = threeMDateYear+'-'+ threeMDateMonth+'-'+ threeMDateDay;
+$('#departureDate').attr('max',threeMDate);
+$('#returnDate').attr('max',threeMDate);
+</script>
