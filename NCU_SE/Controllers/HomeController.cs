@@ -296,9 +296,11 @@ namespace NCU_SE.Controllers
                     flightlist.Add(flight); //原本的code
                 try
                 {
+                    flightlist[i].AirlineID_zh = flightlist[i].AirlineID;
                     //flightlist[i].ActualArrivalTime = flightlist[i].ActualArrivalTime == null ? "時間未定" : flightlist[i].ActualArrivalTime.Substring(flightlist[i].ActualArrivalTime.Length - 11,5)+" "+flightlist[i].ActualArrivalTime.Substring(flightlist[i].ActualArrivalTime.Length - 5);
                     flightlist[i].ScheduleArrivalTime = flightlist[i].ScheduleArrivalTime == null ? "未確定" : flightlist[i].ScheduleArrivalTime.Substring(flightlist[i].ScheduleArrivalTime.Length - 11, 5) + " " + flightlist[i].ScheduleArrivalTime.Substring(flightlist[i].ScheduleArrivalTime.Length - 5);
                     flightlist[i].ArrivalRemark = flightlist[i].ArrivalRemark == null ? "未知" : flightlist[i].ArrivalRemark;
+                    flightlist[i].AirlineID = flightlist[i].AirlineID == null ? "未知" : getAirlineName(flightlist[i].AirlineID).Substring(0,4);
 
                 }
                 catch { }
@@ -307,6 +309,23 @@ namespace NCU_SE.Controllers
 
 
             }
+
+            string getAirlineName(string AirlineID)
+            {
+                string AirlineQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airline?$select=AirlineName&$filter=AirlineID eq '{0}'&$format=JSON", AirlineID);
+                string AirlineJson = null;
+                using (HttpClient Client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
+                {
+                    Client.DefaultRequestHeaders.Add("Authorization", sAuth);
+                    Client.DefaultRequestHeaders.Add("x-date", xdate);
+                    AirlineJson = Client.GetStringAsync(AirlineQuery).Result.Replace("[{\"AirlineName\":", "").Replace("},", ",").Replace("]", "");
+                }
+                AirlineInfo AI = JsonSerializer.Deserialize<AirlineInfo>(AirlineJson);
+                Debug.Print("機場名稱：" + AI.Zh_tw);
+                return AI.Zh_tw;
+            }
+
+
 
             //固定的ViewBag 測試用 用不到了 
             //string ArrivalTime = flightlist[1].ActualArrivalTime.Substring(flightlist[1].ActualArrivalTime.Length - 5);
@@ -328,6 +347,7 @@ namespace NCU_SE.Controllers
         {
             public string FlightNumber { get; set; }
             public string AirlineID { get; set; }
+            public string AirlineID_zh { get; set; }
             public string DepartureAirportID { get; set; }
             public string ArrivalAirportID { get; set; }
             public string ScheduleDepartureTime { get; set; }
@@ -337,6 +357,10 @@ namespace NCU_SE.Controllers
             public string DepartureRemark { get; set; } //出發狀態
             public string ArrivalRemark { get; set; } //抵達狀態
 
+        }
+        public class AirlineInfo
+        {
+            public string Zh_tw { get; set; }
         }
     }
 }
