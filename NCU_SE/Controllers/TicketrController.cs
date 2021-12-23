@@ -18,11 +18,10 @@ using NCU_SE.Models;
 
 namespace NCU_SE.Controllers
 {
-    //來回班機回傳格式
+    //班機回傳格式
     public class QueryFlight
     {
         public List<FixFlight> Depart { get; set; }
-        public List<FixFlight> Return { get; set; }
         public string Origin { get; set; }
         public string Destination { get; set; }
     }
@@ -59,8 +58,7 @@ namespace NCU_SE.Controllers
             QueryFlight QF = new QueryFlight();          
                 //取得固定航班資料
                 if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
-                ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中
-                ticket.tmp = QF;//將回程機票資料先暫存
+                ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中                
              
             //if (obj != null) ViewBag.Return = QF.Return;
             ViewData["origin"] = QF.Origin;
@@ -87,8 +85,7 @@ namespace NCU_SE.Controllers
             obj.MemberID = Login_Var.login_uid;//會員ID
             obj.TicketID = DateTime.Now.ToString("yyyyMMddmmssfffff") + obj.MemberID + obj.FlightID;//系統機票號碼
             _db.Ticket.Add(obj);//新增個人機票
-            _db.SaveChanges();//更新至資料庫
-            ticket.saveTicketState++;//單次儲存機票的數量
+            _db.SaveChanges();//更新至資料庫            
             return View("PersonalTicket");           
         }
 
@@ -168,8 +165,7 @@ namespace NCU_SE.Controllers
             string[] place = { origin, destnation };
             DateTime[] time = { departureDate, returnDate };
             QueryFlight QF = new QueryFlight();
-            QF.Depart = new List<FixFlight>();
-            QF.Return = new List<FixFlight>();
+            QF.Depart = new List<FixFlight>();          
             QF.Origin = origin;
             QF.Destination = destnation;
             #region 取得機場代號           
@@ -198,11 +194,9 @@ namespace NCU_SE.Controllers
             
             #endregion
             #region 取得班機
-            //取得來回班機資訊
-            for (int i = 0; i<2; i++)
-            {               
+            //取得來回班機資訊              
                 string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= ScheduleStartDate ge {0} and ScheduleEndDate le {0} and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' and {3} {4}&$format=JSON"
-                    , time[i].ToString("yyyy-MM-dd"),(i==0?place[0]:place[1]), (i==0?place[1]:place[0]), (time[i].ToString("dddd",new CultureInfo("en-US")) + " eq true"), (FlightNumber == null ? "" : ("and FlightNumber eq'" + FlightNumber + "'")));
+                    , time[0].ToString("yyyy-MM-dd"),place[0], place[1], (time[0].ToString("dddd",new CultureInfo("en-US")) + " eq true"), (FlightNumber == null ? "" : ("and FlightNumber eq'" + FlightNumber + "'")));
                 //取得API資料(官方提供方法)
                 using (HttpClient Client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
                 {
@@ -218,7 +212,7 @@ namespace NCU_SE.Controllers
                     {    
                         //將所有找到的相關班機資訊放入List
                         FixFlight FF = JsonSerializer.Deserialize<FixFlight>(flights[j]);
-                        FF.FlightDate = time[i];//將出發日期加入
+                        FF.FlightDate = time[0];//將出發日期加入
                         FF.FlightNumber = FF.FlightNumber.Insert(2, "-");
                         FF.AirlineID = getAirlineName(FF.AirlineID);
                         if (TimeSpan.Parse(FF.ArrivalTime.Replace("+1","")) < TimeSpan.Parse(FF.DepartureTime))
@@ -229,22 +223,15 @@ namespace NCU_SE.Controllers
                         {
                             FF.FlightTime = "" + (TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")) - TimeSpan.Parse(FF.DepartureTime));
                         }
-                        FF.FlightTime = FF.FlightTime.Substring(0, 5).Replace(":","小時")+"分鐘";
-                        if (i == 0)
-                        {                            
-                            QF.Depart.Add(FF);//將資料存放到class中==>去程
-                        }
-                        else
-                        {                            
-                            QF.Return.Add(FF);//將資料存放到class中==>回程
-                        }
+                        FF.FlightTime = FF.FlightTime.Substring(0, 5).Replace(":","小時")+"分鐘";                          
+                        QF.Depart.Add(FF);//將資料存放到class中==>去程
                     }                   
                 }
                 catch (Exception ex)
                 {
                     Debug.Print(ex.Message);                   
                 }
-            }
+            
             #endregion
 
             #region 取得航空公司名稱
