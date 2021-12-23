@@ -49,7 +49,7 @@
         <!-- 增加個人檔案邊框 -->
         <div class="container d-flex align-items-center flex-column" style="border-width:4px;border-style:dashed;border-color:#f3e5e5;padding:10px;">
             <!-- Masthead Avatar Image-->
-            <img class="masthead-avatar mb-5" src="~/img/img0.png" alt="..." />
+            <img class="masthead-avatar mb-5" src=@ViewData["log_profile"] alt="..." />
             <!-- Masthead Heading-->
             <h1 class="masthead-heading text-uppercase mb-0" style="border:6px orange solid;padding:10px;">@ViewData["log_name"]</h1>
             <!-- Icon Divider-->
@@ -117,7 +117,7 @@
                                                         <span class="ticket-font-small airportFromTo">@obj.AirportFrom</span>
                                                         <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
                                                             <span class="ticket-font-small">Departure Times</span>
-                                                            <span>@obj.DepDate.ToString("dd MMM yyyy")</span>
+                                                            <span>@obj.DepTime.ToString("dd MMM yyyy")</span>
 
                                                         </div>
 
@@ -133,7 +133,7 @@
                                                         <span class="ticket-font-small airportFromTo">@obj.AirportTo</span>
                                                         <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
                                                             <span class="ticket-font-small">Arrival Times</span>
-                                                            <span>@obj.ArriDate.ToString("dd MMM yyyy")</span>
+                                                            <span>@obj.ArriTime.ToString("dd MMM yyyy")</span>
                                                         </div>
 
                                                         <div class="ticket-row " style="padding: 0;align-items: center;">
@@ -174,6 +174,7 @@
                                     <form class="row justify-content-center" action="">
                                         <div class="col-lg-auto">
                                             <!-- Portfolio Modal - Title-->
+                                            <input required class="form-control" id="note" value=@obj.FlightNote type="text" placeholder="Enter your name..." name="note" />
                                             <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">@obj.FlightNote</h2>
                                             <!-- Icon Divider-->
                                             <div class="divider-custom">
@@ -210,7 +211,7 @@
                                                                 <span class="ticket-font-small airportFromTo">@obj.AirportFrom</span>
                                                                 <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
                                                                     <span class="ticket-font-small">Departure Times</span>
-                                                                    <span>@obj.DepDate.ToString("dd MMM yyyy")</span>
+                                                                    <span>@obj.DepTime.ToString("dd MMM yyyy")</span>
 
                                                                 </div>
 
@@ -225,7 +226,7 @@
                                                                 <span class="ticket-font-small airportFromTo">@obj.AirportTo</span>
                                                                 <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
                                                                     <span class="ticket-font-small">Arrival Times</span>
-                                                                    <span>@obj.ArriDate.ToString("dd MMM yyyy")</span>
+                                                                    <span>@obj.ArriTime.ToString("dd MMM yyyy")</span>
                                                                 </div>
 
                                                                 <div class="ticket-row " style="padding: 0;align-items: center;">
@@ -239,25 +240,24 @@
                                                 </div>
                                             </div>
                                             <!--一張機票-->
-
                                             @*<div id="changeDate" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
-                                                <div style="display:flex;align-items: center;justify-content: center; ">
-                                                    <div class="chooseDate">
-                                                        選擇要更改的日期 <input name="change_date" type='text' id='datepicker' />
-                                                    </div>
-                                                    <button class="btn btn-primary" style="height: fit-content;">確定</button>
-                                                </div>
+            <div style="display:flex;align-items: center;justify-content: center; ">
+                <div class="chooseDate">
+                    選擇要更改的日期 <input name="change_date" type='text' id='datepicker' />
+                </div>
+                <button class="btn btn-primary" style="height: fit-content;">確定</button>
+            </div>
 
-                                            </div>
+        </div>
 
-                                            <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="changeDate" onclick="ChangeBtn()">
-                                                <i class="fas fa-times fa-fw"></i>
-                                                修改日期
-                                            </div>
+        <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="changeDate" onclick="ChangeBtn()">
+            <i class="fas fa-times fa-fw"></i>
+            修改日期
+        </div>
 
-                                            <script>function ChangeBtn() {
-                                                    $("#changeDate").show();
-                                                }</script>*@
+        <script>function ChangeBtn() {
+                $("#changeDate").show();
+            }</script>*@
 
                                             <button name="editnote_ticket" value="這邊放每個ticket的ID" class="btn btn-primary" href="#!" data-bs-dismiss="modal">
                                                 <i class="fas fa-times fa-fw"></i>
