@@ -66,29 +66,67 @@ namespace NCU_SE.Controllers
                 ViewData["log_birthday"] = Login_Var.login_birthday;
                 ViewData["log_profile"] = Login_Var.login_profile;
                 ViewData["log_age"] = Login_Var.login_age;
-                if (ModelState.IsValid)
-                {
-                    if (obj.Name != null) ViewData["log_name"] = Login_Var.login_name = obj.Name;
-                    if (obj.Email != null) ViewData["log_email"] = Login_Var.login_email = obj.Email;
-                    if (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1")  ViewData["log_birthday"] = Login_Var.login_birthday = obj.Birthday.ToString("yyyy-MM-dd");
-                    ViewData["log_profile"] = Login_Var.login_profile = "/img/img" + obj.profile + ".png";
-                    //_db.Member.Update(obj);
-                    _db.Member.Attach(obj);
-                    _db.Entry(obj).Property(u => u.profile).IsModified = true;
-                    _db.Entry(obj).Property(u => u.Name).IsModified = (obj.Name!=null);
-                    _db.Entry(obj).Property(u => u.Email).IsModified = (obj.Email != null);
-                    _db.Entry(obj).Property(u => u.Birthday).IsModified = (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1");
-                    _db.SaveChanges();
-                    return View("PersonalInfo");
-                }
             }
             return View();
         }
 
-        public IActionResult EditPersonalInfo(int id)
+        public IActionResult EditPersonalInfo(Member obj)
         {
-            var memberdetail = _db.Member.Find(id);
+            if (ModelState.IsValid)
+            {
+                _db.Member.Attach(obj);
+                //_db.Entry(obj).Property(u => u.profile).IsModified = true;
+                _db.Entry(obj).Property(u => u.Name).IsModified = (obj.Name != null);
+                _db.Entry(obj).Property(u => u.Email).IsModified = (obj.Email != null);
+                _db.Entry(obj).Property(u => u.Birthday).IsModified = (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1");
+                _db.SaveChanges();
 
+                //重設全域變數
+                ViewData["log_action"] = Login_Var.login_action;
+                ViewData["login"] = Login_Var.login_status = obj.Name + "，您好 按此登出";
+                ViewData["logid"] = Login_Var.login_uid;
+                ViewData["log_name"] = Login_Var.login_name = obj.Name;
+                ViewData["log_email"] = Login_Var.login_email = obj.Email;
+                if (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1")  //為何要限制？
+                {
+                    ViewData["log_birthday"] = Login_Var.login_birthday = obj.Birthday.ToString("yyyy-MM-dd");
+                    //計算年齡
+                    int birth = int.Parse(obj.Birthday.ToString("yyyyMMdd"));
+                    int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
+                    int age = (now - birth) / 10000;
+                    ViewData["log_age"] = Login_Var.login_age = age;
+                }
+                ViewData["log_profile"] = Login_Var.login_profile;
+                return View("PersonalInfo");
+            }
+            return View("PersonalInfo");
+        }
+
+        public IActionResult EditPersonalPicture(Member obj)
+        {
+            if (ModelState.IsValid)
+            {
+                //使用者選的頭像代號傳到資料庫
+                _db.Member.Attach(obj);
+                _db.Entry(obj).Property(u => u.profile).IsModified = true;
+                _db.SaveChanges();
+
+                //重設全域變數
+                ViewData["log_action"] = Login_Var.login_action;
+                ViewData["login"] = Login_Var.login_status;
+                ViewData["logid"] = Login_Var.login_uid;
+                ViewData["log_name"] = Login_Var.login_name;
+                ViewData["log_email"] = Login_Var.login_email;
+                ViewData["log_profile"] = Login_Var.login_profile = "/img/img" + obj.profile + ".png";
+                ViewData["log_birthday"] = Login_Var.login_birthday;
+                DateTime birthday = Convert.ToDateTime(Login_Var.login_birthday);
+                //計算年齡
+                int birth = int.Parse(birthday.ToString("yyyyMMdd"));
+                int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
+                int age = (now - birth) / 10000;
+                ViewData["log_age"] = Login_Var.login_age = age;
+                return View("PersonalInfo");
+            }
             return View("PersonalInfo");
         }
 
