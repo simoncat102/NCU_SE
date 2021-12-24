@@ -97,7 +97,7 @@ namespace NCU_SE.Controllers
             ViewData["log_name"] = Login_Var.login_name;
             ViewData["log_email"] = Login_Var.login_email;
             ViewData["log_profile"] = Login_Var.login_profile;
-            //讀取資料語法
+            //讀取機票資料語法
             IEnumerable<Flight> objList = _db.Flight;
             return View(objList);
         }
