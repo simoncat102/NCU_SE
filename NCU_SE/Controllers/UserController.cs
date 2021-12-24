@@ -50,6 +50,7 @@ namespace NCU_SE.Controllers
 
         public IActionResult PersonalInfo(Member obj)
         {
+            Debug.Print(obj.Birthday.ToString());
             if (!LoginStat())
             {
                 return RedirectToAction("Login", "Home");
@@ -65,20 +66,18 @@ namespace NCU_SE.Controllers
                 ViewData["log_birthday"] = Login_Var.login_birthday;
                 ViewData["log_profile"] = Login_Var.login_profile;
                 ViewData["log_age"] = Login_Var.login_age;
-                if (ModelState.IsValid && obj.Name != null)
+                if (ModelState.IsValid)
                 {
-                    ViewData["log_profile"] = Login_Var.login_profile = obj.profile.ToString();
-                    ViewData["log_name"] = Login_Var.login_name = obj.Name;
-                    ViewData["log_email"] = Login_Var.login_email = obj.Email;
-                    ViewData["log_birthday"] = Login_Var.login_birthday = obj.Birthday.ToString("yyyy-MM-dd");
-
+                    if (obj.Name != null) ViewData["log_name"] = Login_Var.login_name = obj.Name;
+                    if (obj.Email != null) ViewData["log_email"] = Login_Var.login_email = obj.Email;
+                    if (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1")  ViewData["log_birthday"] = Login_Var.login_birthday = obj.Birthday.ToString("yyyy-MM-dd");
+                    ViewData["log_profile"] = Login_Var.login_profile = "/img/img" + obj.profile + ".png";
                     //_db.Member.Update(obj);
                     _db.Member.Attach(obj);
-                    _db.Entry(obj).Property(u => u.profile).IsModified = (obj.profile==null);
-                    _db.Entry(obj).Property(u => u.Name).IsModified = true;
-                    _db.Entry(obj).Property(u => u.Email).IsModified = true;
-                    _db.Entry(obj).Property(u => u.Birthday).IsModified = true;
-
+                    _db.Entry(obj).Property(u => u.profile).IsModified = true;
+                    _db.Entry(obj).Property(u => u.Name).IsModified = (obj.Name!=null);
+                    _db.Entry(obj).Property(u => u.Email).IsModified = (obj.Email != null);
+                    _db.Entry(obj).Property(u => u.Birthday).IsModified = (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1");
                     _db.SaveChanges();
                     return View("PersonalInfo");
                 }

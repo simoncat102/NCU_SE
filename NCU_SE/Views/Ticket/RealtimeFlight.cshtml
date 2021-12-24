@@ -34,7 +34,7 @@
                         <div class="form-row tm-search-form-row">
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
                                 <label for="inputCity">請選擇您的出發地</label>
-                                <input asp-for="Origin" list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice" class="form-control" placeholder="Type your destination..." />
+                                <input asp-for="Origin" list="ice-cream-flavors" id="ice-cream-choice" name="Origin" class="form-control" placeholder="Type your destination..." />
                                 
                                 <datalist id="ice-cream-flavors">
                                     <option value="Chocolate"></option>
@@ -47,7 +47,7 @@
                             </div>
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
                                 <label for="inputCity">請選擇您的目的地</label>
-                                <input asp-for="Destination" list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice" class="form-control" placeholder="Type your destination..." />
+                                <input asp-for="Destination" list="ice-cream-flavors" id="ice-cream-choice" name="Destination" class="form-control" placeholder="Type your destination..." />
 
                                 <datalist id="ice-cream-flavors">
                                     <option value="Chocolate">></option>
@@ -63,11 +63,11 @@
                         <div class="form-row tm-search-form-row">
 
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                                <label for="inputCheckIn">出發時間</label>
+                                <label for="inputCheckIn">出發時間(從)</label>
                                 <input asp-for="DepartureDate" class="form-control" type="date" required />
                             </div>
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
-                                <label for="inputCheckOut">回程時間</label>
+                                <label for="inputCheckOut">出發時間(到)</label>
                                 <input asp-for="ReturnDate" class="form-control" type="date" required />
                             </div>
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
@@ -97,15 +97,16 @@
                     <div class="tm-recommended-place">
                         <img src="~/img/chinaairlines.jpg" alt="Image" class="img-fluid tm-recommended-img">
                         <div class="tm-recommended-description-box">
-                            <h3 class="tm-recommended-title">@flight.AirlineID</h3>
+                            <h3 class="tm-recommended-title">@flight.AirlineName</h3>
                             <p class="tm-text-highlight">起飛時間: @flight.DepartureTime</p>
                             <p class="tm-text-highlight">降落時間: @flight.ArrivalTime</p>
                             <p class="tm-text-gray">預估飛行時間：@flight.FlightTime</p>
                         </div>
-                        @{DateTime ArriveDate = flight.ArrivalTime.Contains("+1") ? flight.FlightDate.AddDays(1) : flight.FlightDate;}
+                        @{/*自動依據出發時間，若抵達時間比出發時間早(代表跨日飛行)則自動將降落日期+1*/}
+                        @{DateTime ArriveDate = (TimeSpan.Parse(flight.ArrivalTime.Replace("+1", "")) < TimeSpan.Parse(flight.DepartureTime)) ? flight.FlightDate.AddDays(1) : flight.FlightDate;}
                         <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal"
                            data-whatever="@flight.FlightNumber"
-                           data-aName="@flight.AirlineID"
+                           data-aName="@flight.AirlineName"
                            data-ddate="@flight.FlightDate.ToString("yyyy/MM/dd")"
                            data-dtime="@flight.DepartureTime"
                            data-adate="@ArriveDate.ToString("yyyy/MM/dd")"
