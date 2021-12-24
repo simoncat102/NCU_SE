@@ -96,6 +96,7 @@ namespace NCU_SE.Controllers
         public IActionResult UserTicket()
         {
             if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
+            ViewData["log_action"] = Login_Var.login_action;
             ViewData["login"] = Login_Var.login_status;
             ViewData["logid"] = Login_Var.login_uid;
             ViewData["log_name"] = Login_Var.login_name;
