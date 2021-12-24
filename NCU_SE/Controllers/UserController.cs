@@ -68,6 +68,9 @@ namespace NCU_SE.Controllers
                 ViewData["log_age"] = Login_Var.login_age;
                 if (ModelState.IsValid)
                 {
+                    if (obj.Name != null) ViewData["log_name"] = Login_Var.login_name = obj.Name;
+                    if (obj.Email != null) ViewData["log_email"] = Login_Var.login_email = obj.Email;
+                    if (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1")  ViewData["log_birthday"] = Login_Var.login_birthday = obj.Birthday.ToString("yyyy-MM-dd");
                     ViewData["log_profile"] = Login_Var.login_profile = "/img/img" + obj.profile + ".png";
                     //_db.Member.Update(obj);
                     _db.Member.Attach(obj);
