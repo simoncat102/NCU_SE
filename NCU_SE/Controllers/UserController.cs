@@ -75,7 +75,6 @@ namespace NCU_SE.Controllers
                     _db.Entry(obj).Property(u => u.Name).IsModified = (obj.Name!=null);
                     _db.Entry(obj).Property(u => u.Email).IsModified = (obj.Email != null);
                     _db.Entry(obj).Property(u => u.Birthday).IsModified = (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1");
-
                     _db.SaveChanges();
                     return View("PersonalInfo");
                 }
