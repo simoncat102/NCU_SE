@@ -97,8 +97,7 @@ namespace NCU_SE.Controllers
             
             _db.Flight.Add(obj);//新增個人機票
             _db.SaveChanges();//更新至資料庫
-            return RedirectToAction("UserTicket", "User");
-            //return View("PersonalTicket");           
+            return RedirectToAction("UserTicket", "User");       
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
