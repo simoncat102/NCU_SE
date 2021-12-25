@@ -96,7 +96,6 @@
                     {
                      
                     <div class="tm-recommended-place">
-                        <img src="~/img/chinaairlines.jpg" alt="Image" class="img-fluid tm-recommended-img">
                         <div class="tm-recommended-description-box">
                             <h3 class="tm-recommended-title">@flight.AirlineName</h3>
                             @{DateTime ArriveDate = (TimeSpan.Parse(flight.ArrivalTime.Replace("+1", "")) < TimeSpan.Parse(flight.DepartureTime)) ? flight.FlightDate.AddDays(1) : flight.FlightDate;}
