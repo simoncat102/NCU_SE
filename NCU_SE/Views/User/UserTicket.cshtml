@@ -16,30 +16,49 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="~/css/personstyles.css" rel="stylesheet" />
-
+    <!--
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    -->
+    <!--日期彈跳視窗-->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+     <!--日期彈跳視窗-->
+
+     <!--日期本身-->
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.1/jquery-ui.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.1/jquery-ui.min.js"></script>
+    <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.1/themes/flick/jquery-ui.css"  rel="stylesheet"/>
+
     <script type="text/javascript">
-        var availableDates = ["2-1-2021", "3-1-2021", "4-1-2021"];
-        $(function () {
-            $('#datepicker').datepicker({
-                beforeShowDay:
-                    function (dt) {
-                        return [available(dt), ""];
-                    }
-                , changeMonth: true, changeYear: false
-            });
-        });
 
         function available(date) {
-            dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-            if ($.inArray(dmy, availableDates) != -1) {
-                return true;
-            } else {
-                return false;
-            }
-        }</script>
+          availableDates = ['24-12-2021', '26-12-2021','27-12-2021','30-12-2021'];//可指定可選的日期
+          dmy = date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear();
+          
+          //console.log(dmy + ' : ' + ($.inArray(dmy, availableDates)));
+          
+          if ($.inArray(dmy, availableDates) != -1) {//若指定的日期有出現在dym中，就回傳他在dym的index，沒有就回傳-1
+            return true;
+          } else {
+            return false;
+          }
+        }
+
+        $(function()
+        {
+            $('#change_date').datepicker({ 
+                beforeShowDay:
+                  function(dt)
+                  { 
+                      //getDay()是取得星期，下面是星期一或星期六或是上面指定的可選日期都會回傳true(可被選取)
+                    return [dt.getDay() == 1 || dt.getDay() == 6 || available(dt), "" ];
+                  }
+               , changeMonth: true, changeYear: true});
+        });
+
+ 
+    </script>
 
 </head>
 
@@ -171,10 +190,11 @@
                             <div class="modal-body text-center pb-5">
                                 <div class="container form-container ">
                                     <!--刪除、修改時要傳給後端的表單-->
-                                    <form class="row justify-content-center" action="">
+                                    <form id="TicketForm" class="row justify-content-center" asp-action="" method="post">
                                         <div class="col-lg-auto">
                                             <!-- Portfolio Modal - Title-->
-                                            <input required class="form-control" id="note" value=@obj.FlightNote type="text" placeholder="Enter your name..." name="note" />
+                                            @*<input value=@obj.FlightID name="FlightId" hidden />*@
+                                            @*<input required class="form-control" id="note" value=@obj.FlightNote type="text" placeholder="Enter your name..." name="FlightNote" />*@
                                             <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">@obj.FlightNote</h2>
                                             <!-- Icon Divider-->
                                             <div class="divider-custom">
@@ -239,26 +259,29 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <!--一張機票-->
-                                            @*<div id="changeDate" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
+                                            <div id="changeDate" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
             <div style="display:flex;align-items: center;justify-content: center; ">
                 <div class="chooseDate">
-                    選擇要更改的日期 <input name="change_date" type='text' id='datepicker' />
+                    選擇要更改的出發日期 <input readonly name="change_date" type="text" id='change_date'/>
                 </div>
                 <button class="btn btn-primary" style="height: fit-content;">確定</button>
             </div>
 
-        </div>
+                                            </div>
 
-        <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="changeDate" onclick="ChangeBtn()">
-            <i class="fas fa-times fa-fw"></i>
-            修改日期
-        </div>
+                                            
+                                            <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="changeDate" onclick="ChangeBtn()">
+                                                <i class="fas fa-times fa-fw"></i>
+                                                修改日期
+                                            </div>
 
         <script>function ChangeBtn() {
                 $("#changeDate").show();
-            }</script>*@
+            }</script>
 
+                                            <!--要點了這個之後上方備註變成可輸入、按鈕變成確定修改-->
                                             <button name="editnote_ticket" value="這邊放每個ticket的ID" class="btn btn-primary" href="#!" data-bs-dismiss="modal">
                                                 <i class="fas fa-times fa-fw"></i>
                                                 確認修改備註
