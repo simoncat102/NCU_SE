@@ -68,8 +68,9 @@ namespace NCU_SE.Controllers
             QueryFlight QF = new QueryFlight();          
                 //取得固定航班資料
                 if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
-                ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中                
-             
+                ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中
+            //如果已登入，自動載入儲存的機票-->避免重複儲存機票用
+            if(LoginStat()) ViewBag.SavedFlight = _db.Flight.Where(u => u.MemberID == Login_Var.login_uid && u.DepTime>=DateTime.Today).Select(u => new { u.FlightCode, u.DepTime }).ToList();
             //if (obj != null) ViewBag.Return = QF.Return;
             ViewData["origin"] = QF.Origin;
             ViewData["destination"] = QF.Destination;
@@ -220,28 +221,29 @@ namespace NCU_SE.Controllers
                     string[] flights = json.Replace(",{", "`{").Split("`");
                     List<FixFlight> Flight = new List<FixFlight>();
                     for(int j =0; j<flights.Length; j++)
-                    {    
-                        //將所有找到的相關班機資訊放入List
-                        FixFlight FF = JsonSerializer.Deserialize<FixFlight>(flights[j]);
-                        FF.FlightNumber = FF.FlightNumber.Insert(2, "-");//班機編號
-                        FF.AirlineName = getAirlineName(FF.AirlineID);//航空公司中文名稱
+                    {
+                        FixFlight FT = JsonSerializer.Deserialize<FixFlight>(flights[j]);
+                        int dayCount = (Convert.ToDateTime(FT.ScheduleEndDate) - Convert.ToDateTime(FT.ScheduleStartDate)).Days+1;
                         
-                        //飛行時間計算
-                        if (TimeSpan.Parse(FF.ArrivalTime.Replace("+1","")) < TimeSpan.Parse(FF.DepartureTime))
-                        {
-                            FF.FlightTime = ""+(TimeSpan.Parse("23:59") - TimeSpan.Parse(FF.DepartureTime)+ TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")));
-                        }
-                        else
-                        {
-                            FF.FlightTime = "" + (TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")) - TimeSpan.Parse(FF.DepartureTime));
-                        }
-                        FF.FlightTime = FF.FlightTime.Substring(0, 5).Replace(":","小時")+"分鐘";//飛行時間
-                        //將一筆航班資料分為多張機票資料
-                        int dayCount = (Convert.ToDateTime(FF.ScheduleEndDate) - Convert.ToDateTime(FF.ScheduleStartDate)).Days+1;
-                    
                         for (int x=0;x<dayCount;x++)
                         {
-                            string wday = time[0].AddDays(x).ToString("dddd", new CultureInfo("en-US"));
+                            //將所有找到的相關班機資訊放入List
+                            FixFlight FF = JsonSerializer.Deserialize<FixFlight>(flights[j]);
+                            FF.FlightNumber = FF.FlightNumber.Insert(2, "-");//班機編號
+                            FF.AirlineName = getAirlineName(FF.AirlineID);//航空公司中文名稱
+
+                            //飛行時間計算
+                            if (TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")) < TimeSpan.Parse(FF.DepartureTime))
+                            {
+                                FF.FlightTime = "" + (TimeSpan.Parse("23:59") - TimeSpan.Parse(FF.DepartureTime) + TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")));
+                            }
+                            else
+                            {
+                                FF.FlightTime = "" + (TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")) - TimeSpan.Parse(FF.DepartureTime));
+                            }
+                            FF.FlightTime = FF.FlightTime.Substring(0, 5).Replace(":", "小時") + "分鐘";//飛行時間
+                            //將一筆航班資料分為多張機票資料
+                        string wday = Convert.ToDateTime(FF.ScheduleStartDate).AddDays(x).ToString("dddd", new CultureInfo("en-US"));
                             if (wday == "Monday" && !FF.Monday) continue;
                             if (wday == "Tuesday" && !FF.Tuesday) continue;
                             if (wday == "Wednesday" && !FF.Wednesday) continue;
@@ -249,9 +251,10 @@ namespace NCU_SE.Controllers
                             if (wday == "Friday" && !FF.Friday) continue;
                             if (wday == "Saturday" && !FF.Saturday) continue;
                             if (wday == "Sunday" && !FF.Sunday) continue;
-                            FF.FlightDate = time[0].AddDays(x);//將出發日期加入[回程日期會在cshtml端的程式加入]
-                            QF.Depart.Add(FF);//將資料存放到class中==>去程
-                        }                  
+                            FF.FlightDate = Convert.ToDateTime(FF.ScheduleStartDate).AddDays(x);//將出發日期加入[回程日期會在cshtml端的程式加入]
+                        Debug.Print("Flight Date = "+FF.FlightDate);
+                        QF.Depart.Add(FF);//將資料存放到class中==>去程
+                    }                  
                     }                   
                 }
                 catch (Exception ex)
@@ -260,6 +263,7 @@ namespace NCU_SE.Controllers
                 }
             
             #endregion
+
 
             #region 取得航空公司名稱
             string getAirlineName(string AirlineID)
