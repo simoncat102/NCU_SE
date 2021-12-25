@@ -98,12 +98,15 @@
                     <div class="tm-recommended-place">
                         <div class="tm-recommended-description-box">
                             <h3 class="tm-recommended-title">@flight.AirlineName</h3>
+                            @{DateTime ArriveDate = (TimeSpan.Parse(flight.ArrivalTime.Replace("+1", "")) < TimeSpan.Parse(flight.DepartureTime)) ? flight.FlightDate.AddDays(1) : flight.FlightDate;}
+                            <p class="tm-text-highlight">起飛日期: @flight.FlightDate.ToString("yyyy/MM/dd")</p>
                             <p class="tm-text-highlight">起飛時間: @flight.DepartureTime</p>
+                            <p class="tm-text-highlight">降落日期: @ArriveDate.ToString("yyyy/MM/dd")</p>
                             <p class="tm-text-highlight">降落時間: @flight.ArrivalTime</p>
                             <p class="tm-text-gray">預估飛行時間：@flight.FlightTime</p>
                         </div>
                         @{/*自動依據出發時間，若抵達時間比出發時間早(代表跨日飛行)則自動將降落日期+1*/}
-                        @{DateTime ArriveDate = (TimeSpan.Parse(flight.ArrivalTime.Replace("+1", "")) < TimeSpan.Parse(flight.DepartureTime)) ? flight.FlightDate.AddDays(1) : flight.FlightDate;}
+                        @*@{DateTime ArriveDate = (TimeSpan.Parse(flight.ArrivalTime.Replace("+1", "")) < TimeSpan.Parse(flight.DepartureTime)) ? flight.FlightDate.AddDays(1) : flight.FlightDate;}*@
                         <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal"
                            data-whatever="@flight.FlightNumber"
                            data-aName="@flight.AirlineName"
