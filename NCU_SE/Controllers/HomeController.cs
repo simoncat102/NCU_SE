@@ -37,7 +37,7 @@ namespace NCU_SE.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _db; //使用資料庫實體
-        private IHttpContextAccessor session;
+        private readonly IHttpContextAccessor session;
 
         public HomeController(ApplicationDbContext db, IHttpContextAccessor httpContextAccessor)
         {
@@ -137,45 +137,6 @@ namespace NCU_SE.Controllers
             ViewData["log_age"] = Login_Var.login_age = 0;
             return View();
         }
-        public IActionResult Verify(Member obj)
-        {
-            #region 
-            /*少邦
-            var SearchEmail = _db.Member.Where(x => x.Email.Equals(obj.Email.ToString()));
-            var SearchPW = _db.Member.Where(x => x.Password.Equals(obj.Password.ToString()));
-            
-            if (SearchEmail != null) //email存在
-            {
-                if (SearchPW != null)
-                {
-                    @ViewData["login"] = "歡迎登入 " + obj.Email;
-                    return View("Index");
-                    
-                }
-
-
-            }
-            return View("Login");
-            */
-
-            //冠廷
-            /*
-            try//檢測session 'acc'是否存在，若存在且不為空則表示已經登入
-            {
-                if(session.HttpContext.Session.GetString("acc") != null)//若已登入
-                {
-                    return View("Index");//跳到首頁
-                    Login_Var.login_status = obj.Email;
-                }
-            }
-            catch
-            {
-                Debug.Print("Session不存在!");
-            }
-            */
-            #endregion
-            return View("Login");
-        }
 
         public IActionResult Realtime() 
         {
@@ -201,7 +162,12 @@ namespace NCU_SE.Controllers
             #endregion
             ViewData["login"] = Login_Var.login_status = "登入/註冊";
             ViewData["log_action"] = Login_Var.login_action="Login";
-            Login_Var.login_action = "Login";
+            Login_Var.login_uid = 0;
+            Login_Var.login_name = "無";
+            Login_Var.login_email = "無";
+            Login_Var.login_birthday = "無";
+            Login_Var.login_profile = "無";
+            Login_Var.login_age = 0;
             try
             {
                 session.HttpContext.Session.Remove("acc");
@@ -263,8 +229,8 @@ namespace NCU_SE.Controllers
             //加密簽章產生
             Encoding _encode = Encoding.GetEncoding("utf-8");
             byte[] _byteData = Encoding.GetEncoding("utf-8").GetBytes(SignDate);
-            HMACSHA1 _hmac = new HMACSHA1(_encode.GetBytes(APPKey));
-            using (CryptoStream _cs = new CryptoStream(Stream.Null, _hmac, CryptoStreamMode.Write))
+            HMACSHA1 _hmac = new(_encode.GetBytes(APPKey));
+            using (CryptoStream _cs = new(Stream.Null, _hmac, CryptoStreamMode.Write))
             {
                 _cs.Write(_byteData, 0, _byteData.Length);
             }
@@ -275,7 +241,7 @@ namespace NCU_SE.Controllers
 
             //取得API資料(官方提供方法)
             string json = null;
-            using (HttpClient Client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
+            using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
             {
                 Client.DefaultRequestHeaders.Add("Authorization", sAuth);
                 Client.DefaultRequestHeaders.Add("x-date", xdate);
@@ -286,7 +252,7 @@ namespace NCU_SE.Controllers
             string[] FlightList = json.Split('`');//將json集合分開
 
             //儲存即時航班資料的List
-            List<Flight> flightlist = new List<Flight>();
+            List<Flight> flightlist = new();
             //解析每個json-->將解析結果放入List中
             //for (int i = 0; i < FlightList.Length; i++)
             for (int i = 0; i < 30; i++)
@@ -314,7 +280,7 @@ namespace NCU_SE.Controllers
             {
                 string AirlineQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airline?$select=AirlineName&$filter=AirlineID eq '{0}'&$format=JSON", AirlineID);
                 string AirlineJson = null;
-                using (HttpClient Client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
+                using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
                 {
                     Client.DefaultRequestHeaders.Add("Authorization", sAuth);
                     Client.DefaultRequestHeaders.Add("x-date", xdate);

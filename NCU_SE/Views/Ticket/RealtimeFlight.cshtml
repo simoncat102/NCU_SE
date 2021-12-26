@@ -94,101 +94,103 @@
                 <div class="tm-recommended-place-wrap">
                     @foreach (var flight in ViewBag.Depart)
                     {
-                     
-                    <div class="tm-recommended-place">
-                        <div class="tm-recommended-description-box">
-                            <h3 class="tm-recommended-title">@flight.AirlineName</h3>
-                            @{DateTime ArriveDate = (TimeSpan.Parse(flight.ArrivalTime.Replace("+1", "")) < TimeSpan.Parse(flight.DepartureTime)) ? flight.FlightDate.AddDays(1) : flight.FlightDate;}
-                            <p class="tm-text-highlight">起飛日期: @flight.FlightDate.ToString("yyyy/MM/dd")</p>
-                            <p class="tm-text-highlight">起飛時間: @flight.DepartureTime</p>
-                            <p class="tm-text-highlight">降落日期: @ArriveDate.ToString("yyyy/MM/dd")</p>
-                            <p class="tm-text-highlight">降落時間: @flight.ArrivalTime</p>
-                            <p class="tm-text-gray">預估飛行時間：@flight.FlightTime</p>
-                        </div>
-                        @{/*自動依據出發時間，若抵達時間比出發時間早(代表跨日飛行)則自動將降落日期+1*/}
-                        @*@{DateTime ArriveDate = (TimeSpan.Parse(flight.ArrivalTime.Replace("+1", "")) < TimeSpan.Parse(flight.DepartureTime)) ? flight.FlightDate.AddDays(1) : flight.FlightDate;}*@
-                        <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal"
-                           data-whatever="@flight.FlightNumber"
-                           data-aName="@flight.AirlineName"
-                           data-ddate="@flight.FlightDate.ToString("yyyy/MM/dd")"
-                           data-dtime="@flight.DepartureTime"
-                           data-adate="@ArriveDate.ToString("yyyy/MM/dd")"
-                           data-atime="@flight.ArrivalTime">
+                        <div class="tm-recommended-place">
+                            <img src="~/img/chinaairlines.jpg" alt="Image" class="img-fluid tm-recommended-img">
+                            <div class="tm-recommended-description-box">
+                                <h3 class="tm-recommended-title">@flight.AirlineName</h3>
+                                @{/*自動依據出發時間，若抵達時間比出發時間早(代表跨日飛行)則自動將降落日期+1*/}
+                                @{DateTime ArriveDate = (TimeSpan.Parse(flight.ArrivalTime.Replace("+1", "")) < TimeSpan.Parse(flight.DepartureTime)) ? flight.FlightDate.AddDays(1) : flight.FlightDate;}
+                                <p class="tm-text-highlight">起飛日期: @flight.FlightDate.ToString("yyyy/MM/dd")</p>
+                                <p class="tm-text-highlight">起飛時間: @flight.DepartureTime</p>
+                                <p class="tm-text-highlight">降落日期: @ArriveDate.ToString("yyyy/MM/dd")</p>
+                                <p class="tm-text-highlight">降落時間: @flight.ArrivalTime</p>
+                                <p class="tm-text-gray">預估飛行時間：@flight.FlightTime</p>
+                            </div>
+                            <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal"
+                               data-whatever="@flight.FlightNumber"
+                               data-aName="@flight.AirlineName"
+                               data-ddate="@flight.FlightDate.ToString("yyyy/MM/dd")"
+                               data-dtime="@flight.DepartureTime"
+                               data-adate="@ArriveDate.ToString("yyyy/MM/dd")"
+                               data-atime="@flight.ArrivalTime">
 
-                            <p class="tm-recommended-price">@flight.FlightNumber</p>
-                            <p class="tm-recommended-price-link">儲存</p>
-                        </a>
-                    </div>
+                                <p class="tm-recommended-price">@flight.FlightNumber</p>
+                                @{string save_btn = ViewBag.SavedFlight.Contains(flight.FlightNumber + flight.FlightDate.ToString("yyyy/MM/dd")) ? "已儲存" : "儲存";}
+                                @{string tmp = flight.FlightNumber + flight.FlightDate.ToString("yyyy/MM/dd");}
+                                <script>console.log('@tmp')</script>
+                                <p class="tm-recommended-price-link">@save_btn</p>
+                            </a>
+                        </div>
                     }
                     <!--
-                    <div class="tm-recommended-place">
-                        <img src="~/img/chinaairlines.jpg" alt="Image" class="img-fluid tm-recommended-img">
-                        <div class="tm-recommended-description-box">
-                            <h3 class="tm-recommended-title">中華航空</h3>
-                            <p class="tm-text-highlight">起飛日期: 2021/12/16</p>
-                            <p class="tm-text-highlight">起飛時間: 12:00</p>
-                            <p class="tm-text-highlight">降落日期: 2021/12/16</p>
-                            <p class="tm-text-highlight">降落時間: 14:00</p>
-                            <p class="tm-text-gray">預估飛行時間...</p>
-                        </div>
-                        <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
-                            <p class="tm-recommended-price">CL-2234</p>
-                            <p class="tm-recommended-price-link">儲存</p>
-                        </a>
-                    </div>
+        <div class="tm-recommended-place">
+            <img src="~/img/chinaairlines.jpg" alt="Image" class="img-fluid tm-recommended-img">
+            <div class="tm-recommended-description-box">
+                <h3 class="tm-recommended-title">中華航空</h3>
+                <p class="tm-text-highlight">起飛日期: 2021/12/16</p>
+                <p class="tm-text-highlight">起飛時間: 12:00</p>
+                <p class="tm-text-highlight">降落日期: 2021/12/16</p>
+                <p class="tm-text-highlight">降落時間: 14:00</p>
+                <p class="tm-text-gray">預估飛行時間...</p>
+            </div>
+            <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
+                <p class="tm-recommended-price">CL-2234</p>
+                <p class="tm-recommended-price-link">儲存</p>
+            </a>
+        </div>
 
-                    <div class="tm-recommended-place">
-                        <img src="~/img/evaair.png" alt="Image" class="img-fluid tm-recommended-img">
-                        <div class="tm-recommended-description-box">
-                            <h3 class="tm-recommended-title">長榮航空</h3>
-                            <p class="tm-text-highlight">起飛日期: 2021/12/16</p>
-                            <p class="tm-text-highlight">起飛時間: 12:00</p>
-                            <p class="tm-text-highlight">降落日期: 2021/12/16</p>
-                            <p class="tm-text-highlight">降落時間: 14:00</p>
-                            <p class="tm-text-gray">預估飛行時間...</p>
-                        </div>
-                        <div id="preload-hover-img"></div>
-                        <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
-                            <p class="tm-recommended-price">CL-2234</p>
-                            <p class="tm-recommended-price-link">儲存</p>
-                        </a>
-                    </div>
+        <div class="tm-recommended-place">
+            <img src="~/img/evaair.png" alt="Image" class="img-fluid tm-recommended-img">
+            <div class="tm-recommended-description-box">
+                <h3 class="tm-recommended-title">長榮航空</h3>
+                <p class="tm-text-highlight">起飛日期: 2021/12/16</p>
+                <p class="tm-text-highlight">起飛時間: 12:00</p>
+                <p class="tm-text-highlight">降落日期: 2021/12/16</p>
+                <p class="tm-text-highlight">降落時間: 14:00</p>
+                <p class="tm-text-gray">預估飛行時間...</p>
+            </div>
+            <div id="preload-hover-img"></div>
+            <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
+                <p class="tm-recommended-price">CL-2234</p>
+                <p class="tm-recommended-price-link">儲存</p>
+            </a>
+        </div>
 
-                    <div class="tm-recommended-place">
-                        <img src="~/img/starlux.jpg" alt="Image" class="img-fluid tm-recommended-img">
-                        <div class="tm-recommended-description-box">
-                            <h3 class="tm-recommended-title">星宇航空</h3>
-                            <p class="tm-text-highlight">起飛日期: 2021/12/16</p>
-                            <p class="tm-text-highlight">起飛時間: 12:00</p>
-                            <p class="tm-text-highlight">降落日期: 2021/12/16</p>
-                            <p class="tm-text-highlight">降落時間: 14:00</p>
-                            <p class="tm-text-gray">預估飛行時間...</p>
-                        </div>
-                        <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
-                            <p class="tm-recommended-price">CL-2234</p>
-                            <p class="tm-recommended-price-link">儲存</p>
-                        </a>
-                    </div>
+        <div class="tm-recommended-place">
+            <img src="~/img/starlux.jpg" alt="Image" class="img-fluid tm-recommended-img">
+            <div class="tm-recommended-description-box">
+                <h3 class="tm-recommended-title">星宇航空</h3>
+                <p class="tm-text-highlight">起飛日期: 2021/12/16</p>
+                <p class="tm-text-highlight">起飛時間: 12:00</p>
+                <p class="tm-text-highlight">降落日期: 2021/12/16</p>
+                <p class="tm-text-highlight">降落時間: 14:00</p>
+                <p class="tm-text-gray">預估飛行時間...</p>
+            </div>
+            <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
+                <p class="tm-recommended-price">CL-2234</p>
+                <p class="tm-recommended-price-link">儲存</p>
+            </a>
+        </div>
 
-                    <div class="tm-recommended-place">
-                        <img src="~/img/tigerair.jpg" alt="Image" class="img-fluid tm-recommended-img">
-                        <div class="tm-recommended-description-box">
-                            <h3 class="tm-recommended-title">台灣虎航</h3>
-                            <p class="tm-text-highlight">起飛日期: 2021/12/16</p>
-                            <p class="tm-text-highlight">起飛時間: 12:00</p>
-                            <p class="tm-text-highlight">降落日期: 2021/12/16</p>
-                            <p class="tm-text-highlight">降落時間: 14:00</p>
-                            <p class="tm-text-gray">預估飛行時間...</p>
-                        </div>
-                        <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
-                            <p class="tm-recommended-price">CL-2234</p>
-                            <p class="tm-recommended-price-link">儲存</p>
-                        </a>
-                    </div>
-                    -->
+        <div class="tm-recommended-place">
+            <img src="~/img/tigerair.jpg" alt="Image" class="img-fluid tm-recommended-img">
+            <div class="tm-recommended-description-box">
+                <h3 class="tm-recommended-title">台灣虎航</h3>
+                <p class="tm-text-highlight">起飛日期: 2021/12/16</p>
+                <p class="tm-text-highlight">起飛時間: 12:00</p>
+                <p class="tm-text-highlight">降落日期: 2021/12/16</p>
+                <p class="tm-text-highlight">降落時間: 14:00</p>
+                <p class="tm-text-gray">預估飛行時間...</p>
+            </div>
+            <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal" data-whatever="CL-2234">
+                <p class="tm-recommended-price">CL-2234</p>
+                <p class="tm-recommended-price-link">儲存</p>
+            </a>
+        </div>
+        -->
                 </div>
 
-                <a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">顯示更多搜尋結果</a>
+                <!--<a href="#" class="text-uppercase btn-primary tm-btn mx-auto tm-d-table">顯示更多搜尋結果</a>-->
             </div> <!-- tab-pane -->
 
 

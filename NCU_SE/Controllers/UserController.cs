@@ -180,7 +180,7 @@ namespace NCU_SE.Controllers
 
         //通用模組
         private readonly ApplicationDbContext _db; //使用資料庫實體
-        private IHttpContextAccessor session;
+        private readonly IHttpContextAccessor session;
 
         public UserController(ApplicationDbContext db, IHttpContextAccessor httpContextAccessor)
         {
