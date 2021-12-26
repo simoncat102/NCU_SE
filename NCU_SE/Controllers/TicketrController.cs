@@ -26,12 +26,6 @@ namespace NCU_SE.Controllers
         public string Destination { get; set; }
     }
 
-    public static class ticket
-    {
-        public static int saveTicketState = 0;
-        public static QueryFlight tmp = new QueryFlight();
-    }
-
     //即時航班格式
     public class FixFlight
     {
@@ -65,13 +59,27 @@ namespace NCU_SE.Controllers
         
         public IActionResult FixedFlight(FixedFlight obj)
         {
-            QueryFlight QF = new QueryFlight();          
+            QueryFlight QF = new();
                 //取得固定航班資料
                 if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
                 ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中
             //如果已登入，自動載入儲存的機票-->避免重複儲存機票用
-            if(LoginStat()) ViewBag.SavedFlight = _db.Flight.Where(u => u.MemberID == Login_Var.login_uid && u.DepTime>=DateTime.Today).Select(u => new { u.FlightCode, u.DepTime }).ToList();
-            //if (obj != null) ViewBag.Return = QF.Return;
+            ViewData["uid"] = Login_Var.login_uid;
+            if (LoginStat())
+            {
+                var flight_saved = _db.Flight.Where(u => u.MemberID == Login_Var.login_uid && u.DepTime >= DateTime.Today).Select(u => new { u.FlightCode, u.DepTime }).ToList();
+                List<string> SavedFlight = new();
+                foreach (var f in flight_saved)
+                {
+                    string flight = (f.FlightCode).ToString()+(f.DepTime).ToString("yyyy/MM/dd");
+                    SavedFlight.Add(flight);
+                    Debug.Print(flight);
+                }
+                
+                ViewBag.SavedFlight = SavedFlight;
+            }
+            //Debug.Print("目前已儲存"+ViewBag.SavedFlight.Where(x=> x.FlightCode =="TG-6244" && x.DepTime.ToString("yyyy/MM/dd")=="2021/12/27").Count()) ;
+
             ViewData["origin"] = QF.Origin;
             ViewData["destination"] = QF.Destination;
             ViewData["login"] = Login_Var.login_status;
@@ -85,7 +93,7 @@ namespace NCU_SE.Controllers
         {
             if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
             //因為一個view難以套用兩個model，因此使用FixedFlight先取回資料，再換容器
-            Flight obj = new Flight();
+            Flight obj = new();
             //將資料置入Ticket內
             obj.AirportFrom = ff.Origin;//出發地
             obj.AirportTo = ff.Destination;//目的地
@@ -138,7 +146,7 @@ namespace NCU_SE.Controllers
 
         //通用模組
         private readonly ApplicationDbContext _db; //使用資料庫實體
-        private IHttpContextAccessor session;
+        private readonly IHttpContextAccessor session;
 
         public TicketController(ApplicationDbContext db, IHttpContextAccessor httpContextAccessor)
         {
@@ -164,8 +172,8 @@ namespace NCU_SE.Controllers
             //加密簽章產生
             Encoding _encode = Encoding.GetEncoding("utf-8");
             byte[] _byteData = Encoding.GetEncoding("utf-8").GetBytes(SignDate);
-            HMACSHA1 _hmac = new HMACSHA1(_encode.GetBytes(APPKey));
-            using (CryptoStream _cs = new CryptoStream(Stream.Null, _hmac, CryptoStreamMode.Write))
+            HMACSHA1 _hmac = new(_encode.GetBytes(APPKey));
+            using (CryptoStream _cs = new(Stream.Null, _hmac, CryptoStreamMode.Write))
             {
                 _cs.Write(_byteData, 0, _byteData.Length);
             }
@@ -176,7 +184,7 @@ namespace NCU_SE.Controllers
             
             string[] place = { origin, destnation };
             DateTime[] time = { departureDate, returnDate };
-            QueryFlight QF = new QueryFlight();
+            QueryFlight QF = new();
             QF.Depart = new List<FixFlight>();          
             QF.Origin = origin;
             QF.Destination = destnation;
@@ -186,7 +194,7 @@ namespace NCU_SE.Controllers
                 string AirportQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airport?$select=AirportID&$filter=AirportID ne '' and (AirportID eq '{0}' or AirportName/Zh_tw eq '{0}' or AirportName/En eq '{0}' or AirportCityName/Zh_tw eq '{0}' or AirportCityName/En eq '{0}')&$top=2&$format=JSON", place[i]);
                 json = null;
                 //取得API資料(官方提供方法)
-                using (HttpClient Client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
+                using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
                 {
                     Client.DefaultRequestHeaders.Add("Authorization", sAuth);
                     Client.DefaultRequestHeaders.Add("x-date", xdate);
@@ -210,7 +218,7 @@ namespace NCU_SE.Controllers
                 string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= ScheduleStartDate ge {0} and ScheduleEndDate le {3} and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' {4}&$format=JSON"
                     , time[0].ToString("yyyy-MM-dd"),place[0], place[1], /*(time[0].ToString("dddd",new CultureInfo("en-US")) + " eq true")*/time[1].ToString("yyyy-MM-dd"), (FlightNumber == null ? "" : ("and FlightNumber eq'" + FlightNumber + "'")));
                 //取得API資料(官方提供方法)
-                using (HttpClient Client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
+                using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
                 {
                     Client.DefaultRequestHeaders.Add("Authorization", sAuth);
                     Client.DefaultRequestHeaders.Add("x-date", xdate);
@@ -219,7 +227,7 @@ namespace NCU_SE.Controllers
                 try //分解json
                 {
                     string[] flights = json.Replace(",{", "`{").Split("`");
-                    List<FixFlight> Flight = new List<FixFlight>();
+                    List<FixFlight> Flight = new();
                     for(int j =0; j<flights.Length; j++)
                     {
                         FixFlight FT = JsonSerializer.Deserialize<FixFlight>(flights[j]);
@@ -252,7 +260,7 @@ namespace NCU_SE.Controllers
                             if (wday == "Saturday" && !FF.Saturday) continue;
                             if (wday == "Sunday" && !FF.Sunday) continue;
                             FF.FlightDate = Convert.ToDateTime(FF.ScheduleStartDate).AddDays(x);//將出發日期加入[回程日期會在cshtml端的程式加入]
-                        Debug.Print("Flight Date = "+FF.FlightDate);
+                        //Debug.Print("Flight Date = "+FF.FlightDate);
                         QF.Depart.Add(FF);//將資料存放到class中==>去程
                     }                  
                     }                   
@@ -270,18 +278,18 @@ namespace NCU_SE.Controllers
             {                
                 string AirlineQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airline?$select=AirlineName&$filter=AirlineID eq '{0}'&$format=JSON", AirlineID);
                 string AirlineJson = null;
-                using (HttpClient Client = new HttpClient(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
+                using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
                 {
                     Client.DefaultRequestHeaders.Add("Authorization", sAuth);
                     Client.DefaultRequestHeaders.Add("x-date", xdate);
                     AirlineJson = Client.GetStringAsync(AirlineQuery).Result.Replace("[{\"AirlineName\":", "").Replace("},",",").Replace("]", "");
                 }
                 AirlineInfo AI = JsonSerializer.Deserialize<AirlineInfo>(AirlineJson);
-                Debug.Print("機場名稱：" + AI.Zh_tw);
+                //Debug.Print("機場名稱：" + AI.Zh_tw);
                 return AI.Zh_tw;
             }
             #endregion
-            Debug.Print(place[0] + " --> " + place[1]);
+            //Debug.Print(place[0] + " --> " + place[1]);
             return QF;
         }
 
