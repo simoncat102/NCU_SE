@@ -327,6 +327,8 @@ label { font-weight: 700; }
     align-items: stretch;
     justify-content: space-around;
     margin-bottom: 25px;
+    margin: 25px auto;
+    width: fit-content;
 }
 
 .tm-recommended-title {
