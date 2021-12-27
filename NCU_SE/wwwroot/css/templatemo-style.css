@@ -344,7 +344,7 @@ label { font-weight: 700; }
     width: 500px;
 }
 
-.tm-recommended-price-box {    
+.tm-recommended-price-box {
     background-color: #69c6ba;
     background-image: url(../img/button-curve.png);
     background-repeat: no-repeat;
@@ -370,9 +370,21 @@ label { font-weight: 700; }
     padding-left: 20px;
     width: 200px;
     transition: all 0.3s ease;
+    border: none;
 }
 
 .tm-recommended-price-box:hover { background-color: #c66995; }
+.tm-recommended-price-box:focus {outline: 5px auto orange;}
+
+/* 已儲存的顏色*/
+.saved_btn {
+    background-color: #afbbb9;
+}
+.saved_btn:hover {
+    background-color: #afbbb9;
+    cursor: unset;
+    text-decoration: unset;
+}
 
 .tm-recommended-price {
     color: white;
