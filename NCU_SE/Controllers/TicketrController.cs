@@ -64,6 +64,7 @@ namespace NCU_SE.Controllers
                 if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
                 ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中
             //如果已登入，自動載入儲存的機票-->避免重複儲存機票用
+            Debug.Print(Login_Var.login_uid+"");
             ViewData["uid"] = Login_Var.login_uid;
             if (LoginStat())
             {
