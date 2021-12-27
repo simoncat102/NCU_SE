@@ -115,9 +115,9 @@
                                data-atime="@flight.ArrivalTime">
 
                                 <p class="tm-recommended-price">@flight.FlightNumber</p>
-                                @{string save_btn = ViewBag.SavedFlight.Contains(flight.FlightNumber + flight.FlightDate.ToString("yyyy/MM/dd")) ? "已儲存" : "儲存";}
-                                @{string tmp = flight.FlightNumber + flight.FlightDate.ToString("yyyy/MM/dd");}
-                                <script>console.log('@tmp')</script>
+                                @{string save_btn = "儲存";}
+                                @{string eval_txt = flight.FlightNumber + flight.FlightDate.ToString("yyyy/MM/dd"); }
+                                @{if (ViewData["uid"].ToString() != "0") save_btn = ViewBag.SavedFlight.Contains(eval_txt) ? "已儲存" : "儲存";}
                                 <p class="tm-recommended-price-link">@save_btn</p>
                             </a>
                         </div>
