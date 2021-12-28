@@ -106,7 +106,19 @@
                                 <p class="tm-text-highlight">降落時間: @flight.ArrivalTime</p>
                                 <p class="tm-text-gray">預估飛行時間：@flight.FlightTime</p>
                             </div>
-                            <a href="#!" class="tm-recommended-price-box" data-toggle="modal" data-target="#exampleModal"
+                            @{
+                                string save_btn_class = "";
+                                string eval_txt = flight.FlightNumber + flight.FlightDate.ToString("yyyy/MM/dd");
+                                string data_toggle_txt = "modal";
+                            }
+                            @{
+                                if (ViewData["uid"].ToString() != "0")
+                                {
+                                    save_btn_class = ViewBag.SavedFlight.Contains(eval_txt) ? "saved_btn" : "";
+                                    data_toggle_txt = ViewBag.SavedFlight.Contains(eval_txt) ? "" : "modal";
+                                }
+                            }
+                            <a href="#!" class="tm-recommended-price-box @save_btn_class" data-toggle="@data_toggle_txt" data-target="#exampleModal"
                                data-whatever="@flight.FlightNumber"
                                data-aName="@flight.AirlineName"
                                data-ddate="@flight.FlightDate.ToString("yyyy/MM/dd")"
@@ -116,7 +128,6 @@
 
                                 <p class="tm-recommended-price">@flight.FlightNumber</p>
                                 @{string save_btn = "儲存";}
-                                @{string eval_txt = flight.FlightNumber + flight.FlightDate.ToString("yyyy/MM/dd"); }
                                 @{if (ViewData["uid"].ToString() != "0") save_btn = ViewBag.SavedFlight.Contains(eval_txt) ? "已儲存" : "儲存";}
                                 <p class="tm-recommended-price-link">@save_btn</p>
                             </a>
