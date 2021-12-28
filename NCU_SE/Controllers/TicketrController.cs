@@ -87,6 +87,8 @@ namespace NCU_SE.Controllers
             ViewData["log_action"] = Login_Var.login_action;
             ViewData["log_uid"] = Login_Var.login_uid;
 
+            Login_Var.LastQuery = Request.QueryString;
+            
             return View("RealtimeFlight");
         }
 

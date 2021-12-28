@@ -32,6 +32,7 @@ namespace NCU_SE.Controllers
         public static string login_birthday { get; set; } = "無";
         public static string login_profile { get; set; } = "無";
         public static int login_age { get; set; } = 0;
+        public static object LastQuery { get; set; } = null;
     }
 
     public class HomeController : Controller
@@ -122,7 +123,14 @@ namespace NCU_SE.Controllers
                 int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
                 int age = (now - birth) / 10000;
                 ViewData["log_age"] = Login_Var.login_age = age;
-                return View("Index");//登入成功時跳轉到首頁
+                if (Login_Var.LastQuery != null)
+                {
+                    return Redirect("../Ticket/FixedFlight"+Login_Var.LastQuery);
+                }
+                else
+                {
+                    return View("Index");//登入成功時跳轉到首頁
+                }               
             }
             else if (AccExist == 0)
             {
@@ -168,6 +176,7 @@ namespace NCU_SE.Controllers
             Login_Var.login_birthday = "無";
             Login_Var.login_profile = "無";
             Login_Var.login_age = 0;
+            Login_Var.LastQuery = null;
             try
             {
                 session.HttpContext.Session.Remove("acc");
