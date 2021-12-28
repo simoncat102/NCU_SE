@@ -95,7 +95,6 @@
                     @foreach (var flight in ViewBag.Depart)
                     {
                         <div class="tm-recommended-place">
-                            <img src="~/img/chinaairlines.jpg" alt="Image" class="img-fluid tm-recommended-img">
                             <div class="tm-recommended-description-box">
                                 <h3 class="tm-recommended-title">@flight.AirlineName</h3>
                                 @{/*自動依據出發時間，若抵達時間比出發時間早(代表跨日飛行)則自動將降落日期+1*/}
@@ -107,7 +106,7 @@
                                 <p class="tm-text-gray">預估飛行時間：@flight.FlightTime</p>
                             </div>
                             @{
-                                string save_btn_class = "saved_btn";
+                                string save_btn_class = "unlogin_saved_btn";
                                 string eval_txt = flight.FlightNumber + flight.FlightDate.ToString("yyyy/MM/dd");
                                 string data_toggle_txt = "";
                                 string redirect_url = "../Home/Login";
