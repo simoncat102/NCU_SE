@@ -63,7 +63,7 @@ namespace NCU_SE.Controllers
                 //取得固定航班資料
                 if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
                 ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中
-            //如果已登入，自動載入儲存的機票-->避免重複儲存機票用
+            //如果已登入，自動載入儲存的航班-->避免重複儲存航班用
             Debug.Print(Login_Var.login_uid+"");
             ViewData["uid"] = Login_Var.login_uid;
             if (LoginStat())
@@ -103,11 +103,11 @@ namespace NCU_SE.Controllers
             obj.DepTime = ff.DepartureDate;//預計起飛日期時間
             obj.ArriTime = ff.ReturnDate;//預計降落日期時間
             obj.FlightCode = ff.FlightNumber;//航班編號
-            obj.FlightNote = ff.Note;//機票備註            
+            obj.FlightNote = ff.Note;//航班備註            
             obj.MemberID = Login_Var.login_uid;//會員ID
             obj.Airline = ff.FlightNumber.Substring(0,2);
             
-            _db.Flight.Add(obj);//新增個人機票
+            _db.Flight.Add(obj);//新增個人航班
             _db.SaveChanges();//更新至資料庫
             return RedirectToAction("UserTicket", "User");       
         }
@@ -253,7 +253,7 @@ namespace NCU_SE.Controllers
                                 FF.FlightTime = "" + (TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")) - TimeSpan.Parse(FF.DepartureTime));
                             }
                             FF.FlightTime = FF.FlightTime.Substring(0, 5).Replace(":", "小時") + "分鐘";//飛行時間
-                            //將一筆航班資料分為多張機票資料
+                            //將一筆航班資料分為多張航班資料
                         string wday = Convert.ToDateTime(FF.ScheduleStartDate).AddDays(x).ToString("dddd", new CultureInfo("en-US"));
                             if (wday == "Monday" && !FF.Monday) continue;
                             if (wday == "Tuesday" && !FF.Tuesday) continue;
