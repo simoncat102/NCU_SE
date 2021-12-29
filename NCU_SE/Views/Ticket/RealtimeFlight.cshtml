@@ -212,7 +212,7 @@
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">儲存機票</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">儲存航班</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -288,14 +288,14 @@
           // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
             
             var modal = $(this);
-            modal.find('.modal-title').text('儲存' + recipient + '的機票');
+            modal.find('.modal-title').text('儲存' + recipient + '的航班');
             modal.find('#airlineName').val(button.attr('data-aName'));
             modal.find('#departureDate').val(button.attr('data-ddate'));
             modal.find('#departureTime').val(button.attr('data-dtime'));
             modal.find('#arriveDate').val(button.attr('data-adate'));
             modal.find('#arriveTime').val(button.attr('data-atime'));
 
-            //儲存機票專用
+            //儲存航班專用
             modal.find('#FlightNumber').val(recipient);
             console.log(button.attr('data-ddate') + ' ' + button.attr('data-dtime').replace('+1', ''))
             modal.find('#DepartureDateTime').val(button.attr('data-ddate') + ' ' + button.attr('data-dtime').replace('+1', ''));

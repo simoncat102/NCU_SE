@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Flight>
 @*選擇資料表*@
 @{
-    ViewData["Title"] = "使用者機票";
+    ViewData["Title"] = "使用者航班";
 }
 
 <head>
@@ -86,7 +86,7 @@
     <section class="page-section portfolio" id="portfolio">
         <div>
             <!-- Portfolio Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">個人機票</h2>
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">個人航班</h2>
             <!-- Icon Divider-->
             <div class="divider-custom">
                 <div class="divider-custom-line"></div>
@@ -97,20 +97,20 @@
             <!-- Portfolio Grid Items-->
             <div class="row justify-content-center" style="width: 100%;">
 
-                @if (Model.Count() > 0) //讀資料庫機票成功，還差辨別機票屬於誰
+                @if (Model.Count() > 0) //讀資料庫航班成功，還差辨別航班屬於誰
                 {
                     @foreach (var obj in Model)
                     {
-                        @*這裡應該能辨別機票屬於誰*@
+                        @*這裡應該能辨別航班屬於誰*@
                         @if (@obj.MemberID.Equals(@ViewData["logid"]))
                         {
-                            <!-- Portfolio Item 1機票-->
+                            <!-- Portfolio Item 1航班-->
                             <div class="col-6" style="margin: 10px 0;">
                                 <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal-@obj.FlightID">
                                     <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                         <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                                     </div>
-                                    <!--一張機票-->
+                                    <!--一張航班-->
                                     <div>
                                         <div class="ticket_form">
                                             <div class="ticketcontainer">
@@ -165,7 +165,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--一張機票-->
+                                    <!--一張航班-->
                                 </div>
                             </div>
                         }
@@ -176,7 +176,7 @@
     </section>
 
     
-    @if (Model.Count() > 0) //讀資料庫機票成功，還差辨別機票屬於誰
+    @if (Model.Count() > 0) //讀資料庫航班成功，還差辨別航班屬於誰
     {
         @foreach (var obj in Model)
         {
@@ -205,7 +205,7 @@
 
 
                                             <!-- Portfolio Modal - Image-->
-                                            <!--一張機票-->
+                                            <!--一張航班-->
                                             <div>
                                                 <div class="ticket_form">
                                                     <div class="ticketcontainer">
@@ -260,7 +260,7 @@
                                                 </div>
                                             </div>
 
-                                            <!--一張機票-->
+                                            <!--一張航班-->
                                             <div id="changeDate" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
             <div style="display:flex;align-items: center;justify-content: center; ">
                 <div class="chooseDate">
@@ -289,7 +289,7 @@
 
                                             <button name="delete_ticket" value="這邊放每個ticket的ID" class="btn btn-primary delete-btn" href="#!" data-bs-dismiss="modal">
                                                 <i class="fas fa-times fa-fw"></i>
-                                                刪除機票
+                                                刪除航班
                                             </button>
 
 

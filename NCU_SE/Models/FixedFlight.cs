@@ -12,6 +12,6 @@ namespace NCU_SE.Models
         public DateTime DepartureDate { get; set; }//出發日期時間 = DepartureDateTime ==>在此表代表出發日期
         public DateTime ReturnDate { get; set; }//預計降落時間 = ArriveDateTime ==>在此表代表的是回程日期
         public string FlightNumber { get; set; }//航班編號 = FlightID
-        public string Note { get; set; }//機票備註 = Note ==>此表並不使用
+        public string Note { get; set; }//航班備註 = Note ==>此表並不使用
     }
 }
