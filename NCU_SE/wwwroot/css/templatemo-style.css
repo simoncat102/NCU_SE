@@ -386,6 +386,18 @@ label { font-weight: 700; }
     text-decoration: unset;
 }
 
+/*未登入的顏色*/
+.unlogin_saved_btn{
+    background-color: #9c8e8e;
+}
+
+.unlogin_saved_btn:hover {
+    background-color: #5c5b5b;
+    cursor: pointer;
+    text-decoration: unset;
+}
+
+
 .tm-recommended-price {
     color: white;
     font-size: 1.1rem;
