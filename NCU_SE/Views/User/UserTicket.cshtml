@@ -18,47 +18,12 @@
     <link href="~/css/personstyles.css" rel="stylesheet" />
     <!--
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     -->
-    <!--日期彈跳視窗-->
+
+    <!--備註彈跳視窗-->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-     <!--日期彈跳視窗-->
-
-     <!--日期本身-->
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.1/jquery-ui.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.1/jquery-ui.min.js"></script>
-    <link href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.1/themes/flick/jquery-ui.css"  rel="stylesheet"/>
-
-    <script type="text/javascript">
-
-        function available(date) {
-          availableDates = ['24-12-2021', '26-12-2021','27-12-2021','30-12-2021'];//可指定可選的日期
-          dmy = date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear();
-          
-          //console.log(dmy + ' : ' + ($.inArray(dmy, availableDates)));
-          
-          if ($.inArray(dmy, availableDates) != -1) {//若指定的日期有出現在dym中，就回傳他在dym的index，沒有就回傳-1
-            return true;
-          } else {
-            return false;
-          }
-        }
-
-        $(function()
-        {
-            $('#change_date').datepicker({ 
-                beforeShowDay:
-                  function(dt)
-                  { 
-                      //getDay()是取得星期，下面是星期一或星期六或是上面指定的可選日期都會回傳true(可被選取)
-                    return [dt.getDay() == 1 || dt.getDay() == 6 || available(dt), "" ];
-                  }
-               , changeMonth: true, changeYear: true});
-        });
-
- 
-    </script>
+    <!--備註彈跳視窗-->
 
 </head>
 
@@ -261,33 +226,24 @@
                                             </div>
 
                                             <!--一張航班-->
-                                            <div id="changeDate" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
-            <div style="display:flex;align-items: center;justify-content: center; ">
-                <div class="chooseDate">
-                    選擇要更改的出發日期 <input readonly name="change_date" type="text" id='change_date'/>
-                </div>
-                <button class="btn btn-primary" style="height: fit-content;">確定</button>
-            </div>
 
+                                            <div id="editnote-@obj.FlightID" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
+                                                <div style="display:flex;align-items: center;justify-content: center;margin: 10px auto; ">
+                                                    <div class="editNote">
+                                                        輸入備註： <input type="text" style="margin: 5px;"/>
+                                                    </div>
+                                                    <button class="btn btn-primary" style="height: fit-content;">確定</button>
+                                                </div>
                                             </div>
-
                                             
-                                            <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="changeDate" onclick="ChangeBtn()">
-                                                <i class="fas fa-times fa-fw"></i>
-                                                修改日期
-                                            </div>
-
-        <script>function ChangeBtn() {
-                $("#changeDate").show();
-            }</script>
-
                                             <!--要點了這個之後上方備註變成可輸入、按鈕變成確定修改-->
-                                            <button name="editnote_ticket" value="這邊放每個ticket的ID" class="btn btn-primary" href="#!" data-bs-dismiss="modal">
-                                                <i class="fas fa-times fa-fw"></i>
-                                                修改備註
-                                            </button>
 
-                                            <button name="delete_ticket" value="這邊放每個ticket的ID" class="btn btn-primary delete-btn" href="#!" data-bs-dismiss="modal">
+                                            <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="note-@obj.FlightID">
+                                                <i class="bi bi-pencil-square"></i>
+                                                修改備註
+                                            </div>
+                                            
+                                            <button name="delete_ticket" class="btn btn-primary delete-btn" href="#!" data-bs-dismiss="modal">
                                                 <i class="fas fa-times fa-fw"></i>
                                                 刪除航班
                                             </button>
@@ -301,6 +257,21 @@
                         </div>
                     </div>
                 </div>
+
+                 <script>
+                     var editBtn_@obj.FlightID = 0;
+                  //新增點選事件
+		            $("#note-@obj.FlightID").click(function(){
+			            editBtn_@obj.FlightID ++;
+                        if( editBtn_@obj.FlightID %2 !=0){
+                            $("#editnote-@obj.FlightID").show();
+                        }
+                        else{   //點第二次會隱藏
+                            $("#editnote-@obj.FlightID").hide();
+                        }
+		            })
+
+                </script>
             }
         }
     }
@@ -308,6 +279,5 @@
      <!-- Core theme JS-->
      <script src="~/js/scripts.js"></script>
      <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-
+    
  </body>
-
