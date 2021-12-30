@@ -218,8 +218,8 @@ namespace NCU_SE.Controllers
             #endregion
             #region 取得班機
             //取得班機資訊              
-                string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= ScheduleStartDate ge {0} and ScheduleEndDate le {3} and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' {4}&$format=JSON"
-                    , time[0].ToString("yyyy-MM-dd"),place[0], place[1], /*(time[0].ToString("dddd",new CultureInfo("en-US")) + " eq true")*/time[1].ToString("yyyy-MM-dd"), (FlightNumber == null ? "" : ("and FlightNumber eq'" + FlightNumber + "'")));
+                string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= ScheduleStartDate ge {0} and ScheduleStartDate le {3} and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' {4}&$format=JSON"
+                    , time[0].ToString("yyyy-MM-dd"),place[0], place[1], /*(time[0].ToString("dddd",new CultureInfo("en-US")) + " eq true")*/time[1].ToString("yyyy-MM-dd"), (FlightNumber == null ? "" : ("and FlightNumber eq '" + FlightNumber.Replace("-","").Replace("_","").Trim() + "'")));
                 //取得API資料(官方提供方法)
                 using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
                 {
@@ -233,9 +233,10 @@ namespace NCU_SE.Controllers
                     List<FixFlight> Flight = new();
                     for(int j =0; j<flights.Length; j++)
                     {
-                        FixFlight FT = JsonSerializer.Deserialize<FixFlight>(flights[j]);
-                        int dayCount = (Convert.ToDateTime(FT.ScheduleEndDate) - Convert.ToDateTime(FT.ScheduleStartDate)).Days+1;
-                        
+                        FixFlight FT = JsonSerializer.Deserialize<FixFlight>(flights[j]);//將json轉換成物件
+                        DateTime SchEnd = new DateTime(Math.Min(Convert.ToDateTime(FT.ScheduleStartDate).Ticks,time[1].Ticks));//防止超過篩選區間
+                        int dayCount = (Convert.ToDateTime(FT.ScheduleEndDate) - SchEnd).Days+1;//每個班機排程區間天數
+                        //每個排程中的班機
                         for (int x=0;x<dayCount;x++)
                         {
                             //將所有找到的相關班機資訊放入List
@@ -253,8 +254,10 @@ namespace NCU_SE.Controllers
                                 FF.FlightTime = "" + (TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")) - TimeSpan.Parse(FF.DepartureTime));
                             }
                             FF.FlightTime = FF.FlightTime.Substring(0, 5).Replace(":", "小時") + "分鐘";//飛行時間
-                            //將一筆航班資料分為多張航班資料
-                        string wday = Convert.ToDateTime(FF.ScheduleStartDate).AddDays(x).ToString("dddd", new CultureInfo("en-US"));
+
+                            //將一筆航班資料分為多張機票資料
+                            string wday = Convert.ToDateTime(FF.ScheduleStartDate).AddDays(x).ToString("dddd", new CultureInfo("en-US"));
+
                             if (wday == "Monday" && !FF.Monday) continue;
                             if (wday == "Tuesday" && !FF.Tuesday) continue;
                             if (wday == "Wednesday" && !FF.Wednesday) continue;
@@ -263,9 +266,9 @@ namespace NCU_SE.Controllers
                             if (wday == "Saturday" && !FF.Saturday) continue;
                             if (wday == "Sunday" && !FF.Sunday) continue;
                             FF.FlightDate = Convert.ToDateTime(FF.ScheduleStartDate).AddDays(x);//將出發日期加入[回程日期會在cshtml端的程式加入]
-                        //Debug.Print("Flight Date = "+FF.FlightDate);
-                        QF.Depart.Add(FF);//將資料存放到class中==>去程
-                    }                  
+                            //Debug.Print("Flight Date = "+FF.FlightDate);
+                            QF.Depart.Add(FF);//將資料存放到class中==>去程
+                        }                  
                     }                   
                 }
                 catch (Exception ex)
