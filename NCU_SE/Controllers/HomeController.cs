@@ -47,35 +47,12 @@ namespace NCU_SE.Controllers
         }
 
         #region 註解
-        //private readonly IConfiguration configuration;
-
-        //public HomeController(IConfiguration config)
-        //{
-        //    this.configuration = config;
-        //}
-
         //這邊控制了navbar點什麼會顯示什麼頁面
         //return View 要看的是上面的名稱 他回去找Home資料夾有沒有相對應的頁面(VIEW)
         //少邦的影片
         #endregion
         public IActionResult Index()
         {
-            #region 原先連接DB的方式
-            //跟_db衝突了 暫時用不到我先註解掉 但留著參考
-            ////測試有沒有連到
-            //string connectionstring = configuration.GetConnectionString("DefaultConnection");
-
-            ////找到SQLCONNECTION，新增了NuGet套件
-            //SqlConnection connection = new SqlConnection(connectionstring);
-            //connection.Open();
-            //SqlCommand com = new SqlCommand("Select count(*) from Member", connection);
-            //var count = (int)com.ExecuteScalar();
-
-            //ViewData["TotalData"] = count; //Member資料表的資料數量
-
-            //connection.Close();
-            #endregion
-
             ViewData["login"] = Login_Var.login_status;
             ViewData["log_action"] = Login_Var.login_action;
             ViewData["log_uid"] = Login_Var.login_uid;
@@ -84,6 +61,7 @@ namespace NCU_SE.Controllers
             ViewData["log_birthday"] = Login_Var.login_birthday;
             ViewData["log_profile"] = Login_Var.login_profile;
             ViewData["log_age"] = Login_Var.login_age;
+            Debug.Print("xx");
             return View();
         }
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Flight>
+﻿@model Flight
 @*選擇資料表*@
 @{
     ViewData["Title"] = "使用者機票";
@@ -97,93 +97,88 @@
             <!-- Portfolio Grid Items-->
             <div class="row justify-content-center" style="width: 100%;">
 
-                @if (Model.Count() > 0) //讀資料庫機票成功，還差辨別機票屬於誰
+                @if (ViewBag.ticket.Count>0) //讀資料庫機票成功，還差辨別機票屬於誰
                 {
-                    @foreach (var obj in Model)
+
+                    @foreach (var ticket in ViewBag.ticket)
                     {
-                        @*這裡應該能辨別機票屬於誰*@
-                        @if (@obj.MemberID.Equals(@ViewData["logid"]))
-                        {
-                            <!-- Portfolio Item 1機票-->
-                            <div class="col-6" style="margin: 10px 0;">
-                                <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal-@obj.FlightID">
-                                    <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                        <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
-                                    </div>
-                                    <!--一張機票-->
-                                    <div>
-                                        <div class="ticket_form">
-                                            <div class="ticketcontainer">
-                                                <div class="ticket-row ticket-row-border">
-                                                    <div class="ticket-col ticket-rwd-bg">
-                                                        <span style="align-self: center;">@obj.FlightCode</span>
-                                                        <span class="ticket-font-small">@obj.Airline</span>
-                                                    </div>
-                                                    <div class="ticket-col ticket-rwd-bg">
-                                                        <span>@obj.AirportFrom</span>
-                                                        <span class="ticket-font-small">@obj.CityFrom</span>
-                                                    </div>
-                                                    <div class="ticket-col" style="justify-content: center;"><img src="~/img/airplane-icon.png" alt=""></div>
-                                                    <div class="ticket-col ticket-rwd-bg">
-                                                        <span style="align-self: center;">@obj.AirportTo</span>
-                                                        <span class="ticket-font-small">@obj.CityTo</span>
-                                                    </div>
-                                                    <div class="ticket-font-small" style="color: #57ff65;">@obj.Status</div>
+                        <!-- Portfolio Item 1機票-->
+                        <div class="col-6" style="margin: 10px 0;">
+                            <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal-@ticket.FlightID">
+                                <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                    <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <!--一張機票-->
+                                <div>
+                                    <div class="ticket_form">
+                                        <div class="ticketcontainer">
+                                            <div class="ticket-row ticket-row-border">
+                                                <div class="ticket-col ticket-rwd-bg">
+                                                    <span style="align-self: center;">@ticket.FlightCode</span>
+                                                    <span class="ticket-font-small">@ticket.Airline</span>
                                                 </div>
+                                                <div class="ticket-col ticket-rwd-bg">
+                                                    <span>@ticket.AirportFrom</span>
+                                                    <span class="ticket-font-small">@ticket.CityFrom</span>
+                                                </div>
+                                                <div class="ticket-col" style="justify-content: center;"><img src="~/img/airplane-icon.png" alt=""></div>
+                                                <div class="ticket-col ticket-rwd-bg">
+                                                    <span style="align-self: center;">@ticket.AirportTo</span>
+                                                    <span class="ticket-font-small">@ticket.CityTo</span>
+                                                </div>
+                                                <div class="ticket-font-small" style="color: #57ff65;">@ticket.Status</div>
+                                            </div>
 
-                                                <div class="ticket-row-bottom">
-                                                    <div class="ticket-col ticket-col-left">
-                                                        <span class="ticket-font-small airportFromTo">@obj.AirportFrom</span>
-                                                        <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
-                                                            <span class="ticket-font-small">Departure Times</span>
-                                                            <span>@obj.DepTime.ToString("dd MMM yyyy")</span>
-
-                                                        </div>
-
-                                                        <div class="ticket-row" style="padding: 0;align-items: center;">
-                                                            <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
-                                                            <span style="align-self: center;padding: 2px;">@obj.DepTime.ToString("HH:mm")</span>
-
-                                                        </div>
-
-                                                    </div>
-                                                    <hr width="1" style="background-color: #f8f9fa;height: auto;margin: 0;" />
-                                                    <div class="ticket-col ticket-col-right">
-                                                        <span class="ticket-font-small airportFromTo">@obj.AirportTo</span>
-                                                        <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
-                                                            <span class="ticket-font-small">Arrival Times</span>
-                                                            <span>@obj.ArriTime.ToString("dd MMM yyyy")</span>
-                                                        </div>
-
-                                                        <div class="ticket-row " style="padding: 0;align-items: center;">
-                                                            <span class="ticket-font-small">Scheduled</span>
-                                                            <span style="align-self: center;padding: 2px;">@obj.ArriTime.ToString("HH:mm")</span>
-                                                        </div>
+                                            <div class="ticket-row-bottom">
+                                                <div class="ticket-col ticket-col-left">
+                                                    <span class="ticket-font-small airportFromTo">@ticket.AirportFrom</span>
+                                                    <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
+                                                        <span class="ticket-font-small">Departure Times</span>
+                                                        <span>@ticket.DepTime.ToString("dd MMM yyyy")</span>
 
                                                     </div>
+
+                                                    <div class="ticket-row" style="padding: 0;align-items: center;">
+                                                        <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
+                                                        <span style="align-self: center;padding: 2px;">@ticket.DepTime.ToString("HH:mm")</span>
+
+                                                    </div>
+
+                                                </div>
+                                                <hr width="1" style="background-color: #f8f9fa;height: auto;margin: 0;" />
+                                                <div class="ticket-col ticket-col-right">
+                                                    <span class="ticket-font-small airportFromTo">@ticket.AirportTo</span>
+                                                    <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
+                                                        <span class="ticket-font-small">Arrival Times</span>
+                                                        <span>@ticket.ArriTime.ToString("dd MMM yyyy")</span>
+                                                    </div>
+
+                                                    <div class="ticket-row " style="padding: 0;align-items: center;">
+                                                        <span class="ticket-font-small">Scheduled</span>
+                                                        <span style="align-self: center;padding: 2px;">@ticket.ArriTime.ToString("HH:mm")</span>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <!--一張機票-->
                                 </div>
+                                <!--一張機票-->
                             </div>
-                        }
+                        </div>
+
                     }
                 }
             </div>
         </div>
     </section>
 
-    
-    @if (Model.Count() > 0) //讀資料庫機票成功，還差辨別機票屬於誰
+    @if (ViewBag.ticket.Count > 0) //讀資料庫機票成功，還差辨別機票屬於誰
     {
-        @foreach (var obj in Model)
+        @foreach (var ticket_alter in ViewBag.ticket)
         {
-            @if (@obj.MemberID.Equals(@ViewData["logid"]))
-            {
                 <!-- Portfolio Modal 1-->
-                <div class="portfolio-modal modal fade" id="portfolioModal-@obj.FlightID" tabindex="-1" aria-labelledby="portfolioModal-@obj.FlightID" aria-hidden="true">
+                <div class="portfolio-modal modal fade" id="portfolioModal-@ticket_alter.FlightID" tabindex="-1" aria-labelledby="portfolioModal-@ticket_alter.FlightID" aria-hidden="true">
                     <div class="modal-dialog modal-xl ">
                         <div class="modal-content">
                             <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
@@ -193,9 +188,9 @@
                                     <form id="TicketForm" class="row justify-content-center" asp-action="" method="post">
                                         <div class="col-lg-auto">
                                             <!-- Portfolio Modal - Title-->
-                                            @*<input value=@obj.FlightID name="FlightId" hidden />*@
-                                            @*<input required class="form-control" id="note" value=@obj.FlightNote type="text" placeholder="Enter your name..." name="FlightNote" />*@
-                                            <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">@obj.FlightNote</h2>
+                                            <input value=@ticket_alter.FlightID name="FlightId" hidden />
+                                            <input required class="form-control" id="note" value=@ticket_alter.FlightNote type="text" placeholder="Enter your name..." name="FlightNote" />
+                                            <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">@ticket_alter.FlightNote</h2>
                                             <!-- Icon Divider-->
                                             <div class="divider-custom">
                                                 <div class="divider-custom-line"></div>
@@ -211,47 +206,47 @@
                                                     <div class="ticketcontainer">
                                                         <div class="ticket-row ticket-row-border">
                                                             <div class="ticket-col ticket-rwd-bg">
-                                                                <span style="align-self: center;">@obj.FlightCode</span>
-                                                                <span class="ticket-font-small">@obj.Airline</span>
+                                                                <span style="align-self: center;">@ticket_alter.FlightCode</span>
+                                                                <span class="ticket-font-small">@ticket_alter.Airline</span>
                                                             </div>
                                                             <div class="ticket-col ticket-rwd-bg">
-                                                                <span>@obj.AirportFrom</span>
-                                                                <span class="ticket-font-small">@obj.CityFrom</span>
+                                                                <span>@ticket_alter.AirportFrom</span>
+                                                                <span class="ticket-font-small">@ticket_alter.CityFrom</span>
                                                             </div>
                                                             <div class="ticket-col" style="justify-content: center;"><img src="~/img/airplane-icon.png" alt=""></div>
                                                             <div class="ticket-col ticket-rwd-bg">
-                                                                <span style="align-self: center;">@obj.AirportTo</span>
-                                                                <span class="ticket-font-small">@obj.CityTo</span>
+                                                                <span style="align-self: center;">@ticket_alter.AirportTo</span>
+                                                                <span class="ticket-font-small">@ticket_alter.CityTo</span>
                                                             </div>
-                                                            <div class="ticket-font-small" style="color: #57ff65;">@obj.Status</div>
+                                                            <div class="ticket-font-small" style="color: #57ff65;">@ticket_alter.Status</div>
                                                         </div>
 
                                                         <div class="ticket-row-bottom">
                                                             <div class="ticket-col ticket-col-left">
-                                                                <span class="ticket-font-small airportFromTo">@obj.AirportFrom</span>
+                                                                <span class="ticket-font-small airportFromTo">@ticket_alter.AirportFrom</span>
                                                                 <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
                                                                     <span class="ticket-font-small">Departure Times</span>
-                                                                    <span>@obj.DepTime.ToString("dd MMM yyyy")</span>
+                                                                    <span>@ticket_alter.DepTime.ToString("dd MMM yyyy")</span>
 
                                                                 </div>
 
                                                                 <div class="ticket-row" style="padding: 0;align-items: center;">
                                                                     <span class="ticket-font-small" style="text-align: center;">Scheduled</span>
-                                                                    <span style="align-self: center;padding: 2px;">@obj.DepTime.ToString("HH:mm")</span>
+                                                                    <span style="align-self: center;padding: 2px;">@ticket_alter.DepTime.ToString("HH:mm")</span>
                                                                 </div>
 
                                                             </div>
                                                             <hr width="1" style="background-color: #f8f9fa;height: auto;margin: 0;" />
                                                             <div class="ticket-col ticket-col-right">
-                                                                <span class="ticket-font-small airportFromTo">@obj.AirportTo</span>
+                                                                <span class="ticket-font-small airportFromTo">@ticket_alter.AirportTo</span>
                                                                 <div class="ticket-col ticket-rwd-bg" style="padding: 5px 0;">
                                                                     <span class="ticket-font-small">Arrival Times</span>
-                                                                    <span>@obj.ArriTime.ToString("dd MMM yyyy")</span>
+                                                                    <span>@ticket_alter.ArriTime.ToString("dd MMM yyyy")</span>
                                                                 </div>
 
                                                                 <div class="ticket-row " style="padding: 0;align-items: center;">
                                                                     <span class="ticket-font-small">Scheduled</span>
-                                                                    <span style="align-self: center;padding: 2px;">@obj.ArriTime.ToString("HH:mm")</span>
+                                                                    <span style="align-self: center;padding: 2px;">@ticket_alter.ArriTime.ToString("HH:mm")</span>
                                                                 </div>
 
                                                             </div>
@@ -262,24 +257,25 @@
 
                                             <!--一張機票-->
                                             <div id="changeDate" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
-            <div style="display:flex;align-items: center;justify-content: center; ">
-                <div class="chooseDate">
-                    選擇要更改的出發日期 <input readonly name="change_date" type="text" id='change_date'/>
-                </div>
-                <button class="btn btn-primary" style="height: fit-content;">確定</button>
-            </div>
+                                                <div style="display:flex;align-items: center;justify-content: center; ">
+                                                    <div class="chooseDate">
+                                                        選擇要更改的出發日期 <input readonly name="change_date" type="text" id='change_date' />
+                                                    </div>
+                                                    <button class="btn btn-primary" style="height: fit-content;">確定</button>
+                                                </div>
 
                                             </div>
 
-                                            
+
                                             <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="changeDate" onclick="ChangeBtn()">
                                                 <i class="fas fa-times fa-fw"></i>
                                                 修改日期
                                             </div>
 
-        <script>function ChangeBtn() {
-                $("#changeDate").show();
-            }</script>
+                                            <script>
+    function ChangeBtn() {
+                                                    $("#changeDate").show();
+                                                }</script>
 
                                             <!--要點了這個之後上方備註變成可輸入、按鈕變成確定修改-->
                                             <button name="editnote_ticket" value="這邊放每個ticket的ID" class="btn btn-primary" href="#!" data-bs-dismiss="modal">
@@ -301,13 +297,14 @@
                         </div>
                     </div>
                 </div>
-            }
+           
         }
     }
 
-     <!-- Core theme JS-->
-     <script src="~/js/scripts.js"></script>
-     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 
- </body>
+    <!-- Core theme JS-->
+    <script src="~/js/scripts.js"></script>
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+</body>
 

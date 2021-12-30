@@ -87,7 +87,7 @@ namespace NCU_SE.Controllers
                 ViewData["logid"] = Login_Var.login_uid;
                 ViewData["log_name"] = Login_Var.login_name = obj.Name;
                 ViewData["log_email"] = Login_Var.login_email = obj.Email;
-                if (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1")  //為何要限制？
+                if (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1")  //篩選是否有值存在，若不存在時將以"0001/1/1"表示
                 {
                     ViewData["log_birthday"] = Login_Var.login_birthday = obj.Birthday.ToString("yyyy-MM-dd");
                     //計算年齡
@@ -140,8 +140,16 @@ namespace NCU_SE.Controllers
             ViewData["log_email"] = Login_Var.login_email;
             ViewData["log_profile"] = Login_Var.login_profile;
             //讀取機票資料語法
-            IEnumerable<Flight> objList = _db.Flight;
-            return View(objList);
+            //IEnumerable<Flight> objList = _db.Flight;
+            IEnumerable<Flight> ticket = _db.Flight.Where(u=>u.MemberID == Login_Var.login_uid && u.DepTime>=DateTime.Today).Select(u => new Flight {FlightID = u.FlightID, FlightCode = u.FlightCode, Airline = u.Airline, AirportFrom = u.AirportFrom, AirportTo = u.AirportTo, DepTime = u.DepTime, ArriTime = u.ArriTime, FlightNote = u.FlightNote }).ToList();
+            ViewBag.ticket = ticket;
+            return View();
+        }
+
+        public IActionResult AlterTicket(Flight ticke)
+        {
+
+            return RedirectToAction("UserTicket");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
