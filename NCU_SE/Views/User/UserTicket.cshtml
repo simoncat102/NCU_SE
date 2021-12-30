@@ -62,7 +62,7 @@
             <!-- Portfolio Grid Items-->
             <div class="row justify-content-center" style="width: 100%;">
 
-                @if (ViewBag.ticket.Count>0) //讀資料庫機票成功，還差辨別機票屬於誰
+                @if (ViewBag.ticket.Count>0) 
                 {
 
                     @foreach (var ticket in ViewBag.ticket)
@@ -138,7 +138,7 @@
         </div>
     </section>
 
-    @if (ViewBag.ticket.Count > 0) //讀資料庫機票成功，還差辨別機票屬於誰
+    @if (ViewBag.ticket.Count > 0) //個人航班modal
     {
         @foreach (var ticket_alter in ViewBag.ticket)
         {
