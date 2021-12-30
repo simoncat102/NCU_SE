@@ -189,8 +189,6 @@ namespace NCU_SE.Controllers
             DateTime[] time = { departureDate, returnDate };
             QueryFlight QF = new();
             QF.Depart = new List<FixFlight>();          
-            QF.Origin = origin;
-            QF.Destination = destnation;
             #region 取得機場代號           
             for (int i =0; i<2; i++)
             {
@@ -214,11 +212,13 @@ namespace NCU_SE.Controllers
                     place[i] = "";
                 }
             }
-            
+            QF.Origin = place[0];
+            QF.Destination = place[1];
+
             #endregion
             #region 取得班機
             //取得班機資訊              
-                string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= ScheduleStartDate ge {0} and ScheduleStartDate le {3} and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' {4}&$format=JSON"
+            string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= ScheduleStartDate ge {0} and ScheduleStartDate le {3} and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' {4}&$format=JSON"
                     , time[0].ToString("yyyy-MM-dd"),place[0], place[1], /*(time[0].ToString("dddd",new CultureInfo("en-US")) + " eq true")*/time[1].ToString("yyyy-MM-dd"), (FlightNumber == null ? "" : ("and FlightNumber eq '" + FlightNumber.Replace("-","").Replace("_","").Trim() + "'")));
                 //取得API資料(官方提供方法)
                 using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
