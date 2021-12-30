@@ -146,9 +146,18 @@ namespace NCU_SE.Controllers
             return View();
         }
 
-        public IActionResult AlterTicket(Flight ticke)
+        public IActionResult AlterTicket(Flight ticket)
         {
-
+            _db.Flight.Attach(ticket);
+            if(ticket.FlightNote == "!del!")
+            {
+                _db.Flight.Remove(ticket);
+            }
+            else
+            {
+                _db.Entry(ticket).Property(u => u.FlightNote).IsModified = (ticket.FlightNote != null);
+            }
+            _db.SaveChanges();
             return RedirectToAction("UserTicket");
         }
 

@@ -150,11 +150,11 @@
                             <div class="modal-body text-center pb-5">
                                 <div class="container form-container ">
                                     <!--刪除、修改時要傳給後端的表單-->
-                                    <form id="TicketForm" class="row justify-content-center" asp-action="" method="post">
+                                    <form id="TicketForm" class="row justify-content-center" asp-action="AlterTicket" method="post">
                                         <div class="col-lg-auto">
                                             <!-- Portfolio Modal - Title-->
-                                            <input value=@ticket_alter.FlightID name="FlightId" hidden />
-                                            <input required class="form-control" id="note" value=@ticket_alter.FlightNote type="text" placeholder="Enter your name..." name="FlightNote" />
+                                            <input value=@ticket_alter.FlightID name="FlightId" asp-for="FlightID" hidden /><!--機票編號-->
+                                            <!--input required class="form-control" id="note" value=@ticket_alter.FlightNote type="text" placeholder="Enter your name..." name="FlightNote" />-->
                                             <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0">@ticket_alter.FlightNote</h2>
                                             <!-- Icon Divider-->
                                             <div class="divider-custom">
@@ -222,23 +222,23 @@
 
                                             <!--一張航班-->
 
-                                            <div id="editnote-@obj.FlightID" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
+                                            <div id="editnote-@ticket_alter.FlightID" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
                                                 <div style="display:flex;align-items: center;justify-content: center;margin: 10px auto; ">
                                                     <div class="editNote">
-                                                        輸入備註： <input type="text" style="margin: 5px;"/>
+                                                        輸入備註： <input type="text" asp-for="FlightNote" id="FlightNote" style="margin: 5px;" value="" />
                                                     </div>
                                                     <button class="btn btn-primary" style="height: fit-content;">確定</button>
                                                 </div>
                                             </div>
-                                            
+
                                             <!--要點了這個之後上方備註變成可輸入、按鈕變成確定修改-->
 
-                                            <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="note-@obj.FlightID">
+                                            <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="note-@ticket_alter.FlightID">
                                                 <i class="bi bi-pencil-square"></i>
                                                 修改備註
                                             </div>
-                                            
-                                            <button name="delete_ticket" class="btn btn-primary delete-btn" href="#!" data-bs-dismiss="modal">
+
+                                            <button name="delete_ticket" id="delete_ticket" class="btn btn-primary delete-btn" href="#!" data-bs-dismiss="modal">
                                                 <i class="fas fa-times fa-fw"></i>
                                                 刪除航班
                                             </button>
@@ -254,18 +254,23 @@
                 </div>
 
                  <script>
-                     var editBtn_@obj.FlightID = 0;
+                     var editBtn_@ticket_alter.FlightID = 0;
                   //新增點選事件
-		            $("#note-@obj.FlightID").click(function(){
-			            editBtn_@obj.FlightID ++;
-                        if( editBtn_@obj.FlightID %2 !=0){
-                            $("#editnote-@obj.FlightID").show();
+		            $("#note-@ticket_alter.FlightID").click(function(){
+			            editBtn_@ticket_alter.FlightID ++;
+                        if( editBtn_@ticket_alter.FlightID %2 !=0){
+                            $("#editnote-@ticket_alter.FlightID").show();
                         }
                         else{   //點第二次會隱藏
-                            $("#editnote-@obj.FlightID").hide();
+                            $("#editnote-@ticket_alter.FlightID").hide();
                         }
 		            })
 
+
+                     //刪除機票
+                     $("#delete_ticket").click(function () {
+                         $("#FlightNote").val("!del!");
+                     })
                 </script>
             }
         }
