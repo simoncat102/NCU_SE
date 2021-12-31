@@ -268,9 +268,15 @@
 
 
                      //刪除機票
-                     $("#delete_ticket").click(function () {
-                         $("#FlightNote").val("!del!");
-                     })
+                     $("#delete_ticket").click(function() {
+                        if(confirm("是否確認刪除此航班?")) {
+                            $("#FlightNote").val("!del!");
+                            return true;
+                        }
+                        else{
+                            return false;
+                        }
+                    });
                 </script>
             }
         }
