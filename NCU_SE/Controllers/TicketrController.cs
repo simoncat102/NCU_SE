@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NCU_SE.Data;
 using NCU_SE.Models;
+using NCU_SE.SharedModule;
 
 namespace NCU_SE.Controllers
 {
@@ -56,6 +57,7 @@ namespace NCU_SE.Controllers
             _logger = logger;
         }
         */
+        sharedModule module = new();
         public IActionResult FixedFlight(FixedFlight obj)
         {
             QueryFlight QF = new();
@@ -167,29 +169,6 @@ namespace NCU_SE.Controllers
         public QueryFlight getFixedFlight(string origin, string destnation, DateTime departureDate, DateTime returnDate, string FlightNumber)
         {
             string json = null;
-            #region API KEY
-            //申請的APPID
-            //（FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF 為 Guest 帳號，以IP作為API呼叫限制，請替換為註冊的APPID & APPKey）
-            const string APPID = "8a8ffddac5af4e42a3fb1ed014472ece";
-            //申請的APPKey
-            const string APPKey = "cRraTKB4MRKUsfMseiq0UxislXA";
-
-            //取得當下UTC時間
-            string xdate = DateTime.Now.ToUniversalTime().ToString("r");
-            string SignDate = "x-date: " + xdate;
-
-            //加密簽章產生
-            Encoding _encode = Encoding.GetEncoding("utf-8");
-            byte[] _byteData = Encoding.GetEncoding("utf-8").GetBytes(SignDate);
-            HMACSHA1 _hmac = new(_encode.GetBytes(APPKey));
-            using (CryptoStream _cs = new(Stream.Null, _hmac, CryptoStreamMode.Write))
-            {
-                _cs.Write(_byteData, 0, _byteData.Length);
-            }
-            //取得加密簽章
-            string Signature = Convert.ToBase64String(_hmac.Hash);
-            string sAuth = "hmac username=\"" + APPID + "\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"" + Signature + "\"";
-            #endregion
             
             string[] place = { origin, destnation };
             DateTime[] time = { departureDate, returnDate };
@@ -201,14 +180,8 @@ namespace NCU_SE.Controllers
             for (int i =0; i<2; i++)
             {
                 string AirportQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airport?$select=AirportID&$filter=AirportID ne '' and (AirportID eq '{0}' or AirportName/Zh_tw eq '{0}' or AirportName/En eq '{0}' or AirportCityName/Zh_tw eq '{0}' or AirportCityName/En eq '{0}')&$top=2&$format=JSON", place[i]);
-                json = null;
-                //取得API資料(官方提供方法)
-                using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
-                {
-                    Client.DefaultRequestHeaders.Add("Authorization", sAuth);
-                    Client.DefaultRequestHeaders.Add("x-date", xdate);
-                    json = Client.GetStringAsync(AirportQuery).Result.Replace("[", "").Replace("]", "");                
-                }
+                json = module.getAPIdata(AirportQuery).Replace("[", "").Replace("]", "");
+               
                 try
                 {
                     AirportInfo info = JsonSerializer.Deserialize<AirportInfo>(json);
@@ -227,15 +200,10 @@ namespace NCU_SE.Controllers
             //取得班機資訊              
             string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= ScheduleStartDate ge {0} and ScheduleStartDate le {3} and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' {4}&$format=JSON"
                     , time[0].ToString("yyyy-MM-dd"),place[0], place[1], /*(time[0].ToString("dddd",new CultureInfo("en-US")) + " eq true")*/time[1].ToString("yyyy-MM-dd"), (FlightNumber == null ? "" : ("and FlightNumber eq '" + FlightNumber.Replace("-","").Replace("_","").Trim() + "'")));
-                //取得API資料(官方提供方法)
-                using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
-                {
-                    Client.DefaultRequestHeaders.Add("Authorization", sAuth);
-                    Client.DefaultRequestHeaders.Add("x-date", xdate);
-                    json = Client.GetStringAsync(url).Result.Replace("[", "").Replace("]", "");
-                }
-                try //分解json
-                {
+            json = module.getAPIdata(url).Replace("[", "").Replace("]", "");
+
+            try //分解json
+            {
                     string[] flights = json.Replace(",{", "`{").Split("`");
                     List<FixFlight> Flight = new();
                     for(int j =0; j<flights.Length; j++)
@@ -290,13 +258,7 @@ namespace NCU_SE.Controllers
             string getAirlineName(string AirlineID)
             {                
                 string AirlineQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airline?$select=AirlineName&$filter=AirlineID eq '{0}'&$format=JSON", AirlineID);
-                string AirlineJson = null;
-                using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
-                {
-                    Client.DefaultRequestHeaders.Add("Authorization", sAuth);
-                    Client.DefaultRequestHeaders.Add("x-date", xdate);
-                    AirlineJson = Client.GetStringAsync(AirlineQuery).Result.Replace("[{\"AirlineName\":", "").Replace("},",",").Replace("]", "");
-                }
+                string AirlineJson = module.getAPIdata(AirlineQuery).Replace("[{\"AirlineName\":", "").Replace("},", ",").Replace("]", "");
                 AirlineInfo AI = JsonSerializer.Deserialize<AirlineInfo>(AirlineJson);
                 //Debug.Print("機場名稱：" + AI.Zh_tw);
                 return AI.Zh_tw;
