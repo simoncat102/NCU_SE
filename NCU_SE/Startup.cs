@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using NCU_SE.Data;
 
@@ -32,8 +33,18 @@ namespace NCU_SE
                 Configuration.GetConnectionString("DefaultConnection")));
 
             //加入session設定
+            /*
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession();
+            */
+            //新版sesion設定
+            services.AddDistributedMemoryCache();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+            });
 
             services.AddControllersWithViews();
 

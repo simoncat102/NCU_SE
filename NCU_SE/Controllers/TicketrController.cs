@@ -56,7 +56,6 @@ namespace NCU_SE.Controllers
             _logger = logger;
         }
         */
-        
         public IActionResult FixedFlight(FixedFlight obj)
         {
             QueryFlight QF = new();
@@ -64,11 +63,11 @@ namespace NCU_SE.Controllers
                 if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
                 ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中
             //如果已登入，自動載入儲存的航班-->避免重複儲存航班用
-            Debug.Print(Login_Var.login_uid+"");
-            ViewData["uid"] = Login_Var.login_uid;
+            //Debug.Print(Login_Var.login_uid+"");
+            ViewData["uid"] = getSession("login_uid");
             if (LoginStat())
             {
-                var flight_saved = _db.Flight.Where(u => u.MemberID == Login_Var.login_uid && u.DepTime >= DateTime.Today).Select(u => new { u.FlightCode, u.DepTime }).ToList();
+                var flight_saved = _db.Flight.Where(u => u.MemberID == int.Parse(getSession("acc")) && u.DepTime >= DateTime.Today).Select(u => new { u.FlightCode, u.DepTime }).ToList();
                 List<string> SavedFlight = new();
                 foreach (var f in flight_saved)
                 {
@@ -83,15 +82,14 @@ namespace NCU_SE.Controllers
 
             ViewData["origin"] = QF.Origin;
             ViewData["destination"] = QF.Destination;
-            ViewData["login"] = Login_Var.login_status;
-            ViewData["log_action"] = Login_Var.login_action;
-            ViewData["log_uid"] = Login_Var.login_uid;
+            ViewData["login"] = getSession("login_status");
+            ViewData["log_action"] = getSession("login_action");
+            ViewData["log_uid"] =getSession("acc");
 
-            Login_Var.LastQuery = Request.QueryString;
+            setSession("LastQuery" , Request.QueryString.ToString());
             
             return View("RealtimeFlight");
         }
-
         public IActionResult SaveFlight(FixedFlight ff)
         {
             if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
@@ -104,7 +102,7 @@ namespace NCU_SE.Controllers
             obj.ArriTime = ff.ReturnDate;//預計降落日期時間
             obj.FlightCode = ff.FlightNumber;//航班編號
             obj.FlightNote = ff.Note;//航班備註            
-            obj.MemberID = Login_Var.login_uid;//會員ID
+            obj.MemberID = int.Parse(getSession("acc"));//會員ID
             obj.Airline = ff.FlightNumber.Substring(0,2);
             
             _db.Flight.Add(obj);//新增個人航班
@@ -118,13 +116,14 @@ namespace NCU_SE.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        #region 登入狀態/取得session模組/共用模組
+        #region 登入驗證/session處理
         //檢測登入狀態
         public bool LoginStat()
         {
             try//檢測session 'acc'是否存在，若存在且不為空則表示已經登入
             {
-                if (session.HttpContext.Session.GetString("acc") != null)//若已登入
+                Debug.Print("session id = " + HttpContext.Session.Id + "  acc = " + HttpContext.Session.GetString("acc"));
+                if (HttpContext.Session.GetString("acc") != null)//若已登入
                 {
                     return true;//跳到首頁
                 }
@@ -141,22 +140,29 @@ namespace NCU_SE.Controllers
             string result = null;
             try
             {
-                result = session.HttpContext.Session.GetString(name);
+                result = HttpContext.Session.GetString(name);
             }
             catch { }
             return result;
         }
 
-        //通用模組
-        private readonly ApplicationDbContext _db; //使用資料庫實體
-        private readonly IHttpContextAccessor session;
-
-        public TicketController(ApplicationDbContext db, IHttpContextAccessor httpContextAccessor)
+        //設定Session用的模組==>setSession([名稱],[文字內容])
+        public void setSession(string name, string content)
         {
-            _db = db;
-            session = httpContextAccessor;
+            try
+            {
+                HttpContext.Session.SetString(name, content);
+            }
+            catch { }
         }
         #endregion
+        //通用模組
+        private readonly ApplicationDbContext _db; //使用資料庫實體
+        public TicketController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+        
         //取得航班
         public QueryFlight getFixedFlight(string origin, string destnation, DateTime departureDate, DateTime returnDate, string FlightNumber)
         {
@@ -188,7 +194,9 @@ namespace NCU_SE.Controllers
             string[] place = { origin, destnation };
             DateTime[] time = { departureDate, returnDate };
             QueryFlight QF = new();
-            QF.Depart = new List<FixFlight>();          
+            QF.Depart = new List<FixFlight>();
+            QF.Origin = place[0];
+            QF.Destination = place[1];
             #region 取得機場代號           
             for (int i =0; i<2; i++)
             {
@@ -212,8 +220,7 @@ namespace NCU_SE.Controllers
                     place[i] = "";
                 }
             }
-            QF.Origin = place[0];
-            QF.Destination = place[1];
+
 
             #endregion
             #region 取得班機
@@ -247,7 +254,7 @@ namespace NCU_SE.Controllers
                             //飛行時間計算
                             if (TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")) < TimeSpan.Parse(FF.DepartureTime))
                             {
-                                FF.FlightTime = "" + (TimeSpan.Parse("23:59") - TimeSpan.Parse(FF.DepartureTime) + TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")));
+                                FF.FlightTime = "" + (TimeSpan.Parse("23:59")+TimeSpan.Parse("00:01") - TimeSpan.Parse(FF.DepartureTime) + TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")));
                             }
                             else
                             {
