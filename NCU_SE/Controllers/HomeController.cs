@@ -56,14 +56,14 @@ namespace NCU_SE.Controllers
             if (getSession("login_action") == null) setSession("login_action", "Login");
             ViewData["login"] = getSession("login_status");
             ViewData["log_action"] = getSession("login_action");
-            ViewData["log_uid"] = getSession("login_uid");
+            ViewData["log_uid"] = getSession("acc");
             ViewData["log_name"] = getSession("login_name");
             ViewData["log_email"] = getSession("login_email");
             ViewData["log_birthday"] = getSession("login_birthday");
             ViewData["log_profile"] = getSession("login_profile");
             ViewData["log_age"] = getSession("login_age");
             Debug.Print("Session ID = " + HttpContext.Session.Id);
-            Debug.Print("initial uid = "+getSession("login_uid"));
+            Debug.Print("initial uid = "+getSession("acc"));
             return View();
         }
 
@@ -135,7 +135,7 @@ namespace NCU_SE.Controllers
             ViewData["log_profile"] = "無";
             ViewData["log_age"] = 0;
             setSession("login_status","登入/註冊");
-            setSession("login_uid","0");
+            setSession("acc","0");
             setSession("login_name","無");
             setSession("login_email","無");
             setSession("login_birthday","無");
@@ -148,7 +148,7 @@ namespace NCU_SE.Controllers
         {
             ViewData["log_action"] = getSession("login_action");
             ViewData["login"] = getSession("login_status");
-            ViewData["logid"] = getSession("login_uid");
+            ViewData["logid"] = getSession("acc");
             ViewData["log_name"] = getSession("login_name");
             ViewData["log_email"] = getSession("login_email");
             ViewData["log_birthday"] = getSession("login_birthday");
@@ -170,7 +170,7 @@ namespace NCU_SE.Controllers
             ViewData["log_action"] = "Login";
             setSession("login_status", "登入/註冊");
             setSession("login_action", "Login");
-            setSession("login_uid", "0");
+            setSession("acc", "0");
             setSession("login_name", "無");
             setSession("login_email", "無");
             setSession("login_birthday", "無");
@@ -197,7 +197,7 @@ namespace NCU_SE.Controllers
             try//檢測session 'acc'是否存在，若存在且不為空則表示已經登入
             {
                 Debug.Print("session id = " + HttpContext.Session.Id + "  acc = " + HttpContext.Session.GetString("acc"));
-                if (HttpContext.Session.GetString("acc") != null)//若已登入
+                if (getSession("acc") != null && getSession("acc")!="0")//若已登入
                 {
                     return true;//跳到首頁
                 }

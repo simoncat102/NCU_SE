@@ -66,7 +66,7 @@ namespace NCU_SE.Controllers
                 ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中
             //如果已登入，自動載入儲存的航班-->避免重複儲存航班用
             //Debug.Print(Login_Var.login_uid+"");
-            ViewData["uid"] = getSession("login_uid");
+            ViewData["uid"] = getSession("acc");
             if (LoginStat())
             {
                 var flight_saved = _db.Flight.Where(u => u.MemberID == int.Parse(getSession("acc")) && u.DepTime >= DateTime.Today).Select(u => new { u.FlightCode, u.DepTime }).ToList();
@@ -125,7 +125,7 @@ namespace NCU_SE.Controllers
             try//檢測session 'acc'是否存在，若存在且不為空則表示已經登入
             {
                 Debug.Print("session id = " + HttpContext.Session.Id + "  acc = " + HttpContext.Session.GetString("acc"));
-                if (HttpContext.Session.GetString("acc") != null)//若已登入
+                if (getSession("acc") != null && getSession("acc") != "0")//若已登入
                 {
                     return true;//跳到首頁
                 }
