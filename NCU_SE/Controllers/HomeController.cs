@@ -68,7 +68,6 @@ namespace NCU_SE.Controllers
         }
 
         public IActionResult Login(Member obj)
-
         {
             setSession("login_action", "Login");
             ViewData["log_action"] = getSession("login_action");//預設還沒登入的按鈕動作
@@ -145,7 +144,7 @@ namespace NCU_SE.Controllers
             return View();
         }
 
-        public IActionResult Realtime()
+        public IActionResult Realtime(Flight obj)
         {
             ViewData["log_action"] = getSession("login_action");
             ViewData["login"] = getSession("login_status");

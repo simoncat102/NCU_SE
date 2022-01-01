@@ -102,7 +102,7 @@
                                 string redirect_url = "../Home/Login";
                             }
                             @{
-                                if (ViewData["uid"].ToString() != "0")
+                                if (ViewData["uid"].ToString() != null || ViewData["uid"].ToString() !="0")
                                 {
                                     save_btn_class = "";
                                     if(ViewBag.SavedFlight!=null) save_btn_class = ViewBag.SavedFlight.Contains(eval_txt) ? "saved_btn" : "";
@@ -120,7 +120,7 @@
 
                                 <p class="tm-recommended-price">@flight.FlightNumber</p>
                                 @{string save_btn = "登入後儲存";}
-                                @{if (ViewData["uid"].ToString() != "0") save_btn = ViewBag.SavedFlight.Contains(eval_txt) ? "已儲存" : "儲存";}
+                                @{if (ViewData["uid"].ToString() != null || ViewData["uid"].ToString() != "0") save_btn = ViewBag.SavedFlight.Contains(eval_txt) ? "已儲存" : "儲存";}
                                 <p class="tm-recommended-price-link">@save_btn</p>
                             </a>
                         </div>
