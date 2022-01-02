@@ -1511,10 +1511,10 @@ form .ticketcontainer {
     border-color: #1abc9c;
 }
 
-btn-realtime:hover {
+.btn-realtime:hover {
     color: #fff !important;
-    background-color: #16a085 !important;
-    border-color: #15967d !important;
+    background-color: #16a085;
+    border-color: #15967d;
 }
 
 .editNote{

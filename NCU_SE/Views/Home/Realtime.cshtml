@@ -20,7 +20,7 @@
     <div class="search-box">
         <form method="get" asp-action="Realtime" class="search_container">
             <span class="icon"><i class="bi bi-search"></i></span>
-            <input type="text" name="FlightCode" asp-for="FlightCode" id="search" placeholder="Search..." onkeyup="myFunction()" />
+            <input type="text" name="FlightCode" asp-for="FlightCode" id="search" placeholder="Search..." />
         </form>
     </div>
 </header>
@@ -75,16 +75,23 @@
 <script>
     /* 搜尋table */
     $(document).ready(function () {
+        var res = $("#search").val().toLowerCase();
+        if( res!='' || res!=undefined ){
+            //console.log(res);
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(res) > -1)
+            });
+        }
         $("#search").on("keyup", function () {
             var value = $(this).val().toLowerCase();
-            console.log(value);
+            //console.log(value);
             $("#myTable tr").filter(function () {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
     });
 
-
+    
     /* 回到頂端 */
     $(function () {
         var $win = $(window);
