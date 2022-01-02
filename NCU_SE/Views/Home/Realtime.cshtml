@@ -1,7 +1,8 @@
-﻿@model Flight
-@{
+﻿@{
     ViewData["Title"] = "即時動態";
 }
+@model Flight
+
 <head>
     <link rel="stylesheet" href="~/css/realtimeTicket.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -19,7 +20,7 @@
     <div class="search-box">
         <form method="get" asp-action="Realtime" class="search_container">
             <span class="icon"><i class="bi bi-search"></i></span>
-            <input type="text" id="search" name="FlightCode" asp-for="FlightCode" placeholder="Search..." onkeyup="myFunction()" />
+            <input type="text" name="FlightCode" asp-for="FlightCode" id="search" placeholder="Search..." onkeyup="myFunction()" />
         </form>
     </div>
 </header>
@@ -40,14 +41,14 @@
         <tbody id="myTable">
             @*固定的ViewBag Data*@
             @*<tr class="realtime-contain">
-                <td>@ViewBag.Flight.ActualArrivalTime</td>
-                <td>@ViewBag.Flight.AirlineID</td>
-                <td>@ViewBag.Flight.FlightNumber</td>
-                <td>@ViewBag.Flight.DepartureAirportID</td>
-                <td>@ViewBag.Flight.ArrivalAirportID</td>
-                <td>@ViewBag.Flight.ArrivalRemark</td>
+                    <td>@ViewBag.Flight.ActualArrivalTime</td>
+                    <td>@ViewBag.Flight.AirlineID</td>
+                    <td>@ViewBag.Flight.FlightNumber</td>
+                    <td>@ViewBag.Flight.DepartureAirportID</td>
+                    <td>@ViewBag.Flight.ArrivalAirportID</td>
+                    <td>@ViewBag.Flight.ArrivalRemark</td>
 
-            </tr>*@
+                </tr>*@
             @*跑迴圈把資料拿出來 但是將時間沒辦法只留時間 日期都會在*@
             @foreach (var allFlight in ViewBag.AllFlight)
             {
@@ -72,34 +73,36 @@
 </div>
 
 <script>
-/* 搜尋table */
-$(document).ready(function(){
-    $("#search").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    /* 搜尋table */
+    $(document).ready(function () {
+        $("#search").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            console.log(value);
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
     });
+
+
+    /* 回到頂端 */
+    $(function () {
+        var $win = $(window);
+        var $backToTop = $('.js-back-to-top');
+        // 當用戶滾動到離頂部100像素時，展示回到頂部按鈕
+        $win.scroll(function () {
+            if ($win.scrollTop() > 100) {
+                $backToTop.show();
+            }
+            else {
+                $backToTop.hide();
+            }
+        });
+        // 當用戶點擊按鈕時，通過動畫效果返回頭部
+        $backToTop.click(function () {
+            $('html, body').animate({ scrollTop: 0 }, 200);
+        });
     });
-});
-   
-/* 回到頂端 */
-$(function () {
-  var $win = $(window);
-  var $backToTop = $('.js-back-to-top');
-  // 當用戶滾動到離頂部100像素時，展示回到頂部按鈕
-  $win.scroll(function (){
-    if ($win.scrollTop() > 100){
-       $backToTop.show();
-    }
-    else{
-        $backToTop.hide();
-    }
-  });
-    // 當用戶點擊按鈕時，通過動畫效果返回頭部
-    $backToTop.click(function () {
-        $('html, body').animate({scrollTop: 0}, 200);
-    });
-});
 
 </script>
 

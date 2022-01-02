@@ -19,21 +19,6 @@ using NCU_SE.SharedModule;
 
 namespace NCU_SE.Controllers
 {
-    #region 全域變數定義
-   /* public static class Login_Var
-    {
-        public static string login_status { get; set; } = "登入/註冊";
-        public static string login_action { get; set; } = "Login";
-        public static int login_uid { get; set; } = 0;
-        public static string login_name { get; set; } = "無";
-        public static string login_email { get; set; } = "無";
-        public static string login_birthday { get; set; } = "無";
-        public static string login_profile { get; set; } = "無";
-        public static int login_age { get; set; } = 0;
-        public static object LastQuery { get; set; } = null;
-    }
-*/
-    #endregion
     public class HomeController : Controller
     {
         
@@ -45,12 +30,9 @@ namespace NCU_SE.Controllers
             _db = db;
         }
 
-        #region 註解
         //這邊控制了navbar點什麼會顯示什麼頁面
         //return View 要看的是上面的名稱 他回去找Home資料夾有沒有相對應的頁面(VIEW)
-        //少邦的影片
-        #endregion
-        public IActionResult Index()
+        public IActionResult Index(FixedFlight obj)
         {
             if (getSession("login_status") == null) setSession("login_status", "登入/註冊");
             if (getSession("login_action") == null) setSession("login_action", "Login");
@@ -64,54 +46,44 @@ namespace NCU_SE.Controllers
             ViewData["log_age"] = getSession("login_age");
             Debug.Print("Session ID = " + HttpContext.Session.Id);
             Debug.Print("initial uid = "+getSession("acc"));
-            return View();
+            return View("Index");
         }
 
         public IActionResult Login(Member obj)
         {
-            setSession("login_action", "Login");
+            setSession("login_action", "Logout");
             ViewData["log_action"] = getSession("login_action");//預設還沒登入的按鈕動作
             if (LoginStat())
             {
                 return View("Index");
             }
-            //以將Login.cshtml的form action改為Login
             //登入判定:1=成功 0=失敗
             int AccExist = (obj.Email == null && obj.Password == null) ? -1 : _db.Member.Where(u => u.Email == (obj.Email.ToString()) && u.Password == obj.Password.ToString()).Count();
             if (AccExist == 1)
             {
                 //擷取必要的會員資料
                 IEnumerable<Member> MemberInfo = _db.Member.Where(u => u.Email == (obj.Email.ToString()) && u.Password == obj.Password.ToString()).Select(u => new Member { ID = u.ID, Name = u.Name, profile = u.profile, Email = u.Email, Birthday = u.Birthday}); ;
-
                 //取得會員ID
-                //string uid = MemberInfo.First().ID.ToString();
-                //ViewData["logid"] = Login_Var.login_uid = MemberInfo.First().ID;//將會員ID放入全域變數+??顯示-->顯示在哪?
                 ViewData["logid"] = MemberInfo.First().ID;
                 setSession(("acc"), MemberInfo.First().ID.ToString());//將會員ID寫入session
                 //取得會員姓名
-                //ViewData["login"] = Login_Var.login_status = MemberInfo.First().Name + "，您好 按此登出";//將會員姓名(歡迎訊息)放入全域變數+右上角顯示的歡迎訊息(兼登出按鈕)                
-                //ViewData["log_name"] = Login_Var.login_name = getSession(Login_Var.login_name);
                 ViewData["login"] = MemberInfo.First().Name + "，您好 按此登出";//將會員姓名(歡迎訊息)放入全域變數+右上角顯示的歡迎訊息(兼登出按鈕)                
                 ViewData["log_name"] = MemberInfo.First().Name;
                 setSession("login_status", MemberInfo.First().Name + "，您好 按此登出");
                 setSession("login_name",MemberInfo.First().Name);
                 //取得會員Email
-                //ViewData["log_email"] = Login_Var.login_email = MemberInfo.First().Email;
                 ViewData["log_email"] = MemberInfo.First().Email;
                 setSession("login_email", MemberInfo.First().Email);
                 //取得會員生日
-                //ViewData["log_birthday"] = MemberInfo.First().Birthday.ToString("yyyy-MM-dd");
                 ViewData["log_birthday"] = MemberInfo.First().Birthday.ToString("yyyy-MM-dd");
                 setSession("login_birthday", MemberInfo.First().Birthday.ToString("yyyy-MM-dd"));
                 //取得會員頭像
-                //ViewData["log_profile"] = Login_Var.login_profile = "/img/img" + MemberInfo.First().profile + ".png";//~/img/img1.png                
                 ViewData["log_profile"] = "/img/img" + MemberInfo.First().profile + ".png";//~/img/img1.png                
                 setSession("login_profile", "/img/img" + MemberInfo.First().profile + ".png");
                 //計算年齡==>這是啥算法?
                 int birth = int.Parse(MemberInfo.First().Birthday.ToString("yyyyMMdd"));
                 int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
                 int age = (now - birth) / 10000;
-                //ViewData["log_age"] = Login_Var.login_age = age;
                 ViewData["log_age"] = age;
                 setSession("login_age", age.ToString());
                 if (getSession("LastQuery") != null)
@@ -160,12 +132,6 @@ namespace NCU_SE.Controllers
         public ActionResult Logout()
 
         {
-            #region 原本的內容
-            /*原本的內容
-            ViewData["login"] = "登入/註冊";
-            return Redirect("Register");
-            */
-            #endregion
             ViewData["login"] = "登入/註冊";
             ViewData["log_action"] = "Login";
             setSession("login_status", "登入/註冊");
@@ -231,7 +197,7 @@ namespace NCU_SE.Controllers
         }
         #endregion
         //取得即時航班
-        public List<Flight> getRealtimeFlight()
+        public List<Flight_data> getRealtimeFlight()
         {
             //取得即時航班API網址(僅限當日)
             const string url = "https://ptx.transportdata.tw/MOTC/v2/Air/FIDS/Flight/?$format=JSON&$select=AirlineID,FlightNumber,DepartureAirportID,ArrivalAirportID,DepartureRemark,ArrivalRemark&$filter=%20ArrivalRemark%20ne%20%27?%27%20and%20DepartureRemark%20ne%20%27?%27";
@@ -240,12 +206,12 @@ namespace NCU_SE.Controllers
             string[] FlightList = json.Split('`');//將json集合分開
 
             //儲存即時航班資料的List
-            List<Flight> flightlist = new();
+            List<Flight_data> flightlist = new();
             //解析每個json-->將解析結果放入List中
             //for (int i = 0; i < FlightList.Length; i++)
             for (int i = 0; i < 30; i++)
             {
-                Flight flight = JsonSerializer.Deserialize<Flight>(FlightList[i]);
+                Flight_data flight = JsonSerializer.Deserialize<Flight_data>(FlightList[i]);
 
                 flightlist.Add(flight); //原本的code
                 try
@@ -275,7 +241,7 @@ namespace NCU_SE.Controllers
         }
 
         //即時航班格式
-        public class Flight
+        public class Flight_data
         {
             public string FlightNumber { get; set; }
             public string AirlineID { get; set; }

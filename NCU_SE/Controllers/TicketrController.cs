@@ -49,14 +49,6 @@ namespace NCU_SE.Controllers
     }
     public class TicketController : Controller
     {
-        /*
-        private readonly ILogger<TicketController> _logger;
-
-        public TicketController(ILogger<TicketController> logger)
-        {
-            _logger = logger;
-        }
-        */
         sharedModule module = new();
         public IActionResult FixedFlight(FixedFlight obj)
         {
@@ -65,7 +57,6 @@ namespace NCU_SE.Controllers
                 if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
                 ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中
             //如果已登入，自動載入儲存的航班-->避免重複儲存航班用
-            //Debug.Print(Login_Var.login_uid+"");
             ViewData["uid"] = getSession("acc");
             if (LoginStat())
             {
