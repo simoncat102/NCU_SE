@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NCU_SE.Data;
 using NCU_SE.Models;
+using NCU_SE.SharedModule;
 
 namespace NCU_SE.Controllers
 {
@@ -48,15 +49,7 @@ namespace NCU_SE.Controllers
     }
     public class TicketController : Controller
     {
-        /*
-        private readonly ILogger<TicketController> _logger;
-
-        public TicketController(ILogger<TicketController> logger)
-        {
-            _logger = logger;
-        }
-        */
-        
+        sharedModule module = new();
         public IActionResult FixedFlight(FixedFlight obj)
         {
             QueryFlight QF = new();
@@ -64,11 +57,10 @@ namespace NCU_SE.Controllers
                 if (obj != null) QF = getFixedFlight(obj.Origin, obj.Destination, obj.DepartureDate, obj.ReturnDate, obj.FlightNumber);
                 ViewBag.Depart = QF.Depart;//將去程資料放入viewbag中
             //如果已登入，自動載入儲存的航班-->避免重複儲存航班用
-            Debug.Print(Login_Var.login_uid+"");
-            ViewData["uid"] = Login_Var.login_uid;
+            ViewData["uid"] = getSession("acc");
             if (LoginStat())
             {
-                var flight_saved = _db.Flight.Where(u => u.MemberID == Login_Var.login_uid && u.DepTime >= DateTime.Today).Select(u => new { u.FlightCode, u.DepTime }).ToList();
+                var flight_saved = _db.Flight.Where(u => u.MemberID == int.Parse(getSession("acc")) && u.DepTime >= DateTime.Today).Select(u => new { u.FlightCode, u.DepTime }).ToList();
                 List<string> SavedFlight = new();
                 foreach (var f in flight_saved)
                 {
@@ -83,15 +75,14 @@ namespace NCU_SE.Controllers
 
             ViewData["origin"] = QF.Origin;
             ViewData["destination"] = QF.Destination;
-            ViewData["login"] = Login_Var.login_status;
-            ViewData["log_action"] = Login_Var.login_action;
-            ViewData["log_uid"] = Login_Var.login_uid;
+            ViewData["login"] = getSession("login_status");
+            ViewData["log_action"] = getSession("login_action");
+            ViewData["log_uid"] =getSession("acc");
 
-            Login_Var.LastQuery = Request.QueryString;
+            setSession("LastQuery" , Request.QueryString.ToString());
             
             return View("RealtimeFlight");
         }
-
         public IActionResult SaveFlight(FixedFlight ff)
         {
             if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
@@ -104,7 +95,7 @@ namespace NCU_SE.Controllers
             obj.ArriTime = ff.ReturnDate;//預計降落日期時間
             obj.FlightCode = ff.FlightNumber;//航班編號
             obj.FlightNote = ff.Note;//航班備註            
-            obj.MemberID = Login_Var.login_uid;//會員ID
+            obj.MemberID = int.Parse(getSession("acc"));//會員ID
             obj.Airline = ff.FlightNumber.Substring(0,2);
             
             _db.Flight.Add(obj);//新增個人航班
@@ -118,13 +109,14 @@ namespace NCU_SE.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        #region 登入狀態/取得session模組/共用模組
+        #region 登入驗證/session處理
         //檢測登入狀態
         public bool LoginStat()
         {
             try//檢測session 'acc'是否存在，若存在且不為空則表示已經登入
             {
-                if (session.HttpContext.Session.GetString("acc") != null)//若已登入
+                Debug.Print("session id = " + HttpContext.Session.Id + "  acc = " + HttpContext.Session.GetString("acc"));
+                if (getSession("acc") != null && getSession("acc") != "0")//若已登入
                 {
                     return true;//跳到首頁
                 }
@@ -141,66 +133,46 @@ namespace NCU_SE.Controllers
             string result = null;
             try
             {
-                result = session.HttpContext.Session.GetString(name);
+                result = HttpContext.Session.GetString(name);
             }
             catch { }
             return result;
         }
 
-        //通用模組
-        private readonly ApplicationDbContext _db; //使用資料庫實體
-        private readonly IHttpContextAccessor session;
-
-        public TicketController(ApplicationDbContext db, IHttpContextAccessor httpContextAccessor)
+        //設定Session用的模組==>setSession([名稱],[文字內容])
+        public void setSession(string name, string content)
         {
-            _db = db;
-            session = httpContextAccessor;
+            try
+            {
+                HttpContext.Session.SetString(name, content);
+            }
+            catch { }
         }
         #endregion
+        //通用模組
+        private readonly ApplicationDbContext _db; //使用資料庫實體
+        public TicketController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+        
         //取得航班
         public QueryFlight getFixedFlight(string origin, string destnation, DateTime departureDate, DateTime returnDate, string FlightNumber)
         {
             string json = null;
-            #region API KEY
-            //申請的APPID
-            //（FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF 為 Guest 帳號，以IP作為API呼叫限制，請替換為註冊的APPID & APPKey）
-            const string APPID = "8a8ffddac5af4e42a3fb1ed014472ece";
-            //申請的APPKey
-            const string APPKey = "cRraTKB4MRKUsfMseiq0UxislXA";
-
-            //取得當下UTC時間
-            string xdate = DateTime.Now.ToUniversalTime().ToString("r");
-            string SignDate = "x-date: " + xdate;
-
-            //加密簽章產生
-            Encoding _encode = Encoding.GetEncoding("utf-8");
-            byte[] _byteData = Encoding.GetEncoding("utf-8").GetBytes(SignDate);
-            HMACSHA1 _hmac = new(_encode.GetBytes(APPKey));
-            using (CryptoStream _cs = new(Stream.Null, _hmac, CryptoStreamMode.Write))
-            {
-                _cs.Write(_byteData, 0, _byteData.Length);
-            }
-            //取得加密簽章
-            string Signature = Convert.ToBase64String(_hmac.Hash);
-            string sAuth = "hmac username=\"" + APPID + "\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"" + Signature + "\"";
-            #endregion
             
             string[] place = { origin, destnation };
             DateTime[] time = { departureDate, returnDate };
             QueryFlight QF = new();
-            QF.Depart = new List<FixFlight>();          
+            QF.Depart = new List<FixFlight>();
+            QF.Origin = place[0];
+            QF.Destination = place[1];
             #region 取得機場代號           
             for (int i =0; i<2; i++)
             {
                 string AirportQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airport?$select=AirportID&$filter=AirportID ne '' and (AirportID eq '{0}' or AirportName/Zh_tw eq '{0}' or AirportName/En eq '{0}' or AirportCityName/Zh_tw eq '{0}' or AirportCityName/En eq '{0}')&$top=2&$format=JSON", place[i]);
-                json = null;
-                //取得API資料(官方提供方法)
-                using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
-                {
-                    Client.DefaultRequestHeaders.Add("Authorization", sAuth);
-                    Client.DefaultRequestHeaders.Add("x-date", xdate);
-                    json = Client.GetStringAsync(AirportQuery).Result.Replace("[", "").Replace("]", "");                
-                }
+                json = module.getAPIdata(AirportQuery).Replace("[", "").Replace("]", "");
+               
                 try
                 {
                     AirportInfo info = JsonSerializer.Deserialize<AirportInfo>(json);
@@ -212,23 +184,17 @@ namespace NCU_SE.Controllers
                     place[i] = "";
                 }
             }
-            QF.Origin = place[0];
-            QF.Destination = place[1];
+
 
             #endregion
             #region 取得班機
             //取得班機資訊              
             string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= ScheduleStartDate ge {0} and ScheduleStartDate le {3} and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' {4}&$format=JSON"
                     , time[0].ToString("yyyy-MM-dd"),place[0], place[1], /*(time[0].ToString("dddd",new CultureInfo("en-US")) + " eq true")*/time[1].ToString("yyyy-MM-dd"), (FlightNumber == null ? "" : ("and FlightNumber eq '" + FlightNumber.Replace("-","").Replace("_","").Trim() + "'")));
-                //取得API資料(官方提供方法)
-                using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
-                {
-                    Client.DefaultRequestHeaders.Add("Authorization", sAuth);
-                    Client.DefaultRequestHeaders.Add("x-date", xdate);
-                    json = Client.GetStringAsync(url).Result.Replace("[", "").Replace("]", "");
-                }
-                try //分解json
-                {
+            json = module.getAPIdata(url).Replace("[", "").Replace("]", "");
+
+            try //分解json
+            {
                     string[] flights = json.Replace(",{", "`{").Split("`");
                     List<FixFlight> Flight = new();
                     for(int j =0; j<flights.Length; j++)
@@ -247,7 +213,7 @@ namespace NCU_SE.Controllers
                             //飛行時間計算
                             if (TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")) < TimeSpan.Parse(FF.DepartureTime))
                             {
-                                FF.FlightTime = "" + (TimeSpan.Parse("23:59") - TimeSpan.Parse(FF.DepartureTime) + TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")));
+                                FF.FlightTime = "" + (TimeSpan.Parse("23:59")+TimeSpan.Parse("00:01") - TimeSpan.Parse(FF.DepartureTime) + TimeSpan.Parse(FF.ArrivalTime.Replace("+1", "")));
                             }
                             else
                             {
@@ -283,13 +249,7 @@ namespace NCU_SE.Controllers
             string getAirlineName(string AirlineID)
             {                
                 string AirlineQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airline?$select=AirlineName&$filter=AirlineID eq '{0}'&$format=JSON", AirlineID);
-                string AirlineJson = null;
-                using (HttpClient Client = new(new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.GZip }))
-                {
-                    Client.DefaultRequestHeaders.Add("Authorization", sAuth);
-                    Client.DefaultRequestHeaders.Add("x-date", xdate);
-                    AirlineJson = Client.GetStringAsync(AirlineQuery).Result.Replace("[{\"AirlineName\":", "").Replace("},",",").Replace("]", "");
-                }
+                string AirlineJson = module.getAPIdata(AirlineQuery).Replace("[{\"AirlineName\":", "").Replace("},", ",").Replace("]", "");
                 AirlineInfo AI = JsonSerializer.Deserialize<AirlineInfo>(AirlineJson);
                 //Debug.Print("機場名稱：" + AI.Zh_tw);
                 return AI.Zh_tw;

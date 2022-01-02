@@ -45,13 +45,11 @@
                             </div>
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
                                 <label for="inputCity">請選擇您的目的地</label>
-                                <input asp-for="Destination" type="text" id="flight_destination" name="Destination" class="form-control" placeholder="Type your destination..." />
-
+                                <input asp-for="Destination" type="text" id="flight_destination" name="Destination" class="form-control" placeholder="Type your destination..." />                 
                             </div>
 
                         </div> <!-- form-row -->
                         <div class="form-row tm-search-form-row">
-
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
                                 <label for="inputCheckIn">出發時間(從)</label>
                                 <input id="departureDate" asp-for="DepartureDate" class="form-control" type="date" required />
@@ -102,7 +100,7 @@
                                 string redirect_url = "../Home/Login";
                             }
                             @{
-                                if (ViewData["uid"].ToString() != "0")
+                                if (ViewData["uid"] != null && ViewData["uid"].ToString() !="0")
                                 {
                                     save_btn_class = "";
                                     if(ViewBag.SavedFlight!=null) save_btn_class = ViewBag.SavedFlight.Contains(eval_txt) ? "saved_btn" : "";
@@ -120,7 +118,7 @@
 
                                 <p class="tm-recommended-price">@flight.FlightNumber</p>
                                 @{string save_btn = "登入後儲存";}
-                                @{if (ViewData["uid"].ToString() != "0") save_btn = ViewBag.SavedFlight.Contains(eval_txt) ? "已儲存" : "儲存";}
+                                @{if (ViewData["uid"] != null && ViewData["uid"].ToString() != "0") save_btn = ViewBag.SavedFlight.Contains(eval_txt) ? "已儲存" : "儲存";}
                                 <p class="tm-recommended-price-link">@save_btn</p>
                             </a>
                         </div>

@@ -232,6 +232,11 @@
                                             </div>
 
                                             <!--要點了這個之後上方備註變成可輸入、按鈕變成確定修改-->
+                                            @{string flightCode = ticket_alter.FlightCode.Replace("-", "");}
+                                            <a class="btn btn-realtime" href="../Home/Realtime?FlightCode=@flightCode">
+                                                <i class="fas fa-plane"></i>
+                                                即時狀態
+                                            </a>
 
                                             <div class="btn btn-primary" href="#!" data-bs-dismiss="modal" id="note-@ticket_alter.FlightID">
                                                 <i class="bi bi-pencil-square"></i>
@@ -242,8 +247,6 @@
                                                 <i class="fas fa-times fa-fw"></i>
                                                 刪除航班
                                             </button>
-
-
                                         </div>
                                     </form>
                                     <!--刪除、修改時要傳給後端的表單-->

@@ -24,7 +24,6 @@ namespace NCU_SE.Controllers
         }
         */
         //injector
-      
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -51,21 +50,23 @@ namespace NCU_SE.Controllers
         public IActionResult PersonalInfo(Member obj)
         {
             Debug.Print(obj.Birthday.ToString());
+            //Debug.Print(Login_Var.login_uid.ToString() + "  " + getSession(Login_Var.login_uid.ToString()));
+
             if (!LoginStat())
             {
                 return RedirectToAction("Login", "Home");
             }//若未登入轉跳到登入畫面
             else
             {
-                ViewData["log_action"] = Login_Var.login_action;
+                ViewData["log_action"] = getSession("login_action");
                 //反正能進來就是以登入 我要登出才會按！
-                ViewData["login"] = Login_Var.login_status;
-                ViewData["logid"] = Login_Var.login_uid;
-                ViewData["log_name"] = Login_Var.login_name;
-                ViewData["log_email"] = Login_Var.login_email;
-                ViewData["log_birthday"] = Login_Var.login_birthday;
-                ViewData["log_profile"] = Login_Var.login_profile;
-                ViewData["log_age"] = Login_Var.login_age;
+                ViewData["login"] = getSession("login_status");
+                ViewData["logid"] = getSession("acc");
+                ViewData["log_name"] = getSession("login_name");
+                ViewData["log_email"] = getSession("login_email");
+                ViewData["log_birthday"] = getSession("login_birthday");
+                ViewData["log_profile"] = getSession("login_profile");
+                ViewData["log_age"] = getSession("login_age");
             }
             return View();
         }
@@ -82,21 +83,26 @@ namespace NCU_SE.Controllers
                 _db.SaveChanges();
 
                 //重設全域變數
-                ViewData["log_action"] = Login_Var.login_action;
-                ViewData["login"] = Login_Var.login_status = obj.Name + "，您好 按此登出";
-                ViewData["logid"] = Login_Var.login_uid;
-                ViewData["log_name"] = Login_Var.login_name = obj.Name;
-                ViewData["log_email"] = Login_Var.login_email = obj.Email;
+                ViewData["log_action"] = getSession("login_action");
+                ViewData["login"] = obj.Name + "，您好 按此登出";
+                ViewData["logid"] = getSession("acc");
+                ViewData["log_name"] = obj.Name;
+                ViewData["log_email"] = obj.Email;
+                setSession("login_status", obj.Name + "，您好 按此登出");
+                setSession("login_name",obj.Name);
+                setSession("login_email", obj.Name + "，您好 按此登出");
                 if (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1")  //篩選是否有值存在，若不存在時將以"0001/1/1"表示
                 {
-                    ViewData["log_birthday"] = Login_Var.login_birthday = obj.Birthday.ToString("yyyy-MM-dd");
+                    ViewData["log_birthday"] = obj.Birthday.ToString("yyyy-MM-dd");
+                    setSession("login_birthday", obj.Birthday.ToString("yyyy-MM-dd"));
                     //計算年齡
                     int birth = int.Parse(obj.Birthday.ToString("yyyyMMdd"));
                     int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
                     int age = (now - birth) / 10000;
-                    ViewData["log_age"] = Login_Var.login_age = age;
+                    ViewData["log_age"] = age;
+                    setSession("login_age",age.ToString());
                 }
-                ViewData["log_profile"] = Login_Var.login_profile;
+                ViewData["log_profile"] = getSession("login_profile");
                 return View("PersonalInfo");
             }
             return View("PersonalInfo");
@@ -112,19 +118,21 @@ namespace NCU_SE.Controllers
                 _db.SaveChanges();
 
                 //重設全域變數
-                ViewData["log_action"] = Login_Var.login_action;
-                ViewData["login"] = Login_Var.login_status;
-                ViewData["logid"] = Login_Var.login_uid;
-                ViewData["log_name"] = Login_Var.login_name;
-                ViewData["log_email"] = Login_Var.login_email;
-                ViewData["log_profile"] = Login_Var.login_profile = "/img/img" + obj.profile + ".png";
-                ViewData["log_birthday"] = Login_Var.login_birthday;
-                DateTime birthday = Convert.ToDateTime(Login_Var.login_birthday);
+                ViewData["log_action"] = getSession("login_action");
+                ViewData["login"] = getSession("login_status");
+                ViewData["logid"] = getSession("acc");
+                ViewData["log_name"] = getSession("login_name");
+                ViewData["log_email"] = getSession("login_email");
+                ViewData["log_profile"] = "/img/img" + obj.profile + ".png";
+                setSession("login_profile", "/img/img" + obj.profile + ".png");
+                ViewData["log_birthday"] = getSession("login_birthday");
+                DateTime birthday = Convert.ToDateTime(getSession("login_birthday"));
                 //計算年齡
                 int birth = int.Parse(birthday.ToString("yyyyMMdd"));
                 int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
                 int age = (now - birth) / 10000;
-                ViewData["log_age"] = Login_Var.login_age = age;
+                ViewData["log_age"] = age;
+                setSession("login_age", age.ToString());
                 return View("PersonalInfo");
             }
             return View("PersonalInfo");
@@ -133,15 +141,16 @@ namespace NCU_SE.Controllers
         public IActionResult UserTicket()
         {
             if (!LoginStat()) return RedirectToAction("Login", "Home");//若未登入轉跳到登入畫面
-            ViewData["log_action"] = Login_Var.login_action;
-            ViewData["login"] = Login_Var.login_status;
-            ViewData["logid"] = Login_Var.login_uid;
-            ViewData["log_name"] = Login_Var.login_name;
-            ViewData["log_email"] = Login_Var.login_email;
-            ViewData["log_profile"] = Login_Var.login_profile;
+            ViewData["log_action"] = getSession("login_action");
+            ViewData["login"] = getSession("login_status");
+            ViewData["logid"] = getSession("acc");
+            ViewData["log_name"] = getSession("login_name");
+            ViewData["log_email"] = getSession("login_email");
+            ViewData["log_profile"] = getSession("login_profile");
             //讀取機票資料語法
             //IEnumerable<Flight> objList = _db.Flight;
-            IEnumerable<Flight> ticket = _db.Flight.Where(u=>u.MemberID == Login_Var.login_uid && u.DepTime>=DateTime.Today).Select(u => new Flight {FlightID = u.FlightID, FlightCode = u.FlightCode, Airline = u.Airline, AirportFrom = u.AirportFrom, AirportTo = u.AirportTo, DepTime = u.DepTime, ArriTime = u.ArriTime, FlightNote = u.FlightNote }).ToList();
+            //下面註解的部分是篩選機票必須是還沒起飛的
+            IEnumerable<Flight> ticket = _db.Flight.Where(u=>u.MemberID == int.Parse(getSession("acc")) /*&& u.DepTime>=DateTime.Today*/).Select(u => new Flight {FlightID = u.FlightID, FlightCode = u.FlightCode, Airline = u.Airline, AirportFrom = u.AirportFrom, AirportTo = u.AirportTo, DepTime = u.DepTime, ArriTime = u.ArriTime, FlightNote = u.FlightNote }).ToList();
             ViewBag.ticket = ticket;
             return View();
         }
@@ -166,13 +175,14 @@ namespace NCU_SE.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        #region 登入狀態/取得session模組/共用模組
+        #region 登入驗證/session處理
         //檢測登入狀態
         public bool LoginStat()
         {
             try//檢測session 'acc'是否存在，若存在且不為空則表示已經登入
             {
-                if (session.HttpContext.Session.GetString("acc") != null)//若已登入
+                Debug.Print("session id = " + HttpContext.Session.Id + "  acc = " + HttpContext.Session.GetString("acc"));
+                if (getSession("acc") != null && getSession("acc") != "0")//若已登入
                 {
                     return true;//跳到首頁
                 }
@@ -189,22 +199,30 @@ namespace NCU_SE.Controllers
             string result = null;
             try
             {
-                result = session.HttpContext.Session.GetString(name);
+                result = HttpContext.Session.GetString(name);
             }
             catch { }
             return result;
         }
 
-        //通用模組
-        private readonly ApplicationDbContext _db; //使用資料庫實體
-        private readonly IHttpContextAccessor session;
-
-        public UserController(ApplicationDbContext db, IHttpContextAccessor httpContextAccessor)
+        //設定Session用的模組==>setSession([名稱],[文字內容])
+        public void setSession(string name, string content)
         {
-            _db = db;
-            session = httpContextAccessor;
+            try
+            {
+                HttpContext.Session.SetString(name, content);
+            }
+            catch { }
         }
         #endregion
+        //通用模組
+        private readonly ApplicationDbContext _db; //使用資料庫實體
+
+        public UserController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+        
 
     }
 }
