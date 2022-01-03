@@ -9,8 +9,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <!--回到頂端的js-->
     <script src="https://cdn.staticfile.org/jquery/2.2.4/jquery.min.js"></script>
+    <!--datatable的js-->
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
 </head>
-
 <header class="masthead">
     <div class="center">
         <h1 class="h1-title">即時航班動態</h1>
@@ -27,7 +28,7 @@
 
 <!--即時航班：只呈現今天的即時航班，可以給非會員使用-->
 <div>
-    <table style="width: 90%; margin: 10px auto;">
+    <table style="width: 90%; margin: 10px auto;" id="setTable">
         <thead>
             <tr class="realtime-title">
                 <th>降落時間</th>
@@ -73,30 +74,51 @@
 </div>
 
 <script>
-    /* 搜尋table */
-    $(document).ready(function () {
-        var res = $("#search").val().toLowerCase();
-        var $table = $('table')
-        if( res!='' || res!=undefined ){
-            //console.log(res);
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(res) > -1)
-            });
-        }
-        $("#search").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            //console.log("value:"+value);
-            $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-            }).hide().slice(0,30).show();
-
-            if (value=='' || value==undefined || value==" "){
-                $table.find('tbody tr').hide().slice(0,30).show();
+    /* 使用 Datatable 搜尋 & 分頁 */
+    $(document).ready( function () {
+        var oTable = $('#setTable').DataTable({
+            // 在初始表格的左上有個可選擇的每頁列數的選單設定
+            lengthChange: true,   // 呈現選單
+            lengthMenu: [5, 10, 15, 20, 25, 30 ,50],   // 選單值設定
+            pageLength: 15,   // 不用選單設定也可改用固定每頁列數
+  
+            searching: true,   // 是否開啟搜索功能
+            ordering: false,   // 是否開啟排序功能
+  
+            // 下列 2 個一起用，就可以設定列出全部資料、可滑動又固定尺寸的表格
+            paging: true,   // 是否建立分頁
+            //scrollY: 400,   // 固定可以上下滑動的高度
+  
+            // [指定的列 , 排序方向] 。
+            // 預設 [[0, 'asc']] ，asc 升冪排列、desc 降冪排列。
+            order: [[ 1, 'asc' ], [ 2, 'asc' ]],
+  
+            language: {
+                "lengthMenu": "顯示 _MENU_ 項結果",
+                "zeroRecords": "沒有符合的結果",
+                "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                "infoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                "search": "搜尋:",
+                "infoFiltered": "(從 _MAX_ 項結果中過濾)",
+                "paginate": {
+                    "first": "第一頁",
+                    "previous": "上一頁",
+                    "next": "下一頁",
+                    "last": "最後一頁"
+                },
             }
         });
-        /*只顯示30筆 */
-        $table.find('tbody tr').hide().slice(0,30).show(); 
-    });
+
+        $('#search').keyup(function(){
+              oTable.search($(this).val()).draw() ;
+        })
+        var res = $("#search").val().toLowerCase();
+        if( res!='' || res!=undefined ){
+            //console.log(res);//檢查用
+            oTable.search(res).draw() ;
+        }
+
+    } );
 
     
     /* 回到頂端 */
