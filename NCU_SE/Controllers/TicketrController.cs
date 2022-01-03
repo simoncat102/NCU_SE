@@ -189,7 +189,9 @@ namespace NCU_SE.Controllers
             #endregion
             #region 取得班機
             //取得班機資訊              
-            string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= ScheduleStartDate ge {0} and ScheduleStartDate le {3} and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' {4}&$format=JSON"
+            //string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= ScheduleStartDate ge {0} and ScheduleStartDate le {3} and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' {4}&$format=JSON"
+            //        , time[0].ToString("yyyy-MM-dd"),place[0], place[1], /*(time[0].ToString("dddd",new CultureInfo("en-US")) + " eq true")*/time[1].ToString("yyyy-MM-dd"), (FlightNumber == null ? "" : ("and FlightNumber eq '" + FlightNumber.Replace("-","").Replace("_","").Trim() + "'")));
+            string url = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/GeneralSchedule/International? $select=AirlineID,FlightNumber,DepartureTime,ArrivalTime&$filter= (ScheduleStartDate ge {0} or ScheduleEndDate ge {0}) and (ScheduleEndDate le {3} or ScheduleStartDate le {3}) and DepartureAirportID eq '{1}' and ArrivalAirportID eq '{2}' {4}&$format=JSON"
                     , time[0].ToString("yyyy-MM-dd"),place[0], place[1], /*(time[0].ToString("dddd",new CultureInfo("en-US")) + " eq true")*/time[1].ToString("yyyy-MM-dd"), (FlightNumber == null ? "" : ("and FlightNumber eq '" + FlightNumber.Replace("-","").Replace("_","").Trim() + "'")));
             json = module.getAPIdata(url).Replace("[", "").Replace("]", "");
 
@@ -200,8 +202,9 @@ namespace NCU_SE.Controllers
                     for(int j =0; j<flights.Length; j++)
                     {
                         FixFlight FT = JsonSerializer.Deserialize<FixFlight>(flights[j]);//將json轉換成物件
-                        DateTime SchEnd = new DateTime(Math.Min(Convert.ToDateTime(FT.ScheduleStartDate).Ticks,time[1].Ticks));//防止超過篩選區間
-                        int dayCount = (Convert.ToDateTime(FT.ScheduleEndDate) - SchEnd).Days+1;//每個班機排程區間天數
+                        DateTime SchStart= new DateTime(Math.Max(Convert.ToDateTime(FT.ScheduleStartDate).Ticks,time[0].Ticks));//防止低於篩選區間
+                        DateTime SchEnd = new DateTime(Math.Min(Convert.ToDateTime(FT.ScheduleEndDate).Ticks,time[1].Ticks));//防止超過篩選區間
+                        int dayCount = (SchEnd - SchStart).Days+1;//每個班機排程區間天數
                         //每個排程中的班機
                         for (int x=0;x<dayCount;x++)
                         {
@@ -246,12 +249,16 @@ namespace NCU_SE.Controllers
 
 
             #region 取得航空公司名稱
+            
             string getAirlineName(string AirlineID)
-            {                
+            {
+                if (Airline.id.IndexOf(AirlineID) > -1) return Airline.name[Airline.id.IndexOf(AirlineID)];
                 string AirlineQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airline?$select=AirlineName&$filter=AirlineID eq '{0}'&$format=JSON", AirlineID);
                 string AirlineJson = module.getAPIdata(AirlineQuery).Replace("[{\"AirlineName\":", "").Replace("},", ",").Replace("]", "");
                 AirlineInfo AI = JsonSerializer.Deserialize<AirlineInfo>(AirlineJson);
                 //Debug.Print("機場名稱：" + AI.Zh_tw);
+                Airline.name.Add(AI.Zh_tw);
+                Airline.id.Add(AirlineID);
                 return AI.Zh_tw;
             }
             #endregion

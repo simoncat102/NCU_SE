@@ -17,8 +17,10 @@ namespace NCU_SE.SharedModule
         {
             //申請的APPID
             //（FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF 為 Guest 帳號，以IP作為API呼叫限制，請替換為註冊的APPID & APPKey）
+            //const string APPID = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
             const string APPID = "8a8ffddac5af4e42a3fb1ed014472ece";
             //申請的APPKey
+            //const string APPKey = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
             const string APPKey = "cRraTKB4MRKUsfMseiq0UxislXA";
 
             //取得當下UTC時間

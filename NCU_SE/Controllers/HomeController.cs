@@ -19,6 +19,13 @@ using NCU_SE.SharedModule;
 
 namespace NCU_SE.Controllers
 {
+    //快取航空公司名稱增加速度[所有使用者會共用，所以會越查閱快]
+    public static class Airline
+    {
+        public static List<string> id { get; set; } = new();
+        public static List<string> name { get; set; } = new();
+    }
+
     public class HomeController : Controller
     {
         
@@ -208,33 +215,38 @@ namespace NCU_SE.Controllers
             //儲存即時航班資料的List
             List<Flight_data> flightlist = new();
             //解析每個json-->將解析結果放入List中
-            //for (int i = 0; i < FlightList.Length; i++)
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < FlightList.Length; i++)
+            //for (int i = 0; i < 30; i++)
             {
                 Flight_data flight = JsonSerializer.Deserialize<Flight_data>(FlightList[i]);
-
                 flightlist.Add(flight); //原本的code
                 try
                 {
                     flightlist[i].AirlineID_zh = flightlist[i].AirlineID;
                     //flightlist[i].ActualArrivalTime = flightlist[i].ActualArrivalTime == null ? "時間未定" : flightlist[i].ActualArrivalTime.Substring(flightlist[i].ActualArrivalTime.Length - 11,5)+" "+flightlist[i].ActualArrivalTime.Substring(flightlist[i].ActualArrivalTime.Length - 5);
-                    flightlist[i].ScheduleArrivalTime = flightlist[i].ScheduleArrivalTime == null ? "未確定" : flightlist[i].ScheduleArrivalTime.Substring(flightlist[i].ScheduleArrivalTime.Length - 11, 5) + " " + flightlist[i].ScheduleArrivalTime.Substring(flightlist[i].ScheduleArrivalTime.Length - 5);
+                    flightlist[i].ScheduleArrivalTime = flightlist[i].ScheduleArrivalTime == null ? "未確定" : flightlist[i].ScheduleArrivalTime.Length>=11? flightlist[i].ScheduleArrivalTime.Substring(flightlist[i].ScheduleArrivalTime.Length - 11, 5) + " " + flightlist[i].ScheduleArrivalTime.Substring(flightlist[i].ScheduleArrivalTime.Length - 5): flightlist[i].ScheduleArrivalTime;
                     flightlist[i].ArrivalRemark = flightlist[i].ArrivalRemark == null ? "未知" : flightlist[i].ArrivalRemark;
-                    flightlist[i].AirlineID = flightlist[i].AirlineID == null ? "未知" : getAirlineName(flightlist[i].AirlineID).Substring(0, 4);
+                    flightlist[i].AirlineID = flightlist[i].AirlineID == null ? "未知" : getAirlineName(flightlist[i].AirlineID);
+                    flightlist[i].AirlineID = flightlist[i].AirlineID.Length > 4 ? flightlist[i].AirlineID.Substring(0, 4) : flightlist[i].AirlineID;
                 }
-                catch { }
+                catch(Exception ex) 
+                {
+                    Debug.Print("data-error" + ex.Message);
+                }
 
-                Debug.Print(flightlist[i].FlightNumber + "\n");
+                //Debug.Print(flightlist[i].FlightNumber + "\n");
             }
-
             string getAirlineName(string AirlineID)
             {
-                string AirlineQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airline?$select=AirlineName&$filter=AirlineID eq '{0}'&$format=JSON", AirlineID);
+                if (Airline.id.IndexOf(AirlineID) > -1) return Airline.name[Airline.id.IndexOf(AirlineID)];
+                string AirlineQuery = string.Format("https://ptx.transportdata.tw/MOTC/v2/Air/Airline?$top=1&$select=AirlineName&$filter=AirlineID eq '{0}'&$format=JSON", AirlineID);
                 string AirlineJson = module.getAPIdata(AirlineQuery);
                 AirlineJson = AirlineJson.Replace("[{\"AirlineName\":", "").Replace("},", ",").Replace("]", "");
 
                 AirlineInfo AI = JsonSerializer.Deserialize<AirlineInfo>(AirlineJson);
-                Debug.Print("機場名稱：" + AI.Zh_tw);
+                //Debug.Print("機場名稱：" + AI.Zh_tw);
+                Airline.name.Add(AI.Zh_tw);
+                Airline.id.Add(AirlineID);
                 return AI.Zh_tw;
             }
             return flightlist;
