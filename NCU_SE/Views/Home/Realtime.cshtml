@@ -76,6 +76,7 @@
     /* 搜尋table */
     $(document).ready(function () {
         var res = $("#search").val().toLowerCase();
+        var $table = $('table')
         if( res!='' || res!=undefined ){
             //console.log(res);
             $("#myTable tr").filter(function () {
@@ -84,11 +85,17 @@
         }
         $("#search").on("keyup", function () {
             var value = $(this).val().toLowerCase();
-            //console.log(value);
+            //console.log("value:"+value);
             $("#myTable tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            }).hide().slice(0,30).show();
+
+            if (value=='' || value==undefined || value==" "){
+                $table.find('tbody tr').hide().slice(0,30).show();
+            }
         });
+        /*只顯示30筆 */
+        $table.find('tbody tr').hide().slice(0,30).show(); 
     });
 
     
