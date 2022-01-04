@@ -228,6 +228,7 @@ namespace NCU_SE.Controllers
                     flightlist[i].ArrivalRemark = flightlist[i].ArrivalRemark == null ? "未知" : flightlist[i].ArrivalRemark;
                     flightlist[i].AirlineID = flightlist[i].AirlineID == null ? "未知" : getAirlineName(flightlist[i].AirlineID);
                     flightlist[i].AirlineID = flightlist[i].AirlineID.Length > 4 ? flightlist[i].AirlineID.Substring(0, 4) : flightlist[i].AirlineID;
+                    flightlist[i].FlightNumber = flightlist[i].FlightNumber.Length == 2 ? ("0" + flightlist[i].FlightNumber):flightlist[i].FlightNumber.Length == 1 ?("00" + flightlist[i].FlightNumber):flightlist[i].FlightNumber;
                 }
                 catch(Exception ex) 
                 {
