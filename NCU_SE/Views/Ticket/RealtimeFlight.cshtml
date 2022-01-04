@@ -50,13 +50,19 @@
 
                         </div> <!-- form-row -->
                         <div class="form-row tm-search-form-row">
-                            <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
+                            <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
                                 <label for="inputCheckIn">出發時間(從)</label>
                                 <input id="departureDate" asp-for="DepartureDate" class="form-control" type="date" required />
                             </div>
-                            <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
+                            <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
                                 <label for="inputCheckOut">出發時間(到)</label>
                                 <input id="returnDate" asp-for="ReturnDate" class="form-control" type="date" required />
+                            </div>
+                        </div>
+                        <div class="form-row tm-search-form-row">
+                            <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
+                                <label for="inputflightNumber">班機編號（選填）</label>
+                                <input id="flightNumber" asp-for="FlightNumber" class="form-control" type="text" placeholder="請輸入班機編號"  />
                             </div>
                             <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
                                 <label for="btnSubmit">&nbsp;</label>
