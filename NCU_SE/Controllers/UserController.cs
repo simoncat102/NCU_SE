@@ -34,6 +34,7 @@ namespace NCU_SE.Controllers
             Debug.Print("帳戶存在數量"+accountExist);
             if(accountExist == 0 && obj.Email!=null)
             {
+                obj.profile = 1;
                 obj.RegisterDate = System.DateTime.Today;//將註冊日期加入
                 _db.Member.Add(obj);//相當於SQL的insert語法
                 _db.SaveChanges();//儲存資料庫變更
