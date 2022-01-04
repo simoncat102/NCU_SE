@@ -91,7 +91,7 @@ namespace NCU_SE.Controllers
                 ViewData["log_email"] = obj.Email;
                 setSession("login_status", obj.Name + "，您好 按此登出");
                 setSession("login_name",obj.Name);
-                setSession("login_email", obj.Name + "，您好 按此登出");
+                setSession("login_email", obj.Email);
                 if (obj.Birthday.ToString("yyyy/MM/dd") != "0001/1/1")  //篩選是否有值存在，若不存在時將以"0001/1/1"表示
                 {
                     ViewData["log_birthday"] = obj.Birthday.ToString("yyyy-MM-dd");
