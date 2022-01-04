@@ -20,11 +20,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     -->
-
+    
     <!--備註彈跳視窗-->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <!--備註彈跳視窗-->
-
 </head>
 
 <body id="page-top">
@@ -225,7 +224,7 @@
                                             <div id="editnote-@ticket_alter.FlightID" style="background:#ffffff; display:none;font-family:Microsoft JhengHei">
                                                 <div style="display:flex;align-items: center;justify-content: center;margin: 10px auto; ">
                                                     <div class="editNote">
-                                                        輸入備註： <input type="text" asp-for="FlightNote" id="FlightNote" style="margin: 5px;" value="" />
+                                                        輸入備註： <input type="text" asp-for="FlightNote" id="FlightNote-@ticket_alter.FlightID" style="margin: 5px;" value="" />
                                                     </div>
                                                     <button class="btn btn-primary" style="height: fit-content;">確定</button>
                                                 </div>
@@ -243,7 +242,7 @@
                                                 修改備註
                                             </div>
 
-                                            <button name="delete_ticket" id="delete_ticket" class="btn btn-primary delete-btn" href="#!" data-bs-dismiss="modal">
+                                            <button name="delete_ticket" id="delete_ticket-@ticket_alter.FlightID" class="btn btn-primary delete-btn"   data-bs-dismiss="modal">
                                                 <i class="fas fa-times fa-fw"></i>
                                                 刪除航班
                                             </button>
@@ -267,13 +266,14 @@
                         else{   //點第二次會隱藏
                             $("#editnote-@ticket_alter.FlightID").hide();
                         }
-		            })
+		            });
 
 
                      //刪除機票
-                     $("#delete_ticket").click(function() {
-                        if(confirm("是否確認刪除此航班?")) {
-                            $("#FlightNote").val("!del!");
+                     $("#delete_ticket-@ticket_alter.FlightID").click(function() {
+                        if( confirm("是否確認刪除此航班?") ) {
+                            console.log("delete")
+                            $("#FlightNote-@ticket_alter.FlightID").val("!del!");
                             return true;
                         }
                         else{
@@ -286,7 +286,8 @@
     }
 
      <!-- Core theme JS-->
-     <script src="~/js/scripts.js"></script>
-     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    <!--  <script src="~/js/scripts.js"></script>
+     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>-->
+    
     
  </body>
